@@ -11,18 +11,18 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Table(name = "university_course_details")
 public class UniversityCourseDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "course_details_id", updatable = false, nullable = false)
     private Long courseDetailsId;
-    private String courseName;
-    private String courseCode;
-    private String description;
+
+    @Column(name = "detailed_description", length = 500)
+    private String detailedDescription;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "department_id", nullable = false, foreignKey = @ForeignKey(name = "fk_university_course_details_department"))
-    private UniversityDepartment department;
-
+    @JoinColumn(name = "course_id", nullable = false, foreignKey = @ForeignKey(name = "fk_course_details_course"))
+    private UniversityCourse course;
 }

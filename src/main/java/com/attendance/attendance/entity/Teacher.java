@@ -10,16 +10,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Entity
 @Table(name = "teacher")
-public class Teacher {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "teacher_id", updatable = false, nullable = false)
-    private Long teacherId;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "person_id", nullable = false, foreignKey = @ForeignKey(name = "fk_teacher_person"))
-    private Person person;
+public class Teacher extends Person {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "university_id", nullable = false, foreignKey = @ForeignKey(name = "fk_teacher_university"))

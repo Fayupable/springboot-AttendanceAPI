@@ -32,6 +32,6 @@ public class UniversityCourse {
     @JoinColumn(name = "department_id", nullable = false, foreignKey = @ForeignKey(name = "fk_university_course_department"))
     private UniversityDepartment department;
 
-
-
+    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<UniversityCourseDetails> courseDetails;
 }

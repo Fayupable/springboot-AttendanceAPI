@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -23,4 +26,8 @@ public class UniversityDepartment {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "university_id", nullable = false, foreignKey = @ForeignKey(name = "fk_university_department_university"))
     private University university;
+
+    @OneToMany(mappedBy = "department", cascade = CascadeType.ALL, orphanRemoval = false)
+    @ToString.Exclude
+    private List<UniversityCourse> courses;
 }

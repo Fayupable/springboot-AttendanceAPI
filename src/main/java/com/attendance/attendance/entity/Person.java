@@ -13,8 +13,9 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @Entity
+@Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "person")
-public class Person {
+public abstract class Person {
 
 
     @Id
