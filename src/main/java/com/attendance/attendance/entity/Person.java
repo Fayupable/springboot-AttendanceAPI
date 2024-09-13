@@ -2,21 +2,22 @@ package com.attendance.attendance.entity;
 
 import com.attendance.attendance.enums.Role;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.NoArgsConstructor;
 
-import java.time.Instant;
 import java.util.Date;
-import java.util.List;
+
 
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "person")
-public abstract class Person {
+public class Person {
 
 
     @Id
@@ -41,9 +42,8 @@ public abstract class Person {
     private String lastName;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "role", nullable = false, length = 20)
+    @Column(name = "role", length = 20)
     private Role role;
-
 
 
 
