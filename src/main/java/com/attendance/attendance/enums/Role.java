@@ -1,4 +1,4 @@
-package com.attendance.attendance.entity;
+package com.attendance.attendance.enums;
 
 public enum Role {
     ADMIN,MODERATOR,MEMBER

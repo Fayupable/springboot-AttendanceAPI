@@ -1,5 +1,6 @@
 package com.attendance.attendance.entity;
 
+import com.attendance.attendance.enums.AttendanceStatus;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
