@@ -36,20 +36,16 @@ public class PersonService implements IPersonService {
     }
 
     @Override
-    public Person addPerson(AddPersonRequest request) {
-        if (personRepository.existsByEmail(request.getEmail())) {
-            throw new RuntimeException("Person with this email already exists");
+    public Person addPerson(AddPersonRequest person) {
+        Person personEntity = modelMapper.map(person, Person.class);
+        if (person.getRole().equals(Role.STUDENT)) {
+            Student student = modelMapper.map(person, Student.class);
+            personRepository.save(student);
+        } else if (person.getRole().equals(Role.TEACHER)) {
+            Teacher teacher = modelMapper.map(person, Teacher.class);
+            personRepository.save(teacher);
         }
-
-        Person person = new Person();
-        person.setEmail(request.getEmail());
-        person.setPassword(request.getPassword());
-        person.setFirstName(request.getFirstName());
-        person.setLastName(request.getLastName());
-        person.setDateOfBirth(request.getDateOfBirth());
-        person.setRole(request.getRole());
-
-        return personRepository.save(person);
+        return personRepository.save(personEntity);
     }
 
     @Override
