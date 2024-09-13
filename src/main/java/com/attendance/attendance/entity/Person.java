@@ -39,20 +39,11 @@ public abstract class Person {
     @Column(name = "last_name", length = 100)
     private String lastName;
 
-    @OneToMany(mappedBy = "person", cascade = CascadeType.REMOVE, orphanRemoval = true)
-    private List<Student> students;
-
-    @OneToMany(mappedBy = "person", cascade = CascadeType.REMOVE, orphanRemoval = true)
-    private List<Teacher> teachers;
-
-    @OneToMany(mappedBy = "person", cascade = CascadeType.REMOVE, orphanRemoval = true)
-    private List<UserReports> userReports;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role", nullable = false, length = 20)
+    private Role role;
 
 
-//    @PrePersist
-//    protected void onCreate() {
-//        if (id == null) {
-//            id = Instant.now().toEpochMilli() * 1000 + (long) (Math.random() * 1000);
-//        }
-//    }
+
+
 }

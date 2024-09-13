@@ -25,6 +25,7 @@ public class Student extends Person {
     @JoinColumn(name = "department_id", nullable = false, foreignKey = @ForeignKey(name = "fk_student_department"))
     private UniversityDepartment department;
 
-    @OneToMany(mappedBy = "student", fetch = FetchType.LAZY)
+    @ManyToMany
+    @JoinTable(name = "student_courses", joinColumns = @JoinColumn(name = "student_id"), inverseJoinColumns = @JoinColumn(name = "course_id"))
     private List<UniversityCourse> courses;
 }
