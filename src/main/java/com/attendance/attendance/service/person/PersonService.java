@@ -4,6 +4,7 @@ import com.attendance.attendance.entity.Person;
 import com.attendance.attendance.entity.Student;
 import com.attendance.attendance.entity.Teacher;
 import com.attendance.attendance.enums.Role;
+import com.attendance.attendance.exceptions.AlreadyExistsException;
 import com.attendance.attendance.repository.IPersonRepository;
 import com.attendance.attendance.request.AddPersonRequest;
 import jakarta.validation.constraints.NotNull;
@@ -35,17 +36,32 @@ public class PersonService implements IPersonService {
         return null;
     }
 
+    /*
+    return Optional.of(request)
+                .filter(user -> !userRepository.existsByEmail(request.getEmail()))
+                .map(req -> {
+                    User user = new User();
+                    user.setEmail(request.getEmail());
+                    user.setPassword(passwordEncoder.encode(request.getPassword()));
+                    user.setFirstName(request.getFirstName());
+                    user.setLastName(request.getLastName());
+                    return userRepository.save(user);
+                }).orElseThrow(() -> new AlreadyExistsException("Oops" + request.getEmail() + " already exists"));
+     */
     @Override
-    public Person addPerson(AddPersonRequest person) {
-        Person personEntity = modelMapper.map(person, Person.class);
-        if (person.getRole().equals(Role.STUDENT)) {
-            Student student = modelMapper.map(person, Student.class);
-            personRepository.save(student);
-        } else if (person.getRole().equals(Role.TEACHER)) {
-            Teacher teacher = modelMapper.map(person, Teacher.class);
-            personRepository.save(teacher);
-        }
-        return personRepository.save(personEntity);
+    public Person addPerson(AddPersonRequest request) {
+        return Optional.of(request)
+                .filter(person -> !personRepository.existsByEmail(request.getEmail()))
+                .map(req -> {
+                    Person person = new Person();
+                    person.setEmail(request.getEmail());
+                    person.setFirstName(request.getFirstName());
+                    person.setLastName(request.getLastName());
+                    person.setPassword(request.getPassword());
+                    person.setRole(Role.valueOf(String.valueOf(request.getRole())));
+                    person.setDateOfBirth(request.getDateOfBirth());
+                    return personRepository.save(person);
+                }).orElseThrow(() -> new AlreadyExistsException("Oops" + request.getEmail() + " already exists"));
     }
 
     @Override
