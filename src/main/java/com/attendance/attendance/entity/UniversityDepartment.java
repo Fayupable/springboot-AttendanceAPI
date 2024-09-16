@@ -1,5 +1,6 @@
 package com.attendance.attendance.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,6 +26,7 @@ public class UniversityDepartment {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "university_id", nullable = false, foreignKey = @ForeignKey(name = "fk_university_department_university"))
+    @JsonIgnore
     private University university;
 
     @OneToMany(mappedBy = "department", cascade = CascadeType.ALL, orphanRemoval = false)

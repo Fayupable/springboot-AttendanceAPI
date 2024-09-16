@@ -53,7 +53,7 @@ public class PersonService implements IPersonService {
         return Optional.of(request)
                 .filter(person -> !personRepository.existsByEmail(request.getEmail()))
                 .map(req -> {
-                    Person person = new Person();
+                    Person person = checkPersonType(request);
                     person.setEmail(request.getEmail());
                     person.setFirstName(request.getFirstName());
                     person.setLastName(request.getLastName());
@@ -72,5 +72,13 @@ public class PersonService implements IPersonService {
     @Override
     public void deleteUser(Long id) {
 
+    }
+
+    private Person checkPersonType(AddPersonRequest request) {
+        if (request.getRole().equals(Role.MEMBER)) {
+            return modelMapper.map(request, Person.class);
+        } else {
+            throw new IllegalArgumentException("Role not supported: " + request.getRole());
+        }
     }
 }
