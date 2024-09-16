@@ -28,7 +28,7 @@ public class PersonService implements IPersonService {
 
     @Override
     public List<Person> getUserByEmail(String email) {
-        return personRepository.findByEmail(email);
+        return personRepository.findByEmailContaining(email);
     }
 
     @Override

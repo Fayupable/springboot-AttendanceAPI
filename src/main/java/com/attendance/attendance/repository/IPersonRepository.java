@@ -8,8 +8,8 @@ import java.util.List;
 public interface IPersonRepository extends JpaRepository<Person, Long> {
     boolean existsByEmail(String email);
 
-    List<Person> findByEmail(String email);
-
     List<Person> findByFirstName(String name);
+
+    List<Person> findByEmailContaining(String email);
 
 }
