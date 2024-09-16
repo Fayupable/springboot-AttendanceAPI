@@ -1,4 +1,4 @@
-package com.attendance.attendance.request;
+package com.attendance.attendance.request.university;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;

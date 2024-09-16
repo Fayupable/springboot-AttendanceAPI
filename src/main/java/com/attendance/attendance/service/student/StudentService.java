@@ -11,7 +11,8 @@ import com.attendance.attendance.repository.IDepartmentRepository;
 import com.attendance.attendance.repository.IPersonRepository;
 import com.attendance.attendance.repository.IStudentRepository;
 import com.attendance.attendance.repository.IUniversityRepository;
-import com.attendance.attendance.request.AddStudentRequest;
+
+import com.attendance.attendance.request.student.AddStudentRequest;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;

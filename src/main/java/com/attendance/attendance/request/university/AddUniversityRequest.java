@@ -1,6 +1,5 @@
-package com.attendance.attendance.request;
+package com.attendance.attendance.request.university;
 
-import com.attendance.attendance.entity.UniversityDepartment;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Data;

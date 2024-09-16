@@ -1,4 +1,4 @@
-package com.attendance.attendance.request;
+package com.attendance.attendance.request.person;
 
 import com.attendance.attendance.enums.Role;
 import jakarta.validation.constraints.Email;
@@ -6,7 +6,6 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Past;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.util.Date;
 

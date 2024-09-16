@@ -2,17 +2,16 @@ package com.attendance.attendance.service.person;
 
 import com.attendance.attendance.dto.PersonDto;
 import com.attendance.attendance.entity.Person;
-import com.attendance.attendance.entity.Student;
-import com.attendance.attendance.entity.Teacher;
 import com.attendance.attendance.enums.Role;
 import com.attendance.attendance.exceptions.AlreadyExistsException;
 import com.attendance.attendance.repository.IPersonRepository;
-import com.attendance.attendance.request.AddPersonRequest;
-import jakarta.validation.constraints.NotNull;
+import com.attendance.attendance.request.person.AddPersonRequest;
+import com.attendance.attendance.request.person.UpdatePersonRequest;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -24,31 +23,24 @@ public class PersonService implements IPersonService {
 
     @Override
     public Person getUserById(Long id) {
-        return null;
+        return personRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("User not found"));
     }
 
     @Override
-    public Person getUserByEmail(String email) {
-        return null;
+    public List<Person> getUserByEmail(String email) {
+        return personRepository.findByEmail(email);
     }
 
     @Override
-    public Person getUserByName(String name) {
-        return null;
+    public List<Person> getUserByName(String name) {
+        return personRepository.findByFirstName(name);
     }
 
-    /*
-    return Optional.of(request)
-                .filter(user -> !userRepository.existsByEmail(request.getEmail()))
-                .map(req -> {
-                    User user = new User();
-                    user.setEmail(request.getEmail());
-                    user.setPassword(passwordEncoder.encode(request.getPassword()));
-                    user.setFirstName(request.getFirstName());
-                    user.setLastName(request.getLastName());
-                    return userRepository.save(user);
-                }).orElseThrow(() -> new AlreadyExistsException("Oops" + request.getEmail() + " already exists"));
-     */
+    @Override
+    public List<Person> getAllPerson() {
+        return personRepository.findAll();
+    }
+
     @Override
     public Person addPerson(AddPersonRequest request) {
         return Optional.of(request)
@@ -59,19 +51,30 @@ public class PersonService implements IPersonService {
                     person.setFirstName(request.getFirstName());
                     person.setLastName(request.getLastName());
                     person.setPassword(request.getPassword());
-                    person.setRole(Role.valueOf(String.valueOf(request.getRole())));
+                    person.setRole(Role.MEMBER);
                     person.setDateOfBirth(request.getDateOfBirth());
                     return personRepository.save(person);
                 }).orElseThrow(() -> new AlreadyExistsException("Oops" + request.getEmail() + " already exists"));
     }
 
     @Override
-    public Person updateUser(Person person, Long id) {
-        return null;
+    public Person updateUser(UpdatePersonRequest person, Long userId) {
+        return personRepository.findById(userId)
+                .map(existingUser -> {
+                    existingUser.setFirstName(person.getFirstName());
+                    existingUser.setLastName(person.getLastName());
+                    existingUser.setEmail(person.getEmail());
+                    existingUser.setPassword(person.getPassword());
+                    existingUser.setDateOfBirth(person.getDateOfBirth());
+                    return personRepository.save(existingUser);
+                }).orElseThrow(() -> new IllegalArgumentException("User not found"));
     }
 
     @Override
     public void deleteUser(Long id) {
+        personRepository.findById(id).ifPresentOrElse(personRepository::delete, () -> {
+            throw new IllegalArgumentException("User not found");
+        });
 
     }
 
@@ -86,5 +89,12 @@ public class PersonService implements IPersonService {
     @Override
     public PersonDto convertToDto(Person person) {
         return modelMapper.map(person, PersonDto.class);
+    }
+
+    @Override
+    public List<PersonDto> getConvertedPerson(List<Person> person) {
+        return person.stream()
+                .map(this::convertToDto).
+                toList();
     }
 }

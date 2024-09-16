@@ -2,7 +2,7 @@ package com.attendance.attendance.controller;
 
 import com.attendance.attendance.dto.StudentDto;
 import com.attendance.attendance.entity.Student;
-import com.attendance.attendance.request.AddStudentRequest;
+import com.attendance.attendance.request.student.AddStudentRequest;
 import com.attendance.attendance.response.ApiResponse;
 import com.attendance.attendance.service.student.IStudentService;
 import lombok.RequiredArgsConstructor;

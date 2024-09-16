@@ -2,24 +2,29 @@ package com.attendance.attendance.service.person;
 
 import com.attendance.attendance.dto.PersonDto;
 import com.attendance.attendance.entity.Person;
-import com.attendance.attendance.request.AddPersonRequest;
+import com.attendance.attendance.request.person.AddPersonRequest;
+import com.attendance.attendance.request.person.UpdatePersonRequest;
+
+import java.util.List;
 
 public interface IPersonService {
     Person getUserById(Long id);
 
-    Person getUserByEmail(String email);
+    List<Person> getAllPerson();
 
-    Person getUserByName(String name);
+    List<Person> getUserByEmail(String email);
+
+    List<Person> getUserByName(String name);
 
     Person addPerson(AddPersonRequest person);
 
-    Person updateUser(Person person, Long id);
+    Person updateUser(UpdatePersonRequest person, Long id);
 
     void deleteUser(Long id);
 
+    List<PersonDto> getConvertedPerson(List<Person> person);
+
     PersonDto convertToDto(Person person);
-
-
 
 
 }
