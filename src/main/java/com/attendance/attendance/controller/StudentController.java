@@ -7,6 +7,7 @@ import com.attendance.attendance.response.ApiResponse;
 import com.attendance.attendance.service.student.IStudentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,6 +20,7 @@ public class StudentController {
     private final IStudentService studentService;
 
     @PostMapping("/add")
+    @Transactional
     public ResponseEntity<ApiResponse> createStudent(@RequestBody AddStudentRequest request) {
         try {
             Student createdStudent = studentService.addStudent(request);

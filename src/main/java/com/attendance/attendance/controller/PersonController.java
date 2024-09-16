@@ -8,6 +8,7 @@ import com.attendance.attendance.response.ApiResponse;
 import com.attendance.attendance.service.person.IPersonService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -61,6 +62,7 @@ public class PersonController {
 
 
     @PostMapping("/add")
+    @Transactional
     public ResponseEntity<ApiResponse> createPerson(@RequestBody AddPersonRequest request) {
         try {
             Person createdPerson = personService.addPerson(request);
@@ -72,6 +74,7 @@ public class PersonController {
     }
 
     @PutMapping("/{personId}/update")
+    @Transactional
     public ResponseEntity<ApiResponse> updatePerson(@RequestBody UpdatePersonRequest request, @PathVariable Long personId) {
         try {
             Person updatedPerson = personService.updateUser(request, personId);
@@ -83,6 +86,7 @@ public class PersonController {
     }
 
     @DeleteMapping("/{personId}/delete")
+    @Transactional
     public ResponseEntity<ApiResponse> deletePerson(@PathVariable Long personId) {
         try {
             personService.deleteUser(personId);

@@ -28,7 +28,7 @@ public class UniversityDepartment {
     @JoinColumn(name = "university_id", nullable = false, foreignKey = @ForeignKey(name = "fk_university_department_university"))
     private University university;
 
-    @OneToMany(mappedBy = "department", cascade = CascadeType.ALL, orphanRemoval = false)
+    @OneToMany(mappedBy = "department", cascade = CascadeType.ALL, orphanRemoval = true)
     @ToString.Exclude
     private List<UniversityCourse> courses;
 

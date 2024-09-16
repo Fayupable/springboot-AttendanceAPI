@@ -1,14 +1,19 @@
 package com.attendance.attendance.service.university;
 
 import com.attendance.attendance.dto.UniversityDto;
+import com.attendance.attendance.entity.Student;
 import com.attendance.attendance.entity.University;
 import com.attendance.attendance.entity.UniversityDepartment;
 import com.attendance.attendance.exceptions.AlreadyExistsException;
+import com.attendance.attendance.exceptions.NotFoundException;
+import com.attendance.attendance.repository.IDepartmentRepository;
+import com.attendance.attendance.repository.IStudentRepository;
 import com.attendance.attendance.repository.IUniversityRepository;
 import com.attendance.attendance.request.university.AddUniversityDepartmentRequest;
 import com.attendance.attendance.request.university.AddUniversityRequest;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,31 +25,26 @@ import java.util.stream.Collectors;
 public class UniversityService implements IUniversityService {
 
     private final IUniversityRepository universityRepository;
+    private final IStudentRepository studentRepository;
+    private final IDepartmentRepository departmentRepository;
     private final ModelMapper modelMapper;
 
     @Override
-    public University getUniversityById(Long id) {
-        return null;
+    public List<University> getAllUniversity() {
+        return universityRepository.findAll();
     }
 
     @Override
-    public University getUniversityByName(String name) {
-        return null;
+    public University getUniversityById(Long id) {
+        return universityRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("University not found"));
+    }
+
+    @Override
+    public List<University> getUniversityByName(String name) {
+        return universityRepository.findByUniversityNameContaining(name);
     }
 
 
-    /*
-    return Optional.of(request)
-                .filter(user -> !userRepository.existsByEmail(request.getEmail()))
-                .map(req -> {
-                    User user = new User();
-                    user.setEmail(request.getEmail());
-                    user.setPassword(passwordEncoder.encode(request.getPassword()));
-                    user.setFirstName(request.getFirstName());
-                    user.setLastName(request.getLastName());
-                    return userRepository.save(user);
-                }).orElseThrow(() -> new AlreadyExistsException("Oops" + request.getEmail() + " already exists"));
-     */
     @Override
     public University addUniversity(AddUniversityRequest request) {
         return Optional.of(request)
@@ -84,7 +84,22 @@ public class UniversityService implements IUniversityService {
 
     @Override
     public void deleteUniversity(Long id) {
+        University university = universityRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("University not found with ID: " + id));
 
+        List<UniversityDepartment> departments = university.getDepartments();
+
+        for (UniversityDepartment department : departments) {
+            List<Student> students = studentRepository.findByDepartment(department);
+
+            if (!students.isEmpty()) {
+                studentRepository.deleteAll(students);
+            }
+
+            departmentRepository.delete(department);
+        }
+
+        universityRepository.delete(university);
     }
 
     @Override
@@ -95,5 +110,12 @@ public class UniversityService implements IUniversityService {
     @Override
     public UniversityDto convertToDto(University university) {
         return modelMapper.map(university, UniversityDto.class);
+    }
+
+    @Override
+    public List<UniversityDto> getConvertedUniversity(List<University> universities) {
+        return universities.stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
     }
 }

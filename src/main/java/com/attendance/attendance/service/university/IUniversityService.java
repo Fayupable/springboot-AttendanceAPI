@@ -4,10 +4,14 @@ import com.attendance.attendance.dto.UniversityDto;
 import com.attendance.attendance.entity.University;
 import com.attendance.attendance.request.university.AddUniversityRequest;
 
+import java.util.List;
+
 public interface IUniversityService {
     University getUniversityById(Long id);
 
-    University getUniversityByName(String name);
+    List<University> getAllUniversity();
+
+    List<University> getUniversityByName(String name);
 
     University addUniversity(AddUniversityRequest request);
 
@@ -19,5 +23,5 @@ public interface IUniversityService {
 
     UniversityDto convertToDto(University university);
 
-
+    List<UniversityDto> getConvertedUniversity(List<University> universities);
 }
