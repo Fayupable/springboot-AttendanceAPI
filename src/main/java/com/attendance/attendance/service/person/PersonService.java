@@ -1,5 +1,6 @@
 package com.attendance.attendance.service.person;
 
+import com.attendance.attendance.dto.PersonDto;
 import com.attendance.attendance.entity.Person;
 import com.attendance.attendance.entity.Student;
 import com.attendance.attendance.entity.Teacher;
@@ -80,5 +81,10 @@ public class PersonService implements IPersonService {
         } else {
             throw new IllegalArgumentException("Role not supported: " + request.getRole());
         }
+    }
+
+    @Override
+    public PersonDto convertToDto(Person person) {
+        return modelMapper.map(person, PersonDto.class);
     }
 }

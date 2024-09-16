@@ -1,5 +1,6 @@
 package com.attendance.attendance.controller;
 
+import com.attendance.attendance.dto.PersonDto;
 import com.attendance.attendance.entity.Person;
 import com.attendance.attendance.request.AddPersonRequest;
 import com.attendance.attendance.response.ApiResponse;
@@ -23,7 +24,8 @@ public class PersonController {
     public ResponseEntity<ApiResponse> createPerson(@RequestBody AddPersonRequest request) {
         try {
             Person createdPerson = personService.addPerson(request);
-            return ResponseEntity.ok(new ApiResponse("Person created successfully", createdPerson));
+            PersonDto personDto = personService.convertToDto(createdPerson);
+            return ResponseEntity.ok(new ApiResponse("Person created successfully", personDto));
         } catch (RuntimeException e) {
             return ResponseEntity.status(409).body(new ApiResponse(e.getMessage(), null));
         }

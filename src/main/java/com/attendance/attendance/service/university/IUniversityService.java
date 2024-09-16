@@ -1,5 +1,6 @@
 package com.attendance.attendance.service.university;
 
+import com.attendance.attendance.dto.UniversityDto;
 import com.attendance.attendance.entity.University;
 import com.attendance.attendance.request.AddUniversityRequest;
 
@@ -15,6 +16,8 @@ public interface IUniversityService {
     void deleteUniversity(Long id);
 
     boolean existsByUniversityName(String name);
+
+    UniversityDto convertToDto(University university);
 
 
 }

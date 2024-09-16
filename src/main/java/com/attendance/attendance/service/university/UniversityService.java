@@ -1,5 +1,6 @@
 package com.attendance.attendance.service.university;
 
+import com.attendance.attendance.dto.UniversityDto;
 import com.attendance.attendance.entity.University;
 import com.attendance.attendance.entity.UniversityDepartment;
 import com.attendance.attendance.exceptions.AlreadyExistsException;
@@ -90,5 +91,10 @@ public class UniversityService implements IUniversityService {
     @Override
     public boolean existsByUniversityName(String name) {
         return false;
+    }
+
+    @Override
+    public UniversityDto convertToDto(University university) {
+        return modelMapper.map(university, UniversityDto.class);
     }
 }
