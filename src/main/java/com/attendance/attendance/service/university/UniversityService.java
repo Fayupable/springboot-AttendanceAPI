@@ -12,6 +12,7 @@ import com.attendance.attendance.repository.IStudentRepository;
 import com.attendance.attendance.repository.IUniversityRepository;
 import com.attendance.attendance.request.university.AddUniversityDepartmentRequest;
 import com.attendance.attendance.request.university.AddUniversityRequest;
+import com.attendance.attendance.request.university.UpdateUniversityRequest;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.crossstore.ChangeSetPersister;
@@ -77,8 +78,13 @@ public class UniversityService implements IUniversityService {
 
 
     @Override
-    public University updateUniversity(University university, Long id) {
-        return null;
+    public University updateUniversity(UpdateUniversityRequest request, Long id) {
+        return universityRepository.findById(id)
+                .map(existingUniversity -> {
+                    existingUniversity.setUniversityName(request.getUniversityName());
+                    existingUniversity.setLocation(request.getLocation());
+                    return universityRepository.save(existingUniversity);
+                }).orElseThrow(() -> new NotFoundException("University not found"));
     }
 
     @Override

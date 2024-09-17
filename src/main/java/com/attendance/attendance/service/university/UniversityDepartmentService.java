@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -84,23 +85,26 @@ public class UniversityDepartmentService implements IUniversityDepartmentService
 
     @Override
     public void deleteDepartment(Long id) {
-
+        departmentRepository.findById(id).ifPresentOrElse(departmentRepository::delete, () -> {
+            throw new IllegalArgumentException("Department not found");
+        });
     }
 
     @Override
     public boolean existsByDepartmentName(String name) {
-        return false;
+        return departmentRepository.existsByDepartmentName(name);
     }
 
-    @Override
-    public UniversityDepartmentDto convertToDto(UniversityDepartment theDepartment) {
-        return modelMapper.map(theDepartment, UniversityDepartmentDto.class);
+    public UniversityDepartmentDto convertToDto(UniversityDepartment department) {
+        UniversityDepartmentDto dto = new UniversityDepartmentDto();
+        dto.setDepartmentName(department.getDepartmentName());
+        dto.setUniversityName(department.getUniversity().getUniversityName());
+        return dto;
     }
 
-    @Override
-    public List<UniversityDepartmentDto> convertToDtoList(List<UniversityDepartment> theDepartments) {
-        return theDepartments.stream()
+    public List<UniversityDepartmentDto> convertToDtoList(List<UniversityDepartment> departments) {
+        return departments.stream()
                 .map(this::convertToDto)
-                .toList();
+                .collect(Collectors.toList());
     }
 }

@@ -3,6 +3,7 @@ package com.attendance.attendance.service.university;
 import com.attendance.attendance.dto.UniversityDto;
 import com.attendance.attendance.entity.University;
 import com.attendance.attendance.request.university.AddUniversityRequest;
+import com.attendance.attendance.request.university.UpdateUniversityRequest;
 
 import java.util.List;
 
@@ -15,7 +16,7 @@ public interface IUniversityService {
 
     University addUniversity(AddUniversityRequest request);
 
-    University updateUniversity(University university, Long id);
+    University updateUniversity(UpdateUniversityRequest request, Long id);
 
     void deleteUniversity(Long id);
 

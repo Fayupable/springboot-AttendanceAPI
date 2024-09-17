@@ -5,4 +5,5 @@ import lombok.Data;
 @Data
 public class UniversityDepartmentDto {
     private String departmentName;
+    private String universityName;
 }

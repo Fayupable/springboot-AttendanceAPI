@@ -4,6 +4,7 @@ package com.attendance.attendance.controller;
 import com.attendance.attendance.dto.UniversityDto;
 import com.attendance.attendance.entity.University;
 import com.attendance.attendance.request.university.AddUniversityRequest;
+import com.attendance.attendance.request.university.UpdateUniversityRequest;
 import com.attendance.attendance.response.ApiResponse;
 import com.attendance.attendance.service.university.IUniversityService;
 import lombok.RequiredArgsConstructor;
@@ -38,6 +39,13 @@ public class UniversityController {
         return ResponseEntity.ok(new ApiResponse("University retrieved successfully", universityDto));
     }
 
+    @GetMapping("/name/{universityName}")
+    public ResponseEntity<ApiResponse> getUniversityByName(@PathVariable String universityName) {
+        List<University> universities = universityService.getUniversityByName(universityName);
+        List<UniversityDto> universityDto = universityService.getConvertedUniversity(universities);
+        return ResponseEntity.ok(new ApiResponse("University retrieved successfully", universityDto));
+    }
+
     @PostMapping("/add")
     @Transactional
     public ResponseEntity<ApiResponse> createUniversity(@RequestBody AddUniversityRequest request) {
@@ -56,6 +64,18 @@ public class UniversityController {
         try {
             universityService.deleteUniversity(universityId);
             return ResponseEntity.ok(new ApiResponse("University deleted successfully", null));
+        } catch (Exception e) {
+            return ResponseEntity.status(404).body(new ApiResponse(e.getMessage(), null));
+        }
+    }
+
+    @PutMapping("/update/{universityId}")
+    @Transactional
+    public ResponseEntity<ApiResponse> updateUniversity(@RequestBody UpdateUniversityRequest request, @PathVariable Long universityId) {
+        try {
+            University updatedUniversity = universityService.updateUniversity(request, universityId);
+            UniversityDto universityDto = universityService.convertToDto(updatedUniversity);
+            return ResponseEntity.ok(new ApiResponse("University updated successfully", universityDto));
         } catch (Exception e) {
             return ResponseEntity.status(404).body(new ApiResponse(e.getMessage(), null));
         }
