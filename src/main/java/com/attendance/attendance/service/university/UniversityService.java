@@ -4,6 +4,7 @@ import com.attendance.attendance.dto.UniversityDto;
 import com.attendance.attendance.entity.Student;
 import com.attendance.attendance.entity.University;
 import com.attendance.attendance.entity.UniversityDepartment;
+import com.attendance.attendance.enums.Role;
 import com.attendance.attendance.exceptions.AlreadyExistsException;
 import com.attendance.attendance.exceptions.NotFoundException;
 import com.attendance.attendance.repository.IDepartmentRepository;
@@ -84,23 +85,12 @@ public class UniversityService implements IUniversityService {
 
     @Override
     public void deleteUniversity(Long id) {
-        University university = universityRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("University not found with ID: " + id));
 
-        List<UniversityDepartment> departments = university.getDepartments();
-
-        for (UniversityDepartment department : departments) {
-            List<Student> students = studentRepository.findByDepartment(department);
-
-            if (!students.isEmpty()) {
-                studentRepository.deleteAll(students);
-            }
-
-            departmentRepository.delete(department);
-        }
-
-        universityRepository.delete(university);
+        universityRepository.findById(id).ifPresentOrElse(universityRepository::delete, () -> {
+            throw new NotFoundException("University not found");
+        });
     }
+
 
     @Override
     public boolean existsByUniversityName(String name) {

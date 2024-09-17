@@ -1,5 +1,6 @@
 package com.attendance.attendance.entity;
 
+import com.attendance.attendance.enums.Role;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -29,7 +30,22 @@ public class University {
     @Column(name = "university_name", length = 100, nullable = false)
     private String universityName;
 
-    @OneToMany(mappedBy = "university", cascade = CascadeType.ALL, orphanRemoval = false)
+    @OneToMany(mappedBy = "university", cascade = CascadeType.ALL, orphanRemoval = true)
     @ToString.Exclude
     private List<UniversityDepartment> departments;
+
+    @OneToMany(mappedBy = "university", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ToString.Exclude
+    private List<Student> students;
+
+    @PreRemove
+    private void setAllStudentsToMembers() {
+        if (students != null) {
+            for (Student student : students) {
+                student.setDepartment(null);
+                student.setRole(Role.MEMBER);
+            }
+        }
+    }
+
 }

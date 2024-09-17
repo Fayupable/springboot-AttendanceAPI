@@ -46,16 +46,22 @@ public class PersonService implements IPersonService {
         return Optional.of(request)
                 .filter(person -> !personRepository.existsByEmail(request.getEmail()))
                 .map(req -> {
-                    Person person = checkPersonType(request);
-                    person.setEmail(request.getEmail());
-                    person.setFirstName(request.getFirstName());
-                    person.setLastName(request.getLastName());
-                    person.setPassword(request.getPassword());
-                    person.setRole(Role.MEMBER);
-                    person.setDateOfBirth(request.getDateOfBirth());
+                    Person person = createPerson(request, Role.MEMBER);
                     return personRepository.save(person);
                 }).orElseThrow(() -> new AlreadyExistsException("Oops" + request.getEmail() + " already exists"));
     }
+
+    private Person createPerson(AddPersonRequest request, Role role) {
+        return new Person(
+                request.getDateOfBirth(),
+                request.getEmail(),
+                request.getPassword(),
+                request.getFirstName(),
+                request.getLastName(),
+                role
+        );
+    }
+
 
     @Override
     public Person updateUser(UpdatePersonRequest person, Long userId) {

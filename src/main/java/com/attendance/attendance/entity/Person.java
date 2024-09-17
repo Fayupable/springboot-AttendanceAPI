@@ -45,6 +45,14 @@ public class Person {
     @Column(name = "role", length = 20)
     private Role role;
 
+    public Person(Date dateOfBirth, String email, String password, String firstName, String lastName, Role role) {
+        this.dateOfBirth = dateOfBirth;
+        this.email = email;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.role = role;
+    }
 
 
 }
