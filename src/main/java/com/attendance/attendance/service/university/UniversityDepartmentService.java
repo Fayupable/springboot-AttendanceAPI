@@ -5,16 +5,14 @@ import com.attendance.attendance.entity.University;
 import com.attendance.attendance.entity.UniversityDepartment;
 import com.attendance.attendance.exceptions.AlreadyExistsException;
 import com.attendance.attendance.repository.IDepartmentRepository;
-import com.attendance.attendance.repository.IStudentRepository;
 import com.attendance.attendance.repository.IUniversityRepository;
-import com.attendance.attendance.request.university.AddUniversityDepartmentRequest;
-import com.attendance.attendance.request.university.UpdateUniversityDepartmentRequest;
+import com.attendance.attendance.request.university.department.AddUniversityDepartmentRequest;
+import com.attendance.attendance.request.university.department.UpdateUniversityDepartmentRequest;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service

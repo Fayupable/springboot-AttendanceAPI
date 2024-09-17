@@ -14,4 +14,5 @@ public interface IDepartmentRepository extends JpaRepository<UniversityDepartmen
 
 
     boolean existsByDepartmentNameAndUniversity(String departmentName, University university);
+
 }

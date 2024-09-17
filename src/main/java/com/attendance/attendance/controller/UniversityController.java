@@ -3,8 +3,8 @@ package com.attendance.attendance.controller;
 
 import com.attendance.attendance.dto.UniversityDto;
 import com.attendance.attendance.entity.University;
-import com.attendance.attendance.request.university.AddUniversityRequest;
-import com.attendance.attendance.request.university.UpdateUniversityRequest;
+import com.attendance.attendance.request.university.university.AddUniversityRequest;
+import com.attendance.attendance.request.university.university.UpdateUniversityRequest;
 import com.attendance.attendance.response.ApiResponse;
 import com.attendance.attendance.service.university.IUniversityService;
 import lombok.RequiredArgsConstructor;

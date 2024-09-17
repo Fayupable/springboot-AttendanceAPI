@@ -2,8 +2,8 @@ package com.attendance.attendance.service.university;
 
 import com.attendance.attendance.dto.UniversityDepartmentDto;
 import com.attendance.attendance.entity.UniversityDepartment;
-import com.attendance.attendance.request.university.AddUniversityDepartmentRequest;
-import com.attendance.attendance.request.university.UpdateUniversityDepartmentRequest;
+import com.attendance.attendance.request.university.department.AddUniversityDepartmentRequest;
+import com.attendance.attendance.request.university.department.UpdateUniversityDepartmentRequest;
 
 import java.util.List;
 

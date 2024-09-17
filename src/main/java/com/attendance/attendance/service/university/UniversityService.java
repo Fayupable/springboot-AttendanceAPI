@@ -1,21 +1,16 @@
 package com.attendance.attendance.service.university;
 
 import com.attendance.attendance.dto.UniversityDto;
-import com.attendance.attendance.entity.Student;
 import com.attendance.attendance.entity.University;
 import com.attendance.attendance.entity.UniversityDepartment;
-import com.attendance.attendance.enums.Role;
 import com.attendance.attendance.exceptions.AlreadyExistsException;
 import com.attendance.attendance.exceptions.NotFoundException;
-import com.attendance.attendance.repository.IDepartmentRepository;
-import com.attendance.attendance.repository.IStudentRepository;
 import com.attendance.attendance.repository.IUniversityRepository;
-import com.attendance.attendance.request.university.AddUniversityDepartmentRequest;
-import com.attendance.attendance.request.university.AddUniversityRequest;
-import com.attendance.attendance.request.university.UpdateUniversityRequest;
+import com.attendance.attendance.request.university.department.AddUniversityDepartmentRequest;
+import com.attendance.attendance.request.university.university.AddUniversityRequest;
+import com.attendance.attendance.request.university.university.UpdateUniversityRequest;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

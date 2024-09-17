@@ -1,0 +1,62 @@
+package com.attendance.attendance.controller;
+
+import com.attendance.attendance.dto.UniversityCourseDto;
+import com.attendance.attendance.entity.UniversityCourse;
+import com.attendance.attendance.request.university.course.AddUniversityCourseRequest;
+import com.attendance.attendance.response.ApiResponse;
+import com.attendance.attendance.service.university.IUniversityCourseService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RequiredArgsConstructor
+@RestController
+@RequestMapping("${api.prefix}/university-course")
+public class UniversityCourseController {
+    private final IUniversityCourseService universityCourseService;
+
+    @GetMapping("/all")
+    public ResponseEntity<ApiResponse> getAllUniversityCourses() {
+        List<UniversityCourse> universityCourses = universityCourseService.getAllCourses();
+        List<UniversityCourseDto> universityCourseDtos = universityCourseService.convertToDtoToList(universityCourses);
+        return ResponseEntity.ok(new ApiResponse("University courses retrieved successfully", universityCourseDtos));
+    }
+
+    @GetMapping("/course/{courseId}")
+    public ResponseEntity<ApiResponse> getUniversityCourseById(@PathVariable Long courseId) {
+        try {
+            UniversityCourse universityCourse = universityCourseService.getCourseById(courseId);
+            UniversityCourseDto universityCourseDto = universityCourseService.convertToDto(universityCourse);
+            return ResponseEntity.ok(new ApiResponse("University course retrieved successfully", universityCourseDto));
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(404).body(new ApiResponse(e.getMessage(), null));
+        }
+    }
+
+    @GetMapping("/name/{courseName}")
+    public ResponseEntity<ApiResponse> getUniversityCourseByName(@PathVariable String courseName) {
+        List<UniversityCourse> universityCourses = universityCourseService.getCourseByName(courseName);
+        List<UniversityCourseDto> universityCourseDtos = universityCourseService.convertToDtoToList(universityCourses);
+        return ResponseEntity.ok(new ApiResponse("University courses retrieved successfully", universityCourseDtos));
+    }
+
+    @GetMapping("/code/{courseCode}")
+    public ResponseEntity<ApiResponse> getUniversityCourseByCode(@PathVariable String courseCode) {
+        List<UniversityCourse> universityCourses = universityCourseService.getCourseByCode(courseCode);
+        List<UniversityCourseDto> universityCourseDto = universityCourseService.convertToDtoToList(universityCourses);
+        return ResponseEntity.ok(new ApiResponse("University courses retrieved successfully", universityCourseDto));
+    }
+
+    @PostMapping("/add")
+    public ResponseEntity<ApiResponse> addUniversityCourse(@RequestBody AddUniversityCourseRequest request) {
+        try {
+            UniversityCourse universityCourse = universityCourseService.addCourse(request);
+            UniversityCourseDto universityCourseDto = universityCourseService.convertToDto(universityCourse);
+            return ResponseEntity.ok(new ApiResponse("University course created successfully", universityCourseDto));
+        } catch (Exception e) {
+            return ResponseEntity.status(409).body(new ApiResponse(e.getMessage(), null));
+        }
+    }
+}
