@@ -11,5 +11,15 @@ public interface IStudentRepository extends JpaRepository<Student, Long> {
 
     Student findByEmail(String email);
 
+    List<Student> findByEmailContaining(String email);
+
     List<Student> findByDepartment(UniversityDepartment department);
+
+    List<Student> findStudentByEmail(String email);
+
+    List<Student> findStudentByFirstNameContaining(String name);
+
+    List<Student> findStudentByLastNameContaining(String name);
+
+
 }

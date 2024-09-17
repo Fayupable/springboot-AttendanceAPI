@@ -46,19 +46,19 @@ public class PersonService implements IPersonService {
         return Optional.of(request)
                 .filter(person -> !personRepository.existsByEmail(request.getEmail()))
                 .map(req -> {
-                    Person person = createPerson(request, Role.MEMBER);
+                    Person person = createPerson(request);
                     return personRepository.save(person);
                 }).orElseThrow(() -> new AlreadyExistsException("Oops" + request.getEmail() + " already exists"));
     }
 
-    private Person createPerson(AddPersonRequest request, Role role) {
+    private Person createPerson(AddPersonRequest request) {
         return new Person(
                 request.getDateOfBirth(),
                 request.getEmail(),
                 request.getPassword(),
                 request.getFirstName(),
                 request.getLastName(),
-                role
+                Role.MEMBER
         );
     }
 
@@ -66,14 +66,19 @@ public class PersonService implements IPersonService {
     @Override
     public Person updateUser(UpdatePersonRequest person, Long userId) {
         return personRepository.findById(userId)
-                .map(existingUser -> {
-                    existingUser.setFirstName(person.getFirstName());
-                    existingUser.setLastName(person.getLastName());
-                    existingUser.setEmail(person.getEmail());
-                    existingUser.setPassword(person.getPassword());
-                    existingUser.setDateOfBirth(person.getDateOfBirth());
-                    return personRepository.save(existingUser);
+                .map(existingPerson -> {
+                    Person updatedPerson = updateExistingPerson(existingPerson, person);
+                    return personRepository.save(updatedPerson);
                 }).orElseThrow(() -> new IllegalArgumentException("User not found"));
+    }
+
+    private Person updateExistingPerson(Person existingPerson, UpdatePersonRequest request) {
+        existingPerson.setFirstName(request.getFirstName());
+        existingPerson.setLastName(request.getLastName());
+        existingPerson.setEmail(request.getEmail());
+        existingPerson.setPassword(request.getPassword());
+        existingPerson.setDateOfBirth(request.getDateOfBirth());
+        return existingPerson;
     }
 
     @Override

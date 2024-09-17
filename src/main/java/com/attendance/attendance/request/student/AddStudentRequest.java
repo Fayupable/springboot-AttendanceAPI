@@ -4,7 +4,9 @@ import com.attendance.attendance.request.person.AddPersonRequest;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 public class AddStudentRequest extends AddPersonRequest {
 
