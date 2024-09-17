@@ -10,10 +10,6 @@ public interface IUniversityRepository extends JpaRepository<University, Long> {
 
     University findByUniversityName(String name);
 
+
     List<University> findByUniversityNameContaining(String name);
-
-    List<University> findUniversityByLocation(String location);
-
-
-
 }

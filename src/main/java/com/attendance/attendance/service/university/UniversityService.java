@@ -26,8 +26,6 @@ import java.util.stream.Collectors;
 public class UniversityService implements IUniversityService {
 
     private final IUniversityRepository universityRepository;
-    private final IStudentRepository studentRepository;
-    private final IDepartmentRepository departmentRepository;
     private final ModelMapper modelMapper;
 
     @Override
