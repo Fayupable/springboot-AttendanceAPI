@@ -22,5 +22,5 @@ public interface IUniversityCourseRepository extends JpaRepository<UniversityCou
     UniversityCourse findByCourseCode(String courseCode);
 
 
-
+    boolean existsByCourseNameAndCourseCodeAndDepartment_University(String courseName, String courseCode, University university);
 }

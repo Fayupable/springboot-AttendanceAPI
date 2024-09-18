@@ -1,4 +1,4 @@
-package com.attendance.attendance.request.university.course;
+package com.attendance.attendance.request.university.course.course;
 
 import lombok.Data;
 
@@ -9,7 +9,4 @@ public class AddUniversityCourseRequest {
     private String courseName;
     private String description;
 
-    public Long getUniversityId() {
-        return departmentId;
-    }
 }
