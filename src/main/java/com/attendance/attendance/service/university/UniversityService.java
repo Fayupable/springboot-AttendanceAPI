@@ -42,35 +42,45 @@ public class UniversityService implements IUniversityService {
 
     @Override
     public University addUniversity(AddUniversityRequest request) {
-        return Optional.of(request)
-                .filter(university -> !universityRepository.existsByUniversityName(request.getUniversityName()))
-                .map(req -> {
-                    University university = new University();
-                    university.setUniversityName(request.getUniversityName());
-                    university.setLocation(request.getLocation());
-                    addDepartments(request, university);
-                    return universityRepository.save(university);
-                }).orElseThrow(() -> new AlreadyExistsException("Oops" + request.getUniversityName() + " already exists"));
-
+        validateUniversityName(request.getUniversityName());
+        University university = createUniversityFromRequest(request);
+        addDepartmentsToUniversity(request, university);
+        return saveUniversity(university);
     }
 
-    private void addDepartments(AddUniversityRequest request, University university) {
-        List<AddUniversityDepartmentRequest> departmentRequests = request.getDepartments();
+    private void validateUniversityName(String universityName) {
+        if (existsByUniversityName(universityName)) {
+            throw new AlreadyExistsException("Oops, " + universityName + " already exists");
+        }
+    }
 
+    private University createUniversityFromRequest(AddUniversityRequest request) {
+        University university = new University();
+        university.setUniversityName(request.getUniversityName());
+        university.setLocation(request.getLocation());
+        return university;
+    }
+
+    private void addDepartmentsToUniversity(AddUniversityRequest request, University university) {
+        List<AddUniversityDepartmentRequest> departmentRequests = request.getDepartments();
         if (departmentRequests != null && !departmentRequests.isEmpty()) {
             List<UniversityDepartment> departments = departmentRequests.stream()
-                    .map(deptRequest -> {
-                        UniversityDepartment department = new UniversityDepartment();
-                        department.setDepartmentName(deptRequest.getDepartmentName());
-                        department.setUniversity(university);
-                        return department;
-                    })
+                    .map(deptRequest -> createDepartmentFromRequest(deptRequest, university))
                     .collect(Collectors.toList());
-
             university.setDepartments(departments);
         }
     }
 
+    private UniversityDepartment createDepartmentFromRequest(AddUniversityDepartmentRequest deptRequest, University university) {
+        UniversityDepartment department = new UniversityDepartment();
+        department.setDepartmentName(deptRequest.getDepartmentName());
+        department.setUniversity(university);
+        return department;
+    }
+
+    private University saveUniversity(University university) {
+        return universityRepository.save(university);
+    }
 
     @Override
     public University updateUniversity(UpdateUniversityRequest request, Long id) {
@@ -93,7 +103,7 @@ public class UniversityService implements IUniversityService {
 
     @Override
     public boolean existsByUniversityName(String name) {
-        return false;
+        return universityRepository.existsByUniversityName(name);
     }
 
     @Override

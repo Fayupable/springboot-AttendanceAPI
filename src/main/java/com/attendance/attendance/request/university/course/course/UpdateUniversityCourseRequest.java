@@ -1,11 +1,9 @@
-package com.attendance.attendance.request.university.course;
+package com.attendance.attendance.request.university.course.course;
 
 import lombok.Data;
 
 @Data
 public class UpdateUniversityCourseRequest {
-    private Long courseId;
-    private Long departmentId;
     private String courseCode;
     private String courseName;
     private String description;
