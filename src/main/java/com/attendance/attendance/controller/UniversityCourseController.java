@@ -2,7 +2,8 @@ package com.attendance.attendance.controller;
 
 import com.attendance.attendance.dto.UniversityCourseDto;
 import com.attendance.attendance.entity.UniversityCourse;
-import com.attendance.attendance.request.university.course.AddUniversityCourseRequest;
+import com.attendance.attendance.request.university.course.course.AddUniversityCourseRequest;
+import com.attendance.attendance.request.university.course.course.UpdateUniversityCourseRequest;
 import com.attendance.attendance.response.ApiResponse;
 import com.attendance.attendance.service.university.IUniversityCourseService;
 import lombok.RequiredArgsConstructor;
@@ -59,4 +60,29 @@ public class UniversityCourseController {
             return ResponseEntity.status(409).body(new ApiResponse(e.getMessage(), null));
         }
     }
+
+    @PutMapping("/update/{courseId}/department/{departmentId}")
+    public ResponseEntity<ApiResponse> updateUniversityCourse(
+            @RequestBody UpdateUniversityCourseRequest request,
+            @PathVariable Long courseId,
+            @PathVariable Long departmentId) {
+        try {
+            UniversityCourse universityCourse = universityCourseService.updateCourse(request, courseId, departmentId);
+            UniversityCourseDto universityCourseDto = universityCourseService.convertToDto(universityCourse);
+            return ResponseEntity.ok(new ApiResponse("University course updated successfully", universityCourseDto));
+        } catch (Exception e) {
+            return ResponseEntity.status(409).body(new ApiResponse(e.getMessage(), null));
+        }
+    }
+    @DeleteMapping("/delete/{courseId}")
+    public ResponseEntity<ApiResponse> deleteUniversityCourse(@PathVariable Long courseId) {
+        try {
+            universityCourseService.deleteCourse(courseId);
+            return ResponseEntity.ok(new ApiResponse("University course deleted successfully", null));
+        } catch (Exception e) {
+            return ResponseEntity.status(409).body(new ApiResponse(e.getMessage(), null));
+        }
+    }
+
+
 }

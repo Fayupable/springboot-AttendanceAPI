@@ -8,8 +8,8 @@ import com.attendance.attendance.exceptions.AlreadyExistsException;
 import com.attendance.attendance.repository.IDepartmentRepository;
 import com.attendance.attendance.repository.IUniversityCourseRepository;
 import com.attendance.attendance.repository.IUniversityRepository;
-import com.attendance.attendance.request.university.course.AddUniversityCourseRequest;
-import com.attendance.attendance.request.university.course.UpdateUniversityCourseRequest;
+import com.attendance.attendance.request.university.course.course.AddUniversityCourseRequest;
+import com.attendance.attendance.request.university.course.course.UpdateUniversityCourseRequest;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -64,28 +64,15 @@ public class UniversityCourseService implements IUniversityCourseService {
     }
 
     private void validateCourse(AddUniversityCourseRequest course) {
-        validateCourseNameAndCode(course.getCourseName(), course.getCourseCode());
-        validateCourseNameInUniversity(course.getCourseName(), course.getUniversityId());
-        validateCourseCodeInUniversity(course.getCourseCode(), course.getUniversityId());
+        UniversityDepartment department = findDepartmentById(course.getDepartmentId());
+        validateCourseNameAndCode(course.getCourseName(), course.getCourseCode(), department.getUniversity().getUniversityId());
     }
 
-    private void validateCourseNameAndCode(String courseName, String courseCode) {
-        if (universityCourseRepository.existsByCourseNameAndCourseCode(courseName, courseCode)) {
-            throw new AlreadyExistsException("Course with name '" + courseName + "' and code '" + courseCode + "' already exists.");
-        }
-    }
-
-    private void validateCourseNameInUniversity(String courseName, Long universityId) {
+    private void validateCourseNameAndCode(String courseName, String courseCode, Long universityId) {
         University university = findUniversityById(universityId);
-        if (universityCourseRepository.existsByCourseNameAndDepartment_University(courseName, university)) {
-            throw new AlreadyExistsException("Course with name '" + courseName + "' already exists in university: " + university.getUniversityName());
-        }
-    }
 
-    private void validateCourseCodeInUniversity(String courseCode, Long universityId) {
-        University university = findUniversityById(universityId);
-        if (universityCourseRepository.existsByCourseCodeAndDepartment_University(courseCode, university)) {
-            throw new AlreadyExistsException("Course with code '" + courseCode + "' already exists in university: " + university.getUniversityName());
+        if (universityCourseRepository.existsByCourseNameAndCourseCodeAndDepartment_University(courseName, courseCode, university)) {
+            throw new AlreadyExistsException("Course with name '" + courseName + "' and code '" + courseCode + "' already exists in university: " + university.getUniversityName());
         }
     }
 
@@ -114,9 +101,29 @@ public class UniversityCourseService implements IUniversityCourseService {
 
 
     @Override
-    public UniversityCourse updateCourse(UpdateUniversityCourseRequest course, Long id) {
-        return null;
+    public UniversityCourse updateCourse(UpdateUniversityCourseRequest course, Long courseId, Long departmentId) {
+        UniversityDepartment department = findDepartmentById(departmentId);
+        UniversityCourse existingCourse = findCourseById(courseId);
+        updateExistingCourse(existingCourse, course, department);
+        return saveUpdatedCourse(existingCourse);
     }
+
+    private UniversityCourse findCourseById(Long id) {
+        return universityCourseRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Course not found with ID: " + id));
+    }
+
+    private void updateExistingCourse(UniversityCourse existingCourse, UpdateUniversityCourseRequest course, UniversityDepartment department) {
+        existingCourse.setCourseName(course.getCourseName());
+        existingCourse.setCourseCode(course.getCourseCode());
+        existingCourse.setDescription(course.getDescription());
+        existingCourse.setDepartment(department);
+    }
+
+    private UniversityCourse saveUpdatedCourse(UniversityCourse course) {
+        return universityCourseRepository.save(course);
+    }
+
 
     @Override
     public void deleteCourse(Long id) {

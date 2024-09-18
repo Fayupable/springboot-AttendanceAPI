@@ -2,8 +2,8 @@ package com.attendance.attendance.service.university;
 
 import com.attendance.attendance.dto.UniversityCourseDto;
 import com.attendance.attendance.entity.UniversityCourse;
-import com.attendance.attendance.request.university.course.AddUniversityCourseRequest;
-import com.attendance.attendance.request.university.course.UpdateUniversityCourseRequest;
+import com.attendance.attendance.request.university.course.course.AddUniversityCourseRequest;
+import com.attendance.attendance.request.university.course.course.UpdateUniversityCourseRequest;
 
 import java.util.List;
 
@@ -22,7 +22,7 @@ public interface IUniversityCourseService {
 
     UniversityCourse addCourse(AddUniversityCourseRequest course);
 
-    UniversityCourse updateCourse(UpdateUniversityCourseRequest course, Long id);
+    UniversityCourse updateCourse(UpdateUniversityCourseRequest course, Long id, Long departmentId);
 
     void deleteCourse(Long id);
 
