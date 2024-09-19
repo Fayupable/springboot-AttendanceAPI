@@ -49,17 +49,26 @@ public class StudentService implements IStudentService {
         return studentRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Student not found"));
     }
 
+    /*
+      @Override
+    public Person addPerson(AddPersonRequest request) {
+        return Optional.of(request)
+                .filter(person -> !personRepository.existsByEmail(request.getEmail()))
+                .map(req -> {
+                    Person person = createPerson(request);
+                    return personRepository.save(person);
+                }).orElseThrow(() -> new AlreadyExistsException("Oops" + request.getEmail() + " already exists"));
+    }
+     */
 
     @Override
     public Student addStudent(AddStudentRequest request) {
-        if (studentRepository.existsByEmail(request.getEmail())) {
-            throw new AlreadyExistsException("Oops! " + request.getEmail() + " already exists");
-        }
-        Student student = new Student();
-        createStudent(request, student);
-
-
-        return studentRepository.save(student);
+        return Optional.of(request)
+                .map(req -> {
+                    Student student = new Student();
+                    createStudent(request, student);
+                    return studentRepository.save(student);
+                }).orElseThrow(() -> new AlreadyExistsException("Student already exists"));
     }
 
     private void createStudent(AddStudentRequest request, Student student) {
@@ -70,6 +79,8 @@ public class StudentService implements IStudentService {
         student.setDateOfBirth(request.getDateOfBirth());
         student.setPassword(request.getPassword());
         student.setRole(Role.STUDENT);
+        checkMail(request.getEmail());
+        checkStudentNumber(request.getStudentNumber());
         checkUniversity(request, student);
         checkDepartment(request, student);
 
@@ -85,6 +96,18 @@ public class StudentService implements IStudentService {
         UniversityDepartment department = departmentRepository.findById(request.getDepartmentId())
                 .orElseThrow(() -> new ResourceNotFoundException("Department not found with ID: " + request.getDepartmentId()));
         student.setDepartment(department);
+    }
+
+    private void checkMail(String email) {
+        if (studentRepository.existsByEmail(email)) {
+            throw new AlreadyExistsException("Student mail already exists");
+        }
+    }
+
+    private void checkStudentNumber(String studentNumber) {
+        if (studentRepository.existsByStudentNumber(studentNumber)) {
+            throw new AlreadyExistsException("Student number already exists");
+        }
     }
 
     @Override
