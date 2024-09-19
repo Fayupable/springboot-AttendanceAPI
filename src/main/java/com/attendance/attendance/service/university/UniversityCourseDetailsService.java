@@ -14,6 +14,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -32,12 +33,13 @@ public class UniversityCourseDetailsService implements IUniversityCourseDetailsS
 
     @Override
     public UniversityCourseDetails addCourseDetails(AddUniversityCourseDetailsRequest courseRequest) {
-        UniversityCourse course = findCourseById(courseRequest.getCourseId());
-        if (courseDetailsAlreadyExists(courseRequest)) {
-            throw new IllegalArgumentException("Course details already exist for this course.");
-        }
-        UniversityCourseDetails courseDetails = mapToCourseDetails(courseRequest, course);
-        return saveCourseDetails(courseDetails);
+        return Optional.of(courseRequest)
+                .filter(course -> !courseDetailsAlreadyExists(courseRequest))
+                .map(course -> {
+                    UniversityCourse courses = findCourseById(courseRequest.getCourseId());
+                    UniversityCourseDetails courseDetails = mapToCourseDetails(courseRequest, courses);
+                    return saveCourseDetails(courseDetails);
+                }).orElseThrow(() -> new IllegalArgumentException("Course details already exists"));
     }
 
     private boolean courseDetailsAlreadyExists(AddUniversityCourseDetailsRequest courseRequest) {
@@ -48,10 +50,12 @@ public class UniversityCourseDetailsService implements IUniversityCourseDetailsS
 
     @Override
     public UniversityCourseDetails updateCourseDetails(UpdateUniversityCourseDetailsRequest courseDetailsRequest, Long id) {
-        UniversityCourseDetails existingCourseDetails = findCourseDetailsById(id);
-        UniversityCourse course = findCourseById(courseDetailsRequest.getCourseId());
-        updateCourseDetailsFromRequest(existingCourseDetails, courseDetailsRequest, course);
-        return saveCourseDetails(existingCourseDetails);
+        return universityCourseDetailsRepository.findById(id)
+                .map(courseDetails -> {
+                    UniversityCourse course = findCourseById(courseDetailsRequest.getCourseId());
+                    updateCourseDetailsFromRequest(courseDetails, courseDetailsRequest, course);
+                    return saveCourseDetails(courseDetails);
+                }).orElseThrow(() -> new IllegalArgumentException("Course details not found"));
     }
 
     private UniversityCourseDetails mapToCourseDetails(AddUniversityCourseDetailsRequest courseRequest, UniversityCourse course) {

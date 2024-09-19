@@ -70,10 +70,18 @@ public class StudentService implements IStudentService {
         student.setDateOfBirth(request.getDateOfBirth());
         student.setPassword(request.getPassword());
         student.setRole(Role.STUDENT);
+        checkUniversity(request, student);
+        checkDepartment(request, student);
+
+    }
+
+    private void checkUniversity(AddStudentRequest request, Student student) {
         University university = universityRepository.findById(request.getUniversityId())
                 .orElseThrow(() -> new ResourceNotFoundException("University not found with ID: " + request.getUniversityId()));
         student.setUniversity(university);
+    }
 
+    private void checkDepartment(AddStudentRequest request, Student student) {
         UniversityDepartment department = departmentRepository.findById(request.getDepartmentId())
                 .orElseThrow(() -> new ResourceNotFoundException("Department not found with ID: " + request.getDepartmentId()));
         student.setDepartment(department);

@@ -36,5 +36,9 @@ public class UniversityDepartment {
     @ToString.Exclude
     private List<Student> students;
 
+    @OneToMany(mappedBy = "department", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ToString.Exclude
+    private List<Teacher> teachers;
+
 
 }

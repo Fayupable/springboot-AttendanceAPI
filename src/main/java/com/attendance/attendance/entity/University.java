@@ -38,6 +38,11 @@ public class University {
     @ToString.Exclude
     private List<Student> students;
 
+    @OneToMany(mappedBy = "university", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ToString.Exclude
+    private List<Teacher> teachers;
+    
+
     @PreRemove
     private void setAllStudentsToMembers() {
         if (students != null) {
