@@ -33,8 +33,17 @@ public class UniversityCourseDetailsService implements IUniversityCourseDetailsS
     @Override
     public UniversityCourseDetails addCourseDetails(AddUniversityCourseDetailsRequest courseRequest) {
         UniversityCourse course = findCourseById(courseRequest.getCourseId());
+        if (courseDetailsAlreadyExists(courseRequest)) {
+            throw new IllegalArgumentException("Course details already exist for this course.");
+        }
         UniversityCourseDetails courseDetails = mapToCourseDetails(courseRequest, course);
         return saveCourseDetails(courseDetails);
+    }
+
+    private boolean courseDetailsAlreadyExists(AddUniversityCourseDetailsRequest courseRequest) {
+        return universityCourseDetailsRepository.existsByCourseAndDetailedDescription(
+                findCourseById(courseRequest.getCourseId()),
+                courseRequest.getDetailedDescription());
     }
 
     @Override
