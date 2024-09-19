@@ -97,6 +97,8 @@ public class UniversityDepartmentService implements IUniversityDepartmentService
         UniversityDepartmentDto dto = new UniversityDepartmentDto();
         dto.setDepartmentName(department.getDepartmentName());
         dto.setUniversityName(department.getUniversity().getUniversityName());
+
+
         return dto;
     }
 

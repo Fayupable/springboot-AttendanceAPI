@@ -1,6 +1,7 @@
 package com.attendance.attendance.repository;
 
 import com.attendance.attendance.entity.Teacher;
+import com.attendance.attendance.entity.University;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -15,7 +16,7 @@ public interface ITeacherRepository extends JpaRepository<Teacher, Long> {
     List<Teacher> findByLastNameContaining(String name);
 
     List<Teacher> findTeacherByUniversity_UniversityId(Long universityId);
-
+    
     List<Teacher> findTeacherByDepartment_DepartmentId(Long departmentId);
 
     Teacher findTeacherById(Long id);

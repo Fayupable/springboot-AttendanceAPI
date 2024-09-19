@@ -7,8 +7,8 @@ import lombok.EqualsAndHashCode;
 @Data
 public class TeacherDto extends PersonDto {
 
-    private String departmentName;
+    private UniversityDto university;
 
-    private String universityName;
+    private UniversityDepartmentDto department;
 
 }
