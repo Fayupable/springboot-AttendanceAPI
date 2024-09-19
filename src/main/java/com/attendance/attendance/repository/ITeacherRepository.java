@@ -9,6 +9,8 @@ import java.util.List;
 public interface ITeacherRepository extends JpaRepository<Teacher, Long> {
     boolean existsByEmail(String email);
 
+    boolean existsByEmailAndIdNot(String email, Long id);
+
     List<Teacher> findByEmailContaining(String email);
 
     List<Teacher> findByFirstNameContaining(String name);
@@ -16,8 +18,9 @@ public interface ITeacherRepository extends JpaRepository<Teacher, Long> {
     List<Teacher> findByLastNameContaining(String name);
 
     List<Teacher> findTeacherByUniversity_UniversityId(Long universityId);
-    
+
     List<Teacher> findTeacherByDepartment_DepartmentId(Long departmentId);
 
     Teacher findTeacherById(Long id);
+
 }

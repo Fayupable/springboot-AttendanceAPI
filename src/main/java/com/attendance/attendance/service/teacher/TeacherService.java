@@ -124,7 +124,7 @@ public class TeacherService implements ITeacherService {
     }
 
     private void checkEmail(UpdateTeacherRequest request, Teacher teacher) {
-        if (teacherRepository.existsByEmail(request.getEmail())) {
+        if (teacherRepository.existsByEmailAndIdNot(request.getEmail(), teacher.getId())) {
             throw new AlreadyExistsException("Oops! " + request.getEmail() + " already exists");
         }
     }

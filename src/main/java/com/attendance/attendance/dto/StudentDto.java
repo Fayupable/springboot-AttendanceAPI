@@ -12,5 +12,4 @@ public class StudentDto extends PersonDto {
 
     private String universityName;
 
-
 }
