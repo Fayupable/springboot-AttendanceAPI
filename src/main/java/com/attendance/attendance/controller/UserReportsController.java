@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -50,7 +51,7 @@ public class UserReportsController {
     }
 
     @GetMapping("/userReportDate/{userReportDate}")
-    public ResponseEntity<ApiResponse> getUserReportByDate(@PathVariable LocalDateTime userReportDate) {
+    public ResponseEntity<ApiResponse> getUserReportByDate(@PathVariable LocalDate userReportDate) {
         try {
             List<UserReports> userReports = userReportsService.getUserReportsByDate(userReportDate);
             List<UserReportsDto> userReportsDto = userReportsService.convertToDto(userReports);
@@ -61,7 +62,7 @@ public class UserReportsController {
     }
 
     @GetMapping("/userReportStartDate/{userReportStartDate}/userReportEndDate/{userReportEndDate}")
-    public ResponseEntity<ApiResponse> getUserReportBetweenDates(@PathVariable LocalDateTime userReportStartDate, @PathVariable LocalDateTime userReportEndDate) {
+    public ResponseEntity<ApiResponse> getUserReportBetweenDates(@PathVariable LocalDate userReportStartDate, @PathVariable LocalDate userReportEndDate) {
         try {
             List<UserReports> userReports = userReportsService.getUserReportsByDateBetween(userReportStartDate, userReportEndDate);
             List<UserReportsDto> userReportsDto = userReportsService.convertToDto(userReports);

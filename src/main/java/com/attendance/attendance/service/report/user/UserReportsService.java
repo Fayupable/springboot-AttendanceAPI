@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -50,7 +51,7 @@ public class UserReportsService implements IUserReportsService {
     private void createUserReport(AddUserReportsRequest request, UserReports userReports) {
         userReports.setTitle(request.getTitle());
         userReports.setContent(request.getContent());
-        userReports.setDate(LocalDateTime.now());
+        userReports.setDate(LocalDate.now());
         checkPersonId(request.getPersonId(), userReports);
     }
 
@@ -76,7 +77,7 @@ public class UserReportsService implements IUserReportsService {
     private void updateUserReport(UpdateUserReportsRequest request, UserReports userReports) {
         userReports.setTitle(request.getTitle());
         userReports.setContent(request.getContent());
-        userReports.setDate(LocalDateTime.now());
+        userReports.setDate(LocalDate.now());
     }
 
     @Override
@@ -96,12 +97,12 @@ public class UserReportsService implements IUserReportsService {
     }
 
     @Override
-    public List<UserReports> getUserReportsByDate(LocalDateTime date) {
+    public List<UserReports> getUserReportsByDate(LocalDate date) {
         return userReportsRepository.findUserReportsByDate(date);
     }
 
     @Override
-    public List<UserReports> getUserReportsByTitleAndDate(String reportName, LocalDateTime date) {
+    public List<UserReports> getUserReportsByTitleAndDate(String reportName, LocalDate date) {
         return userReportsRepository.findUserReportsByTitleAndDate(reportName, date);
     }
 
@@ -111,17 +112,17 @@ public class UserReportsService implements IUserReportsService {
     }
 
     @Override
-    public List<UserReports> getUserReportsByDateBetween(LocalDateTime startDate, LocalDateTime endDate) {
+    public List<UserReports> getUserReportsByDateBetween(LocalDate startDate, LocalDate endDate) {
         return userReportsRepository.findUserReportsByDateBetween(startDate, endDate);
     }
 
     @Override
-    public List<UserReports> getUserReportsByTitleAndDateBetween(String reportName, LocalDateTime startDate, LocalDateTime endDate) {
+    public List<UserReports> getUserReportsByTitleAndDateBetween(String reportName, LocalDate startDate, LocalDate endDate) {
         return userReportsRepository.findUserReportsByTitleAndDateBetween(reportName, startDate, endDate);
     }
 
     @Override
-    public List<UserReports> getUserReportsByTitleAndContentContainingAndDateBetween(String reportName, String content, LocalDateTime startDate, LocalDateTime endDate) {
+    public List<UserReports> getUserReportsByTitleAndContentContainingAndDateBetween(String reportName, String content, LocalDate startDate, LocalDate endDate) {
         return userReportsRepository.findUserReportsByTitleAndContentContainingAndDateBetween(reportName, content, startDate, endDate);
     }
 

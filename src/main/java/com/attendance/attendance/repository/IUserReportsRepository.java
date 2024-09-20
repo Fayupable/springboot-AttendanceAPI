@@ -10,17 +10,17 @@ import java.util.List;
 public interface IUserReportsRepository extends JpaRepository<UserReports, Long> {
     List<UserReports> findUserReportsByTitle(String reportName);
 
-    List<UserReports> findUserReportsByDate(LocalDateTime date);
+    List<UserReports> findUserReportsByDate(LocalDate date);
 
-    List<UserReports> findUserReportsByTitleAndDate(String reportName, LocalDateTime date);
+    List<UserReports> findUserReportsByTitleAndDate(String reportName, LocalDate date);
 
     List<UserReports> findUserReportsByTitleAndContentContaining(String reportName, String content);
 
-    List<UserReports> findUserReportsByDateBetween(LocalDateTime startDate, LocalDateTime endDate);
+    List<UserReports> findUserReportsByDateBetween(LocalDate startDate, LocalDate endDate);
 
-    List<UserReports> findUserReportsByTitleAndDateBetween(String reportName, LocalDateTime startDate, LocalDateTime endDate);
+    List<UserReports> findUserReportsByTitleAndDateBetween(String reportName, LocalDate startDate, LocalDate endDate);
 
-    List<UserReports> findUserReportsByTitleAndContentContainingAndDateBetween(String reportName, String content, LocalDateTime startDate, LocalDateTime endDate);
+    List<UserReports> findUserReportsByTitleAndContentContainingAndDateBetween(String reportName, String content, LocalDate startDate, LocalDate endDate);
 
     List<UserReports> findUserReportsByContentContaining(String content);
 

@@ -8,6 +8,7 @@ import lombok.Setter;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
+import java.util.List;
 
 
 @Getter
@@ -44,6 +45,9 @@ public class Person {
     @Enumerated(EnumType.STRING)
     @Column(name = "role", length = 20)
     private Role role;
+
+    @OneToMany(mappedBy = "person", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<UserReports> userReports;
 
     public Person(Date dateOfBirth, String email, String password, String firstName, String lastName, Role role) {
         this.dateOfBirth = dateOfBirth;

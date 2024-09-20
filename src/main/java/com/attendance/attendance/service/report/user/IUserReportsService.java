@@ -5,6 +5,7 @@ import com.attendance.attendance.entity.UserReports;
 import com.attendance.attendance.request.report.user.AddUserReportsRequest;
 import com.attendance.attendance.request.report.user.UpdateUserReportsRequest;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -21,17 +22,17 @@ public interface IUserReportsService {
 
     List<UserReports> getUserReportsByTitle(String reportName);
 
-    List<UserReports> getUserReportsByDate(LocalDateTime date);
+    List<UserReports> getUserReportsByDate(LocalDate date);
 
-    List<UserReports> getUserReportsByTitleAndDate(String reportName, LocalDateTime date);
+    List<UserReports> getUserReportsByTitleAndDate(String reportName, LocalDate date);
 
     List<UserReports> getUserReportsByTitleAndContentContaining(String reportName, String content);
 
-    List<UserReports> getUserReportsByDateBetween(LocalDateTime startDate, LocalDateTime endDate);
+    List<UserReports> getUserReportsByDateBetween(LocalDate startDate, LocalDate endDate);
 
-    List<UserReports> getUserReportsByTitleAndDateBetween(String reportName, LocalDateTime startDate, LocalDateTime endDate);
+    List<UserReports> getUserReportsByTitleAndDateBetween(String reportName, LocalDate startDate, LocalDate endDate);
 
-    List<UserReports> getUserReportsByTitleAndContentContainingAndDateBetween(String reportName, String content, LocalDateTime startDate, LocalDateTime endDate);
+    List<UserReports> getUserReportsByTitleAndContentContainingAndDateBetween(String reportName, String content, LocalDate startDate, LocalDate endDate);
 
     List<UserReports> getUserReportsByContentContaining(String content);
 
