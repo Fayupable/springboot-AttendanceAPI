@@ -72,6 +72,14 @@ public class StudentService implements IStudentService {
     }
 
     private void createStudent(AddStudentRequest request, Student student) {
+        setStudentFields(request, student);
+        checkMail(request.getEmail());
+        checkStudentNumber(request.getStudentNumber());
+        checkUniversity(request, student);
+        checkDepartment(request, student);
+
+    }
+    private void setStudentFields(AddStudentRequest request, Student student){
         student.setStudentNumber(request.getStudentNumber());
         student.setEmail(request.getEmail());
         student.setFirstName(request.getFirstName());
@@ -79,11 +87,6 @@ public class StudentService implements IStudentService {
         student.setDateOfBirth(request.getDateOfBirth());
         student.setPassword(request.getPassword());
         student.setRole(Role.STUDENT);
-        checkMail(request.getEmail());
-        checkStudentNumber(request.getStudentNumber());
-        checkUniversity(request, student);
-        checkDepartment(request, student);
-
     }
 
     private void checkUniversity(AddStudentRequest request, Student student) {

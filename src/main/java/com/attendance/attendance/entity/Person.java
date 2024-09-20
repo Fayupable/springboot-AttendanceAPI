@@ -58,5 +58,4 @@ public class Person {
         this.role = role;
     }
 
-
 }
