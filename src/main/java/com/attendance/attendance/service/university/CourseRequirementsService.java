@@ -88,12 +88,7 @@ public class CourseRequirementsService implements ICourseRequirementsService {
 
     @Override
     public void deleteCourseRequirementsByCourseId(Long courseId) {
-        checkCourseExistence(courseId);
         coursesRequirementsRepository.deleteByCourse_CourseId(courseId);
-    }
-
-    private void checkCourseExistence(Long courseId) {
-        coursesRequirementsRepository.existsByCourse_CourseId(courseId);
     }
 
 

@@ -4,7 +4,6 @@ import com.attendance.attendance.entity.CoursesRequirements;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ICoursesRequirementsRepository extends JpaRepository<CoursesRequirements, Long> {
-    boolean existsByCourse_CourseId(Long courseId);
 
     CoursesRequirements findByCourse_CourseId(Long courseId);
 
