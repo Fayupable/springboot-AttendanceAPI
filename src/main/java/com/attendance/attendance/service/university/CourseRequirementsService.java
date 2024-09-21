@@ -4,7 +4,6 @@ import com.attendance.attendance.dto.CoursesRequirementsDto;
 import com.attendance.attendance.entity.CoursesRequirements;
 import com.attendance.attendance.entity.UniversityCourse;
 import com.attendance.attendance.repository.ICoursesRequirementsRepository;
-import com.attendance.attendance.repository.IUniversityCourseRepository;
 import com.attendance.attendance.request.university.course.requirement.AddCourseRequirementsRequest;
 import com.attendance.attendance.request.university.course.requirement.UpdateCourseRequirementsRequest;
 import lombok.RequiredArgsConstructor;
