@@ -4,7 +4,6 @@ import lombok.Data;
 
 @Data
 public class UpdateCourseRequirementsRequest {
-    private Long courseId;
     private String requirementDescription;
     private Integer attendancePercentage;
 }

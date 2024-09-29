@@ -1,13 +1,11 @@
 package com.attendance.attendance.controller;
 
 import com.attendance.attendance.dto.CoursesRequirementsDto;
-import com.attendance.attendance.dto.UniversityCourseDto;
 import com.attendance.attendance.entity.CoursesRequirements;
-import com.attendance.attendance.entity.UniversityCourse;
 import com.attendance.attendance.request.university.course.requirement.AddCourseRequirementsRequest;
+import com.attendance.attendance.request.university.course.requirement.UpdateCourseRequirementsRequest;
 import com.attendance.attendance.response.ApiResponse;
 import com.attendance.attendance.service.university.IUniversityCourseRequirementsService;
-import com.attendance.attendance.service.university.IUniversityCourseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,7 +33,18 @@ public class UniversityCourseRequirementsController {
         return ResponseEntity.ok(new ApiResponse("University Courses retrieved successfully", universityCourseDto));
     }
 
-    @PostMapping("/add")
+    @GetMapping("/courseRequirementsId/{courseRequirementsId}")
+    public ResponseEntity<ApiResponse> getUniversityCourseRequirementsById(@PathVariable Long courseRequirementsId) {
+        try {
+            CoursesRequirements universityCourse = universityCourseRequirementsService.getCourseRequirementsById(courseRequirementsId);
+            CoursesRequirementsDto universityCourseDto = universityCourseRequirementsService.convertToDto(universityCourse);
+            return ResponseEntity.ok(new ApiResponse("University Course retrieved successfully", universityCourseDto));
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(404).body(new ApiResponse(e.getMessage(), null));
+        }
+    }
+
+    @PostMapping("/add-course-requirements")
     @Transactional
     public ResponseEntity<ApiResponse> addUniversityCourseRequirements(@RequestBody AddCourseRequirementsRequest courseRequirements) {
         try {
@@ -46,7 +55,32 @@ public class UniversityCourseRequirementsController {
             return ResponseEntity.status(400).body(new ApiResponse(e.getMessage(), null));
         }
 
+    }
 
+    @PutMapping("/update-course-requirements/{id}/course/{courseId}")
+    @Transactional
+    public ResponseEntity<ApiResponse> updateUniversityCourseRequirements(
+            @RequestBody UpdateCourseRequirementsRequest courseRequirements,
+            @PathVariable Long id,
+            @PathVariable Long courseId) {
+        try {
+            CoursesRequirements universityCourse = universityCourseRequirementsService.updateCourseRequirements(courseRequirements, id, courseId);
+            CoursesRequirementsDto universityCourseDto = universityCourseRequirementsService.convertToDto(universityCourse);
+            return ResponseEntity.ok(new ApiResponse("University Course updated successfully", universityCourseDto));
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(400).body(new ApiResponse(e.getMessage(), null));
+        }
+    }
+
+    @DeleteMapping("/delete-course-requirements/{id}")
+    @Transactional
+    public ResponseEntity<ApiResponse> deleteUniversityCourseRequirements(@PathVariable Long id) {
+        try {
+            universityCourseRequirementsService.deleteCourseRequirements(id);
+            return ResponseEntity.ok(new ApiResponse("University Course deleted successfully", null));
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(400).body(new ApiResponse(e.getMessage(), null));
+        }
     }
 
 

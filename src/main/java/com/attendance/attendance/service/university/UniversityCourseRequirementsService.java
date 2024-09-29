@@ -56,7 +56,6 @@ public class UniversityCourseRequirementsService implements IUniversityCourseReq
     }
 
 
-
     private UniversityCourse findCourseById(Long courseId) {
         return universityCourseRepository.findById(courseId)
                 .orElseThrow(() -> new IllegalArgumentException("Course not found with ID: " + courseId));
@@ -70,19 +69,28 @@ public class UniversityCourseRequirementsService implements IUniversityCourseReq
         return newCourseRequirements;
     }
 
-    private CoursesRequirements saveCourseRequirements(CoursesRequirements courseRequirements) {
-        return universityCourseRequirementsRepository.save(courseRequirements);
-    }
-
 
     @Override
-    public CoursesRequirements updateCourseRequirements(UpdateCourseRequirementsRequest request, Long id) {
-        return null;
+    public CoursesRequirements updateCourseRequirements(UpdateCourseRequirementsRequest request, Long id, Long courseId) {
+        return universityCourseRequirementsRepository.findById(id)
+                .map(existingCourseRequirements -> updateExistingCourseRequirements(existingCourseRequirements, request, courseId))
+                .orElseThrow(() -> new IllegalArgumentException("Course Requirements not found"));
+    }
+
+    private CoursesRequirements updateExistingCourseRequirements(CoursesRequirements courseRequirements, UpdateCourseRequirementsRequest request, Long courseId) {
+        UniversityCourse course = findCourseById(courseId);
+        courseRequirements.setRequirementDescription(request.getRequirementDescription());
+        courseRequirements.setAttendancePercentage(request.getAttendancePercentage());
+        courseRequirements.setCourse(course);
+        return universityCourseRequirementsRepository.save(courseRequirements);
     }
 
     @Override
     public void deleteCourseRequirements(Long id) {
-
+        universityCourseRequirementsRepository.findById(id)
+                .ifPresentOrElse(universityCourseRequirementsRepository::delete, () -> {
+                    throw new IllegalArgumentException("Course Requirements not found");
+                });
     }
 
     @Override

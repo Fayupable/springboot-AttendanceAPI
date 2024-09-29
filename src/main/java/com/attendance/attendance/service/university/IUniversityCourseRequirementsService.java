@@ -17,7 +17,7 @@ public interface IUniversityCourseRequirementsService {
 
     CoursesRequirements addCourseRequirements(AddCourseRequirementsRequest courseRequirements);
 
-    CoursesRequirements updateCourseRequirements(UpdateCourseRequirementsRequest request, Long id);
+    CoursesRequirements updateCourseRequirements(UpdateCourseRequirementsRequest request, Long id, Long courseId);
 
     void deleteCourseRequirements(Long id);
 
