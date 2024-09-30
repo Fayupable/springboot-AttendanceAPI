@@ -8,16 +8,17 @@ import java.util.Date;
 
 @Data
 public class PersonDto {
-    private Date dateOfBirth;
-
-    private String email;
-
-    @JsonIgnore
-    private String password;
 
     private String firstName;
 
     private String lastName;
+
+    @JsonIgnore
+    private String password;
+
+    private Date dateOfBirth;
+
+    private String email;
 
     private Role role;
 
