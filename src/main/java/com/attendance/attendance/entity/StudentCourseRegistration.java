@@ -8,11 +8,14 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 
-@Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
+@Entity
+@Table(name = "student_course_registration", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"student_id", "course_id"})
+})
 public class StudentCourseRegistration {
 
     @Id
@@ -32,9 +35,6 @@ public class StudentCourseRegistration {
 
     @Column(name = "status", nullable = false)
     private String status;
-
-
-
 
 
 }

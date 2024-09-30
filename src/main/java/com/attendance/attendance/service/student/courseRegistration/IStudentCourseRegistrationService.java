@@ -2,6 +2,8 @@ package com.attendance.attendance.service.student.courseRegistration;
 
 import com.attendance.attendance.dto.StudentCourseRegistrationDto;
 import com.attendance.attendance.entity.StudentCourseRegistration;
+import com.attendance.attendance.request.student.courseRegistration.AddStudentCourseRegistrationRequest;
+import com.attendance.attendance.request.student.courseRegistration.UpdateStudentCourseRegistrationRequest;
 
 import java.util.List;
 
@@ -26,9 +28,9 @@ public interface IStudentCourseRegistrationService {
 
     StudentCourseRegistration findByStudentIdAndCourseId(Long studentId, Long courseId);
 
-    StudentCourseRegistration addStudentCourseRegistration(StudentCourseRegistration studentCourseRegistration);
+    StudentCourseRegistration addStudentCourseRegistration(AddStudentCourseRegistrationRequest studentCourseRegistration);
 
-    StudentCourseRegistration updateStudentCourseRegistration(StudentCourseRegistration studentCourseRegistration);
+    StudentCourseRegistration updateStudentCourseRegistration(UpdateStudentCourseRegistrationRequest studentCourseRegistration, Long studentCourseRegistrationId);
 
     void deleteStudentCourseRegistration(Long studentCourseRegistrationId);
 

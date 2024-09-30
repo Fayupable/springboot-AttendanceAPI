@@ -49,18 +49,6 @@ public class StudentService implements IStudentService {
         return studentRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Student not found"));
     }
 
-    /*
-      @Override
-    public Person addPerson(AddPersonRequest request) {
-        return Optional.of(request)
-                .filter(person -> !personRepository.existsByEmail(request.getEmail()))
-                .map(req -> {
-                    Person person = createPerson(request);
-                    return personRepository.save(person);
-                }).orElseThrow(() -> new AlreadyExistsException("Oops" + request.getEmail() + " already exists"));
-    }
-     */
-
     @Override
     public Student addStudent(AddStudentRequest request) {
         return Optional.of(request)
