@@ -20,6 +20,7 @@ import java.util.List;
 public class GeneralReportsController {
     private final IGeneralReportsService generalReportsService;
 
+
     @GetMapping("/all")
     public ResponseEntity<ApiResponse> getAllGeneralReports() {
         List<GeneralReports> generalReports = generalReportsService.getAllGeneralReports();

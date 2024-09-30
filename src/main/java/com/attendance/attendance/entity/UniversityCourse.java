@@ -37,4 +37,7 @@ public class UniversityCourse {
 
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<UniversityCourseDetails> courseDetails;
+
+    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<CoursesRequirements> courseRequirements;
 }
