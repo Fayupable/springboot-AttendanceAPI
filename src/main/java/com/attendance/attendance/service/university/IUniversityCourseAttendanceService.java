@@ -24,19 +24,20 @@ public interface IUniversityCourseAttendanceService {
 
     List<CourseAttendanceDto> convertToDtoToList(List<CoursesAttendance> coursesAttendance);
 
+    // Repository Methods
     boolean existsCourseAttendanceByStudentIdAndCourseIdAndAttendanceDate(Long studentId, Long courseId, LocalDate attendanceDate);
 
-    List<CoursesAttendance>  getCourseAttendanceByStudentIdAndCourseIdAndAttendanceDate(Long studentId, Long courseId, LocalDate attendanceDate);
+    List<CoursesAttendance> getCourseAttendanceByStudentIdAndCourseIdAndAttendanceDate(Long studentId, Long courseId, LocalDate attendanceDate);
 
-    List<CoursesAttendance>  getCourseAttendanceByStudentIdAndCourseId(Long studentId, Long courseId);
+    List<CoursesAttendance> getCourseAttendanceByStudentIdAndCourseId(Long studentId, Long courseId);
 
+    List<CoursesAttendance> getCourseAttendanceByCourse(Long courseId);
 
+    List<CoursesAttendance> getCourseAttendanceByCourseNameContaining(String courseName);
 
-    List<CoursesAttendance>  getCourseAttendanceByCourseNameContaining(String courseName);
+    List<CoursesAttendance> getCourseAttendanceByCourseId(Long courseId);
 
-    List<CoursesAttendance>  getCourseAttendanceByCourseId(Long courseId);
+    List<CoursesAttendance> getCourseAttendanceByStudentId(Long studentId);
 
-    List<CoursesAttendance>  getCourseAttendanceByStudentId(Long studentId);
-
-    List<CoursesAttendance>  getCourseAttendanceByStudentIdAndCourseNameContaining(Long studentId, String courseName);
+    List<CoursesAttendance> getCourseAttendanceByStudentIdAndCourseNameContaining(Long studentId, String courseName);
 }

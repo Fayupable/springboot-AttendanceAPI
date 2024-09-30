@@ -8,9 +8,9 @@ import java.time.LocalDate;
 @Data
 public class CourseAttendanceDto {
 
-    private String studentName;
+    private Long studentId;
 
-    private String courseName;
+    private Long courseId;
 
     private LocalDate attendanceDate;
 

@@ -2,15 +2,15 @@ package com.attendance.attendance.controller;
 
 import com.attendance.attendance.dto.CourseAttendanceDto;
 import com.attendance.attendance.entity.CoursesAttendance;
+import com.attendance.attendance.request.university.course.attendance.AddCourseAttendanceRequest;
+import com.attendance.attendance.request.university.course.attendance.UpdateCourseAttendanceRequest;
 import com.attendance.attendance.response.ApiResponse;
 import com.attendance.attendance.service.university.IUniversityCourseAttendanceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cglib.core.Local;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -106,7 +106,40 @@ public class CourseAttendanceController {
         }
     }
 
+    @PostMapping("/add")
+    @Transactional
+    public ResponseEntity<ApiResponse> addCourseAttendance(@RequestBody AddCourseAttendanceRequest courseAttendance) {
+        try {
+            CoursesAttendance newCourseAttendance = universityCourseAttendanceService.addCourseAttendance(courseAttendance);
+            CourseAttendanceDto courseAttendanceDto = universityCourseAttendanceService.convertToDto(newCourseAttendance);
+            return ResponseEntity.ok(new ApiResponse("Course Attendance added successfully", courseAttendanceDto));
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(400).body(new ApiResponse(e.getMessage(), null));
+        }
+    }
 
+    @PutMapping("/update-course-attendance/{courseAttendanceId}")
+    @Transactional
+    public ResponseEntity<ApiResponse> updateCourseAttendance(@RequestBody UpdateCourseAttendanceRequest courseAttendance, @PathVariable Long courseAttendanceId) {
+        try {
+            CoursesAttendance updatedCourseAttendance = universityCourseAttendanceService.updateCourseAttendance(courseAttendance, courseAttendanceId);
+            CourseAttendanceDto courseAttendanceDto = universityCourseAttendanceService.convertToDto(updatedCourseAttendance);
+            return ResponseEntity.ok(new ApiResponse("Course Attendance updated successfully", courseAttendanceDto));
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(400).body(new ApiResponse(e.getMessage(), null));
+        }
+    }
+
+    @DeleteMapping("/delete-course-attendance/{courseAttendanceId}")
+    @Transactional
+    public ResponseEntity<ApiResponse> deleteCourseAttendance(@PathVariable Long courseAttendanceId) {
+        try {
+            universityCourseAttendanceService.deleteCourseAttendance(courseAttendanceId);
+            return ResponseEntity.ok(new ApiResponse("Course Attendance deleted successfully", null));
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(400).body(new ApiResponse(e.getMessage(), null));
+        }
+    }
 
 
 }
