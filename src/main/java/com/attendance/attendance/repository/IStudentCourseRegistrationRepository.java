@@ -1,6 +1,8 @@
 package com.attendance.attendance.repository;
 
+import com.attendance.attendance.entity.Student;
 import com.attendance.attendance.entity.StudentCourseRegistration;
+import com.attendance.attendance.entity.UniversityCourse;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

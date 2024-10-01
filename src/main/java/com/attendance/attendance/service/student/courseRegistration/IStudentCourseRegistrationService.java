@@ -1,7 +1,9 @@
 package com.attendance.attendance.service.student.courseRegistration;
 
 import com.attendance.attendance.dto.StudentCourseRegistrationDto;
+import com.attendance.attendance.entity.Student;
 import com.attendance.attendance.entity.StudentCourseRegistration;
+import com.attendance.attendance.entity.UniversityCourse;
 import com.attendance.attendance.request.student.courseRegistration.AddStudentCourseRegistrationRequest;
 import com.attendance.attendance.request.student.courseRegistration.UpdateStudentCourseRegistrationRequest;
 

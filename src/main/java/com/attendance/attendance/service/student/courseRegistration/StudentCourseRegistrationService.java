@@ -1,20 +1,29 @@
 package com.attendance.attendance.service.student.courseRegistration;
 
 import com.attendance.attendance.dto.StudentCourseRegistrationDto;
+import com.attendance.attendance.entity.Student;
 import com.attendance.attendance.entity.StudentCourseRegistration;
+import com.attendance.attendance.entity.UniversityCourse;
+import com.attendance.attendance.exceptions.AlreadyExistsException;
 import com.attendance.attendance.repository.IStudentCourseRegistrationRepository;
+import com.attendance.attendance.repository.IStudentRepository;
+import com.attendance.attendance.repository.IUniversityCourseRepository;
 import com.attendance.attendance.request.student.courseRegistration.AddStudentCourseRegistrationRequest;
 import com.attendance.attendance.request.student.courseRegistration.UpdateStudentCourseRegistrationRequest;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class StudentCourseRegistrationService implements IStudentCourseRegistrationService {
     private final IStudentCourseRegistrationRepository studentCourseRegistrationRepository;
+    private final IStudentRepository studentRepository;
+    private final IUniversityCourseRepository universityCourseRepository;
     private final ModelMapper modelMapper;
 
 
@@ -73,14 +82,15 @@ public class StudentCourseRegistrationService implements IStudentCourseRegistrat
         return null;
     }
 
-
-
-
     @Override
     public StudentCourseRegistration updateStudentCourseRegistration(UpdateStudentCourseRegistrationRequest request, Long studentCourseRegistrationId) {
-        return null;
+        return studentCourseRegistrationRepository.findById(studentCourseRegistrationId)
+                .map(studentCourseRegistration -> {
+                    studentCourseRegistration.setStatus(request.getStatus());
+                    return studentCourseRegistrationRepository.save(studentCourseRegistration);
+                })
+                .orElseThrow(() -> new RuntimeException("Student course registration not found"));
     }
-
 
 
     @Override
