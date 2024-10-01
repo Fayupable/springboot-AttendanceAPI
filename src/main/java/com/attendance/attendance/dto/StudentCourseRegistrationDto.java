@@ -2,11 +2,12 @@ package com.attendance.attendance.dto;
 
 import lombok.Data;
 
+import java.time.LocalDateTime;
+
 @Data
 public class StudentCourseRegistrationDto {
-    private Long id;
     private Long studentId;
     private Long courseId;
-    private String registrationDate;
+    private LocalDateTime registrationDate;
     private String status;
 }

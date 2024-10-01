@@ -13,8 +13,10 @@ import com.attendance.attendance.request.university.course.course.UpdateUniversi
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -58,9 +60,12 @@ public class UniversityCourseService implements IUniversityCourseService {
     @Override
     public UniversityCourse addCourse(AddUniversityCourseRequest course) {
         validateCourse(course);
-        UniversityDepartment department = findDepartmentById(course.getDepartmentId());
-        UniversityCourse universityCourse = createNewCourse(course, department);
-        return saveCourse(universityCourse);
+        return Optional.of(course)
+                .map(courseRequest -> {
+                    UniversityDepartment department = findDepartmentById(course.getDepartmentId());
+                    UniversityCourse universityCourse = createNewCourse(course, department);
+                    return saveCourse(universityCourse);
+                }).orElseThrow(() -> new IllegalArgumentException("Invalid course request"));
     }
 
     private void validateCourse(AddUniversityCourseRequest course) {

@@ -64,10 +64,14 @@ public class StudentCourseRegistrationController {
 
     @PostMapping("/add-student-course-registration")
     @Transactional
-    public ResponseEntity<ApiResponse> createStudentCourseRegistration(AddStudentCourseRegistrationRequest request) {
-        StudentCourseRegistration studentCourseRegistration = studentCourseRegistrationService.addStudentCourseRegistration(request);
-        StudentCourseRegistrationDto studentCourseRegistrationDto = studentCourseRegistrationService.convertToDto(studentCourseRegistration);
-        return ResponseEntity.ok(new ApiResponse("Student course registration created successfully", studentCourseRegistrationDto));
+    public ResponseEntity<ApiResponse> addStudentCourseRegistration(@RequestBody AddStudentCourseRegistrationRequest request) {
+        try {
+            StudentCourseRegistration studentCourseRegistration = studentCourseRegistrationService.addStudentCourseRegistration(request);
+            StudentCourseRegistrationDto studentCourseRegistrationDto = studentCourseRegistrationService.convertToDto(studentCourseRegistration);
+            return ResponseEntity.ok(new ApiResponse("Student course registration created successfully", studentCourseRegistrationDto));
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(400).body(new ApiResponse(e.getMessage(), null));
+        }
     }
 
     @PutMapping("/update-student-course-registration/{id}")
