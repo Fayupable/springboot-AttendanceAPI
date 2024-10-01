@@ -1,9 +1,7 @@
 package com.attendance.attendance.service.student.courseRegistration;
 
 import com.attendance.attendance.dto.StudentCourseRegistrationDto;
-import com.attendance.attendance.entity.Student;
 import com.attendance.attendance.entity.StudentCourseRegistration;
-import com.attendance.attendance.entity.UniversityCourse;
 import com.attendance.attendance.repository.IStudentCourseRegistrationRepository;
 import com.attendance.attendance.request.student.courseRegistration.AddStudentCourseRegistrationRequest;
 import com.attendance.attendance.request.student.courseRegistration.UpdateStudentCourseRegistrationRequest;
@@ -11,9 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -74,49 +70,18 @@ public class StudentCourseRegistrationService implements IStudentCourseRegistrat
 
     @Override
     public StudentCourseRegistration addStudentCourseRegistration(AddStudentCourseRegistrationRequest studentCourseRegistration) {
-        return Optional.of(studentCourseRegistration)
-                .map(this::createStudentCourseRegistration)
-                .map(studentCourseRegistrationRepository::save)
-                .orElseThrow();
+        return null;
     }
 
-    private void setStudentCourseRegistrationFieldsForAdd(StudentCourseRegistration studentCourseRegistration, AddStudentCourseRegistrationRequest studentCourseRegistrationRequest) {
-        Student student = new Student();
-        student.setId(studentCourseRegistrationRequest.getStudentId());
-        studentCourseRegistration.setStudent(student);
-        UniversityCourse course = new UniversityCourse();
-        course.setCourseId(studentCourseRegistrationRequest.getCourseId());
-        studentCourseRegistration.setCourse(course);
-        studentCourseRegistration.setRegistrationDate(LocalDateTime.from(studentCourseRegistrationRequest.getRegistrationDate()));
-        studentCourseRegistration.setStatus(studentCourseRegistrationRequest.getStatus());
-    }
 
-    private StudentCourseRegistration createStudentCourseRegistration(AddStudentCourseRegistrationRequest studentCourseRegistrationRequest) {
-        StudentCourseRegistration studentCourseRegistration = new StudentCourseRegistration();
-        setStudentCourseRegistrationFieldsForAdd(studentCourseRegistration, studentCourseRegistrationRequest);
-        return studentCourseRegistration;
-    }
 
 
     @Override
-    public StudentCourseRegistration updateStudentCourseRegistration(UpdateStudentCourseRegistrationRequest studentCourseRegistration, Long studentCourseRegistrationId) {
-        return studentCourseRegistrationRepository.findById(studentCourseRegistration.getId())
-                .map(studentCourseRegistration1 -> {
-                    setStudentCourseRegistrationFieldsForUpdate(studentCourseRegistration1, studentCourseRegistration);
-                    return studentCourseRegistrationRepository.save(studentCourseRegistration1);
-                }).orElseThrow();
+    public StudentCourseRegistration updateStudentCourseRegistration(UpdateStudentCourseRegistrationRequest request, Long studentCourseRegistrationId) {
+        return null;
     }
 
-    private void setStudentCourseRegistrationFieldsForUpdate(StudentCourseRegistration studentCourseRegistration, UpdateStudentCourseRegistrationRequest studentCourseRegistrationRequest) {
-        Student student = new Student();
-        student.setId(studentCourseRegistrationRequest.getStudentId());
-        studentCourseRegistration.setStudent(student);
-        UniversityCourse course = new UniversityCourse();
-        course.setCourseId(studentCourseRegistrationRequest.getCourseId());
-        studentCourseRegistration.setCourse(course);
-        studentCourseRegistration.setRegistrationDate(LocalDateTime.from(studentCourseRegistrationRequest.getRegistrationDate()));
-        studentCourseRegistration.setStatus(studentCourseRegistrationRequest.getStatus());
-    }
+
 
     @Override
     public void deleteStudentCourseRegistration(Long studentCourseRegistrationId) {

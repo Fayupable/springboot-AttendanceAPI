@@ -27,6 +27,41 @@ public class StudentCourseRegistrationController {
         return ResponseEntity.ok(new ApiResponse("Student course registration retrieved successfully", studentCourseRegistrationDto));
     }
 
+    @GetMapping("/studentId/{studentId}")
+    public ResponseEntity<ApiResponse> getStudentCourseRegistrationsByStudentId(@PathVariable Long studentId) {
+        List<StudentCourseRegistration> studentCourseRegistrations = studentCourseRegistrationService.findByStudentId(studentId);
+        List<StudentCourseRegistrationDto> studentCourseRegistrationDto = studentCourseRegistrationService.convertToDto(studentCourseRegistrations);
+        return ResponseEntity.ok(new ApiResponse("Student course registration retrieved successfully", studentCourseRegistrationDto));
+    }
+
+    @GetMapping("/courseId/{courseId}")
+    public ResponseEntity<ApiResponse> getStudentCourseRegistrationsByCourseId(@PathVariable Long courseId) {
+        List<StudentCourseRegistration> studentCourseRegistrations = studentCourseRegistrationService.findByCourseId(courseId);
+        List<StudentCourseRegistrationDto> studentCourseRegistrationDto = studentCourseRegistrationService.convertToDto(studentCourseRegistrations);
+        return ResponseEntity.ok(new ApiResponse("Student course registration retrieved successfully", studentCourseRegistrationDto));
+    }
+
+    @GetMapping("/studentId/{studentId}/courseId/{courseId}")
+    public ResponseEntity<ApiResponse> getStudentCourseRegistrationsByStudentIdAndCourseId(@PathVariable Long studentId, @PathVariable Long courseId) {
+        StudentCourseRegistration studentCourseRegistration = studentCourseRegistrationService.findByStudentIdAndCourseId(studentId, courseId);
+        StudentCourseRegistrationDto studentCourseRegistrationDto = studentCourseRegistrationService.convertToDto(studentCourseRegistration);
+        return ResponseEntity.ok(new ApiResponse("Student course registration retrieved successfully", studentCourseRegistrationDto));
+    }
+
+    @GetMapping("/studentId/{studentId}/courseId/{courseId}/status/{status}")
+    public ResponseEntity<ApiResponse> getStudentCourseRegistrationsByStudentIdAndCourseIdAndStatus(@PathVariable Long studentId, @PathVariable Long courseId, @PathVariable String status) {
+        List<StudentCourseRegistration> studentCourseRegistrations = studentCourseRegistrationService.findByStudentIdAndCourseIdAndStatus(studentId, courseId, status);
+        List<StudentCourseRegistrationDto> studentCourseRegistrationDto = studentCourseRegistrationService.convertToDto(studentCourseRegistrations);
+        return ResponseEntity.ok(new ApiResponse("Student course registration retrieved successfully", studentCourseRegistrationDto));
+    }
+
+    @GetMapping("/studentId/{studentId}/status/{status}")
+    public ResponseEntity<ApiResponse> getStudentCourseRegistrationsByStudentIdAndStatus(@PathVariable Long studentId, @PathVariable String status) {
+        List<StudentCourseRegistration> studentCourseRegistrations = studentCourseRegistrationService.findByStudentIdAndStatus(studentId, status);
+        List<StudentCourseRegistrationDto> studentCourseRegistrationDto = studentCourseRegistrationService.convertToDto(studentCourseRegistrations);
+        return ResponseEntity.ok(new ApiResponse("Student course registration retrieved successfully", studentCourseRegistrationDto));
+    }
+
     @PostMapping("/add-student-course-registration")
     @Transactional
     public ResponseEntity<ApiResponse> createStudentCourseRegistration(AddStudentCourseRegistrationRequest request) {
