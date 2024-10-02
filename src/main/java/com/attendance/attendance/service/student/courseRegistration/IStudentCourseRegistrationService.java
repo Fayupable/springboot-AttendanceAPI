@@ -16,6 +16,8 @@ public interface IStudentCourseRegistrationService {
 
     boolean existsByStudentIdAndStatus(Long studentId, String status);
 
+    boolean checkStudentStatusAndCourse(Long studentId, Long courseId);
+
     List<StudentCourseRegistration> getAllStudentCourseRegistrations();
 
     List<StudentCourseRegistration> findByCourseId(Long courseId);

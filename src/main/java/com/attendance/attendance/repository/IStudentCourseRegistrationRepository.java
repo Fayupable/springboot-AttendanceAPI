@@ -10,6 +10,7 @@ import java.util.List;
 public interface IStudentCourseRegistrationRepository extends JpaRepository<StudentCourseRegistration, Long> {
     StudentCourseRegistration findByStudentIdAndCourse_CourseId(Long studentId, Long courseId);
 
+
     List<StudentCourseRegistration> findByStudentId(Long studentId);
 
     List<StudentCourseRegistration> findByCourse_CourseId(Long courseId);

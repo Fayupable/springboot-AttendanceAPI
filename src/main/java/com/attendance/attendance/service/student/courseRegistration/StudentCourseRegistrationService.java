@@ -43,6 +43,11 @@ public class StudentCourseRegistrationService implements IStudentCourseRegistrat
     }
 
     @Override
+    public boolean checkStudentStatusAndCourse(Long studentId, Long courseId) {
+        return studentCourseRegistrationRepository.existsByStudentIdAndCourse_CourseIdAndStatus(studentId, courseId, "APPROVED");
+    }
+
+    @Override
     public List<StudentCourseRegistration> getAllStudentCourseRegistrations() {
         return studentCourseRegistrationRepository.findAll();
     }

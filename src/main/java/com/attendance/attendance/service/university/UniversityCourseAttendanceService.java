@@ -5,6 +5,7 @@ import com.attendance.attendance.entity.CoursesAttendance;
 import com.attendance.attendance.exceptions.AlreadyExistsException;
 import com.attendance.attendance.exceptions.ResourceNotFoundException;
 import com.attendance.attendance.repository.ICourseAttendanceRepository;
+import com.attendance.attendance.repository.IStudentCourseRegistrationRepository;
 import com.attendance.attendance.repository.IStudentRepository;
 import com.attendance.attendance.repository.IUniversityCourseRepository;
 import com.attendance.attendance.request.university.course.attendance.AddCourseAttendanceRequest;
@@ -22,6 +23,7 @@ import java.util.Optional;
 public class UniversityCourseAttendanceService implements IUniversityCourseAttendanceService {
     private final ICourseAttendanceRepository courseAttendanceRepository;
     private final IStudentRepository studentRepository;
+    private final IStudentCourseRegistrationRepository studentCourseRegistrationRepository;
     private final IUniversityCourseRepository universityCourseRepository;
     private final ModelMapper modelMapper;
 
@@ -44,11 +46,21 @@ public class UniversityCourseAttendanceService implements IUniversityCourseAtten
 
     @Override
     public CoursesAttendance addCourseAttendance(AddCourseAttendanceRequest courseAttendance) {
+        validateStudentCourseRegistration(courseAttendance);
         validateAttendance(courseAttendance);
         return Optional.of(courseAttendance)
                 .map(this::createCourseAttendance)
                 .map(courseAttendanceRepository::save)
                 .orElseThrow(() -> new RuntimeException("Failed to add course attendance"));
+    }
+    private void validateStudentCourseRegistration(AddCourseAttendanceRequest request) {
+        boolean exists = studentCourseRegistrationRepository.existsByStudentIdAndCourse_CourseIdAndStatus(
+                request.getStudentId(), request.getCourseId(), "APPROVED");
+
+        if (!exists) {
+            throw new ResourceNotFoundException("Student course registration not found with student ID: " + request.getStudentId() +
+                    ", course ID: " + request.getCourseId() + " or not approved");
+        }
     }
 
     private void validateAttendance(AddCourseAttendanceRequest request) {
@@ -75,6 +87,8 @@ public class UniversityCourseAttendanceService implements IUniversityCourseAtten
 
         return coursesAttendance;
     }
+
+
 
 
     @Override
