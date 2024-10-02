@@ -26,5 +26,7 @@ public interface IStudentCourseRegistrationRepository extends JpaRepository<Stud
 
     boolean existsByStudentIdAndStatus(Long studentId, String status);
 
+    StudentCourseRegistration findStudentAndCourseByStudentIdAndCourse_CourseId(Long studentId, Long courseId);
+
 
 }

@@ -4,11 +4,13 @@ import com.attendance.attendance.dto.StudentCourseRegistrationDto;
 import com.attendance.attendance.entity.Student;
 import com.attendance.attendance.entity.StudentCourseRegistration;
 import com.attendance.attendance.entity.UniversityCourse;
+import com.attendance.attendance.exceptions.AlreadyExistsException;
 import com.attendance.attendance.repository.IStudentCourseRegistrationRepository;
 import com.attendance.attendance.repository.IStudentRepository;
 import com.attendance.attendance.repository.IUniversityCourseRepository;
 import com.attendance.attendance.request.student.courseRegistration.AddStudentCourseRegistrationRequest;
 import com.attendance.attendance.request.student.courseRegistration.UpdateStudentCourseRegistrationRequest;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -74,32 +76,36 @@ public class StudentCourseRegistrationService implements IStudentCourseRegistrat
     public StudentCourseRegistration findByStudentIdAndCourseId(Long studentId, Long courseId) {
         return studentCourseRegistrationRepository.findByStudentIdAndCourse_CourseId(studentId, courseId);
     }
+
     @Override
     public StudentCourseRegistration addStudentCourseRegistration(AddStudentCourseRegistrationRequest request) {
         checkIfAlreadyRegistered(request.getStudentId(), request.getCourseId());
         return Optional.of(request)
+                .filter(req -> req.getStudentId() != null && req.getCourseId() != null)
                 .map(this::createStudentCourseRegistration)
                 .map(studentCourseRegistrationRepository::save)
-                .orElseThrow(() -> new RuntimeException("Failed to add student course registration"));
+                .orElseThrow(() -> new RuntimeException("Invalid request"));
     }
+
     private void checkIfAlreadyRegistered(Long studentId, Long courseId) {
         boolean exists = studentCourseRegistrationRepository.existsByStudentIdAndCourse_CourseId(studentId, courseId);
         if (exists) {
-            throw new RuntimeException("This student is already registered for this course.");
+            throw new AlreadyExistsException("This student is already registered for this course.");
         }
     }
 
     private StudentCourseRegistration createStudentCourseRegistration(AddStudentCourseRegistrationRequest request) {
+        UniversityCourse course = universityCourseRepository.findById(request.getCourseId())
+                .orElseThrow(() -> new EntityNotFoundException("Course not found"));
+
+        Student student = studentRepository.findById(request.getStudentId())
+                .orElseThrow(() -> new EntityNotFoundException("Student not found"));
+
         StudentCourseRegistration studentCourseRegistration = new StudentCourseRegistration();
-
-        studentCourseRegistration.setStudent(studentRepository.findById(request.getStudentId())
-                .orElseThrow(() -> new RuntimeException("Student not found with ID: " + request.getStudentId())));
-
-        studentCourseRegistration.setCourse(universityCourseRepository.findById(request.getCourseId())
-                .orElseThrow(() -> new RuntimeException("Course not found with ID: " + request.getCourseId())));
-
-        studentCourseRegistration.setRegistrationDate(request.getRegistrationDate());
+        studentCourseRegistration.setCourse(course);
+        studentCourseRegistration.setStudent(student);
         studentCourseRegistration.setStatus(request.getStatus());
+
 
         return studentCourseRegistration;
     }
@@ -109,6 +115,15 @@ public class StudentCourseRegistrationService implements IStudentCourseRegistrat
     public StudentCourseRegistration updateStudentCourseRegistration(UpdateStudentCourseRegistrationRequest request, Long studentCourseRegistrationId) {
         return studentCourseRegistrationRepository.findById(studentCourseRegistrationId)
                 .map(studentCourseRegistration -> {
+                    Student student = studentRepository.findById(request.getStudentId())
+                            .orElseThrow(() -> new EntityNotFoundException("Student not found"));
+
+                    UniversityCourse course = universityCourseRepository.findById(request.getCourseId())
+                            .orElseThrow(() -> new EntityNotFoundException("Course not found"));
+
+                    studentCourseRegistration.setStudent(student);
+                    studentCourseRegistration.setCourse(course);
+                    studentCourseRegistration.setRegistrationDate(request.getRegistrationDate());
                     studentCourseRegistration.setStatus(request.getStatus());
                     return studentCourseRegistrationRepository.save(studentCourseRegistration);
                 })

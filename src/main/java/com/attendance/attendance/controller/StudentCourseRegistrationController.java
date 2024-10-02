@@ -76,7 +76,7 @@ public class StudentCourseRegistrationController {
 
     @PutMapping("/update-student-course-registration/{id}")
     @Transactional
-    public ResponseEntity<ApiResponse> updateStudentCourseRegistration(UpdateStudentCourseRegistrationRequest request, @PathVariable Long id) {
+    public ResponseEntity<ApiResponse> updateStudentCourseRegistration(@RequestBody UpdateStudentCourseRegistrationRequest request, @PathVariable Long id) {
         StudentCourseRegistration studentCourseRegistration = studentCourseRegistrationService.updateStudentCourseRegistration(request, id);
         StudentCourseRegistrationDto studentCourseRegistrationDto = studentCourseRegistrationService.convertToDto(studentCourseRegistration);
         return ResponseEntity.ok(new ApiResponse("Student course registration updated successfully", studentCourseRegistrationDto));
