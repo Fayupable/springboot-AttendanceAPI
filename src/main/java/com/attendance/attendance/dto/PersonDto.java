@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
 public class PersonDto {
@@ -21,5 +22,7 @@ public class PersonDto {
     private String email;
 
     private Role role;
+
+    private List<ImageDto> images;
 
 }

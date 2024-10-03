@@ -49,6 +49,10 @@ public class Person {
     @OneToMany(mappedBy = "person", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<UserReports> userReports;
 
+    @OneToMany(mappedBy = "person", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Image> images;
+
+
     public Person(Date dateOfBirth, String email, String password, String firstName, String lastName, Role role) {
         this.dateOfBirth = dateOfBirth;
         this.email = email;

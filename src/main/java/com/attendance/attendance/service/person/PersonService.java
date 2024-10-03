@@ -1,9 +1,12 @@
 package com.attendance.attendance.service.person;
 
+import com.attendance.attendance.dto.ImageDto;
 import com.attendance.attendance.dto.PersonDto;
+import com.attendance.attendance.entity.Image;
 import com.attendance.attendance.entity.Person;
 import com.attendance.attendance.enums.Role;
 import com.attendance.attendance.exceptions.AlreadyExistsException;
+import com.attendance.attendance.repository.IImageRepository;
 import com.attendance.attendance.repository.IPersonRepository;
 import com.attendance.attendance.request.person.AddPersonRequest;
 import com.attendance.attendance.request.person.UpdatePersonRequest;
@@ -19,6 +22,7 @@ import java.util.Optional;
 public class PersonService implements IPersonService {
 
     private final IPersonRepository personRepository;
+    private final IImageRepository imageRepository;
     private final ModelMapper modelMapper;
 
     @Override
@@ -99,7 +103,13 @@ public class PersonService implements IPersonService {
 
     @Override
     public PersonDto convertToDto(Person person) {
-        return modelMapper.map(person, PersonDto.class);
+        PersonDto personDto = modelMapper.map(person, PersonDto.class);
+        List<Image> images = imageRepository.findByPersonId(person.getId());
+        List<ImageDto> imageDtos = images.stream()
+                .map(image -> modelMapper.map(image, ImageDto.class))
+                .toList();
+        personDto.setImages(imageDtos);
+        return personDto;
     }
 
     @Override
