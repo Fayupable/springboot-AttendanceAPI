@@ -5,6 +5,7 @@ import com.attendance.attendance.entity.StudentCourseRegistration;
 import com.attendance.attendance.entity.UniversityCourse;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface IStudentCourseRegistrationRepository extends JpaRepository<StudentCourseRegistration, Long> {
@@ -26,6 +27,8 @@ public interface IStudentCourseRegistrationRepository extends JpaRepository<Stud
     boolean existsByStudentIdAndCourse_CourseIdAndStatus(Long studentId, Long courseId, String status);
 
     boolean existsByStudentIdAndStatus(Long studentId, String status);
+
+
 
     StudentCourseRegistration findStudentAndCourseByStudentIdAndCourse_CourseId(Long studentId, Long courseId);
 
