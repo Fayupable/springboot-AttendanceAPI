@@ -77,8 +77,7 @@ mvn spring-boot:run
 ```
 
 ## Table
-
-[![Attendance Image](doc/images/attendancepng.png)](https://github.com/Fayupable/springboot-AttendanceAPI/blob/main/doc/attendancepng.png?raw=true)
+![image alt](https://github.com/Fayupable/springboot-AttendanceAPI/blob/main/doc/attendancepng.png?raw=true)
 
 ## API Endpoints
 
