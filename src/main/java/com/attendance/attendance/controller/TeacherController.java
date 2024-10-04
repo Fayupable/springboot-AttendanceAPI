@@ -8,6 +8,7 @@ import com.attendance.attendance.response.ApiResponse;
 import com.attendance.attendance.service.teacher.ITeacherService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -54,6 +55,7 @@ public class TeacherController {
         return ResponseEntity.ok(new ApiResponse("Teacher retrieved successfully", teacherDto));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/add")
     @Transactional
     public ResponseEntity<ApiResponse> createTeacher(@RequestBody AddTeacherRequest request) {
@@ -66,6 +68,7 @@ public class TeacherController {
         }
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/delete/{teacherId}")
     @Transactional
     public ResponseEntity<ApiResponse> deleteTeacher(@PathVariable Long teacherId) {
@@ -77,6 +80,7 @@ public class TeacherController {
         }
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/update/{teacherId}")
     @Transactional
     public ResponseEntity<ApiResponse> updateTeacher(@RequestBody UpdateTeacherRequest request, @PathVariable Long teacherId) {

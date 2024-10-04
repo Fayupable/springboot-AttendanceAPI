@@ -1,9 +1,6 @@
 package com.attendance.attendance.entity;
 
-import com.attendance.attendance.enums.Role;
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.attendance.attendance.enums.RoleType;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -48,9 +45,14 @@ public class University {
         if (students != null) {
             for (Student student : students) {
                 student.setDepartment(null);
-                student.setRole(Role.MEMBER);
+                student.setRole(RoleType.MEMBER);
             }
         }
+    }
+
+    public University(String universityName, String location) {
+        this.universityName = universityName;
+        this.location = location;
     }
 
 }

@@ -1,6 +1,6 @@
 package com.attendance.attendance.entity;
 
-import com.attendance.attendance.enums.Role;
+import com.attendance.attendance.enums.RoleType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -33,7 +33,7 @@ public class Person {
     @Column(length = 100)
     private String email;
 
-    @Column(length = 45)
+    @Column(length = 100)
     private String password;
 
     @Column(name = "first_name", length = 100)
@@ -44,7 +44,7 @@ public class Person {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "role", length = 20)
-    private Role role;
+    private RoleType role;
 
     @OneToMany(mappedBy = "person", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<UserReports> userReports;
@@ -53,7 +53,7 @@ public class Person {
     private List<Image> images;
 
 
-    public Person(Date dateOfBirth, String email, String password, String firstName, String lastName, Role role) {
+    public Person(Date dateOfBirth, String email, String password, String firstName, String lastName, RoleType role) {
         this.dateOfBirth = dateOfBirth;
         this.email = email;
         this.password = password;
@@ -61,5 +61,7 @@ public class Person {
         this.lastName = lastName;
         this.role = role;
     }
+
+
 
 }

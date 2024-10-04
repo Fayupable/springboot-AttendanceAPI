@@ -4,7 +4,7 @@ import com.attendance.attendance.dto.TeacherDto;
 import com.attendance.attendance.entity.Teacher;
 import com.attendance.attendance.entity.University;
 import com.attendance.attendance.entity.UniversityDepartment;
-import com.attendance.attendance.enums.Role;
+import com.attendance.attendance.enums.RoleType;
 import com.attendance.attendance.exceptions.AlreadyExistsException;
 import com.attendance.attendance.exceptions.ResourceNotFoundException;
 import com.attendance.attendance.repository.IDepartmentRepository;
@@ -75,7 +75,7 @@ public class TeacherService implements ITeacherService {
         teacher.setLastName(request.getLastName());
         teacher.setDateOfBirth(request.getDateOfBirth());
         teacher.setPassword(request.getPassword());
-        teacher.setRole(Role.TEACHER);
+        teacher.setRole(RoleType.TEACHER);
         checkDepartment(request, teacher);
         checkUniversity(request, teacher);
         checkEmail(request, teacher);

@@ -9,6 +9,7 @@ import com.attendance.attendance.response.ApiResponse;
 import com.attendance.attendance.service.university.IUniversityService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -46,6 +47,7 @@ public class UniversityController {
         return ResponseEntity.ok(new ApiResponse("University retrieved successfully", universityDto));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/add")
     @Transactional
     public ResponseEntity<ApiResponse> createUniversity(@RequestBody AddUniversityRequest request) {
@@ -58,6 +60,7 @@ public class UniversityController {
         }
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/delete/{universityId}")
     @Transactional
     public ResponseEntity<ApiResponse> deleteUniversity(@PathVariable Long universityId) {
@@ -69,6 +72,7 @@ public class UniversityController {
         }
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/update/{universityId}")
     @Transactional
     public ResponseEntity<ApiResponse> updateUniversity(@RequestBody UpdateUniversityRequest request, @PathVariable Long universityId) {

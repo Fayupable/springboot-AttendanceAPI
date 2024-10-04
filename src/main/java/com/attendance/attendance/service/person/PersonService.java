@@ -4,7 +4,7 @@ import com.attendance.attendance.dto.ImageDto;
 import com.attendance.attendance.dto.PersonDto;
 import com.attendance.attendance.entity.Image;
 import com.attendance.attendance.entity.Person;
-import com.attendance.attendance.enums.Role;
+import com.attendance.attendance.enums.RoleType;
 import com.attendance.attendance.exceptions.AlreadyExistsException;
 import com.attendance.attendance.repository.IImageRepository;
 import com.attendance.attendance.repository.IPersonRepository;
@@ -62,7 +62,7 @@ public class PersonService implements IPersonService {
                 request.getPassword(),
                 request.getFirstName(),
                 request.getLastName(),
-                Role.MEMBER
+                RoleType.MEMBER
         );
     }
 
@@ -94,7 +94,7 @@ public class PersonService implements IPersonService {
     }
 
     private Person checkPersonType(AddPersonRequest request) {
-        if (request.getRole().equals(Role.MEMBER)) {
+        if (request.getRole().equals(RoleType.MEMBER)) {
             return modelMapper.map(request, Person.class);
         } else {
             throw new IllegalArgumentException("Role not supported: " + request.getRole());

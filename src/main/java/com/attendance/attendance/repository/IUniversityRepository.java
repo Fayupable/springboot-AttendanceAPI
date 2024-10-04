@@ -4,6 +4,7 @@ import com.attendance.attendance.entity.University;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface IUniversityRepository extends JpaRepository<University, Long> {
     boolean existsByUniversityName(String name);

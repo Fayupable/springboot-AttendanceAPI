@@ -1,6 +1,6 @@
 package com.attendance.attendance.dto;
 
-import com.attendance.attendance.enums.Role;
+import com.attendance.attendance.enums.RoleType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
@@ -21,7 +21,7 @@ public class PersonDto {
 
     private String email;
 
-    private Role role;
+    private RoleType role;
 
     private List<ImageDto> images;
 

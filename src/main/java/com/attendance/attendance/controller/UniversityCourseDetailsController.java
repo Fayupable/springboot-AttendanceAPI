@@ -8,6 +8,7 @@ import com.attendance.attendance.response.ApiResponse;
 import com.attendance.attendance.service.university.IUniversityCourseDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -43,6 +44,8 @@ public class UniversityCourseDetailsController {
         }
     }
 
+
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/courses/details/add")
     public ResponseEntity<ApiResponse> addUniversityCourseDetails(@RequestBody AddUniversityCourseDetailsRequest request) {
         try {
@@ -54,6 +57,7 @@ public class UniversityCourseDetailsController {
         }
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/courses/{courseId}/details/update/{id}")
     public ResponseEntity<ApiResponse> updateUniversityCourseDetails(@PathVariable Long courseId, @PathVariable Long id, @RequestBody UpdateUniversityCourseDetailsRequest request) {
         try {
@@ -65,6 +69,7 @@ public class UniversityCourseDetailsController {
         }
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<ApiResponse> deleteUniversityCourseDetails(@PathVariable Long id) {
         try {

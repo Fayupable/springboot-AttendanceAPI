@@ -8,6 +8,7 @@ import com.attendance.attendance.response.ApiResponse;
 import com.attendance.attendance.service.university.IUniversityCourseRequirementsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -44,6 +45,7 @@ public class UniversityCourseRequirementsController {
         }
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/add-course-requirements")
     @Transactional
     public ResponseEntity<ApiResponse> addUniversityCourseRequirements(@RequestBody AddCourseRequirementsRequest courseRequirements) {
@@ -57,6 +59,7 @@ public class UniversityCourseRequirementsController {
 
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/update-course-requirements/{id}/course/{courseId}")
     @Transactional
     public ResponseEntity<ApiResponse> updateUniversityCourseRequirements(
@@ -72,6 +75,7 @@ public class UniversityCourseRequirementsController {
         }
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/delete-course-requirements/{id}")
     @Transactional
     public ResponseEntity<ApiResponse> deleteUniversityCourseRequirements(@PathVariable Long id) {

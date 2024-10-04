@@ -4,11 +4,10 @@ import com.attendance.attendance.dto.StudentDto;
 import com.attendance.attendance.entity.Student;
 import com.attendance.attendance.entity.University;
 import com.attendance.attendance.entity.UniversityDepartment;
-import com.attendance.attendance.enums.Role;
+import com.attendance.attendance.enums.RoleType;
 import com.attendance.attendance.exceptions.AlreadyExistsException;
 import com.attendance.attendance.exceptions.ResourceNotFoundException;
 import com.attendance.attendance.repository.IDepartmentRepository;
-import com.attendance.attendance.repository.IPersonRepository;
 import com.attendance.attendance.repository.IStudentRepository;
 import com.attendance.attendance.repository.IUniversityRepository;
 
@@ -74,7 +73,7 @@ public class StudentService implements IStudentService {
         student.setLastName(request.getLastName());
         student.setDateOfBirth(request.getDateOfBirth());
         student.setPassword(request.getPassword());
-        student.setRole(Role.STUDENT);
+        student.setRole(RoleType.STUDENT);
     }
 
     private void checkUniversity(AddStudentRequest request, Student student) {

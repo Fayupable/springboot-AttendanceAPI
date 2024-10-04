@@ -12,4 +12,6 @@ public interface IPersonRepository extends JpaRepository<Person, Long> {
 
     List<Person> findByEmailContaining(String email);
 
+    Person findByEmail(String email);
+
 }

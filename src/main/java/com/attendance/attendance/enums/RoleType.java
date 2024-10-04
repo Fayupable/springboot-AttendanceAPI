@@ -1,5 +1,7 @@
 package com.attendance.attendance.enums;
 
-public enum Role {
+import jakarta.persistence.Entity;
+
+public enum RoleType {
     ADMIN, MODERATOR, STUDENT, TEACHER, MEMBER
 }

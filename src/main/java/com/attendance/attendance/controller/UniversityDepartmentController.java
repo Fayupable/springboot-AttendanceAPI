@@ -9,6 +9,7 @@ import com.attendance.attendance.response.ApiResponse;
 import com.attendance.attendance.service.university.IUniversityDepartmentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -46,7 +47,7 @@ public class UniversityDepartmentController {
         return ResponseEntity.ok(new ApiResponse("Department retrieved successfully", departmentDto));
     }
 
-
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/add")
     @Transactional
     public ResponseEntity<ApiResponse> addDepartment(@RequestBody AddUniversityDepartmentRequest department) {
@@ -59,6 +60,7 @@ public class UniversityDepartmentController {
         }
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/department/{departmentId}/update")
     @Transactional
     public ResponseEntity<ApiResponse> updateDepartment(@RequestBody UpdateUniversityDepartmentRequest request, @PathVariable Long departmentId) {
@@ -71,6 +73,7 @@ public class UniversityDepartmentController {
         }
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/department/{departmentId}/delete")
     @Transactional
     public ResponseEntity<ApiResponse> deleteDepartment(@PathVariable Long departmentId) {
