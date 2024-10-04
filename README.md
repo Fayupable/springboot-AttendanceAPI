@@ -2,7 +2,7 @@
 
 
 ## Overview
-The Attendance Application is a Spring Boot-based project designed to manage attendance records for universities. It includes features for user authentication, role management, and CRUD operations for university entities.
+The Attendance Application is a Spring Boot-based project designed to manage attendance records for students and teachers. The application allows users to create, update, and delete attendance records, as well as generate reports based on the data. The application also provides endpoints for managing students, teachers, courses, and universities.
 
 ## Table of Contents
 - [Getting Started](#getting-started)
