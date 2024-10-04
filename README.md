@@ -77,7 +77,8 @@ mvn spring-boot:run
 ```
 
 ## Table
-![Attendance Image](/Users/pc/Desktop/code/Sql/Sql%20udemy/attendancepng.png)
+
+![Attendance Image](doc/images/attendancepng.png)
 
 ## API Endpoints
 
