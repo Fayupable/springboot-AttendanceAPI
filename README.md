@@ -10,6 +10,7 @@ The Attendance Application is a Spring Boot-based project designed to manage att
 - [Installation](#installation)
 - [Configuration](#configuration)
 - [Running the Application](#running-the-application)
+- [Table](#table)
 - [API Endpoints](#api-endpoints)
 - [Built With](#built-with)
 - [Contributing](#contributing)
@@ -74,6 +75,9 @@ To run the application, use the following command:
 ```sh
 mvn spring-boot:run
 ```
+
+## Table
+![Attendance Image](/Users/pc/Desktop/code/Sql/Sql%20udemy/attendancepng.png)
 
 ## API Endpoints
 
