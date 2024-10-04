@@ -80,6 +80,73 @@ mvn spring-boot:run
 ### Authentication
 - **POST** `/api/v1/auth/login` - Authenticate a user and return a JWT token.
 
+### CourseAttendances
+- **GET** `/api/v1/course-attendances` - Retrieve a list of all course attendances.
+- **GET** `/api/v1/course-attendances/courseAttendanceId/{courseAttendanceId}` - Retrieve a course attendance by ID.
+- **GET** `/api/v1/course-attendances/studentId/{studentId}/courseId/{courseId}/attendanceDate/{attendanceDate}` - Retrieve a course attendance by student ID, course ID, and attendance date.
+- **GET** `/api/v1/course-attendances/studentId/{studentId}/courseId/{courseId}` - Retrieve a course attendance by student ID and course ID.
+- **GET** `/api/v1/course-attendances/courseName/{courseName}` - Retrieve a course attendance by course name.
+- **GET** `/api/v1/course-attendances/studentId/{studentId}` - Retrieve a course attendance by student ID.
+- **GET** `/api/v1/course-attendances/studentId/{studentId}/courseName/{courseName}` - Retrieve a course attendance by student ID and course name.
+- **POST** `/api/v1/course-attendances/add` - Create a new course attendance.
+- **PUT** `/api/v1/course-attendances/update-course-attendance/{courseAttendanceId}` - Update a course attendance by ID.
+- **DELETE** `/api/v1/course-attendances/delete-course-attendance/{courseAttendanceId}` - Delete a course attendance by ID.
+
+### GeneralReports
+- **GET** `/api/v1/general-reports/all` - Retrieve a list of all general reports.
+- **GET** `/api/v1/general-reports/generalReportId/{generalReportId}` - Retrieve a general report by ID.
+- **GET** `/api/v1/general-reports/generalReportDate/{generalReportDate}` - Retrieve a general report by date.
+- **GET** `/api/v1/general-reports/generalReportStartDate/{generalReportStartDate}/generalReportEndDate/{generalReportEndDate}` - Retrieve general reports between two dates.
+- **POST** `/api/v1/general-reports/add` - Create a new general report.
+- **PUT** `/api/v1/general-reports/update/{generalReportId}` - Update a general report by ID.
+- **DELETE** `/api/v1/general-reports/delete/{generalReportId}` - Delete a general report by ID.
+
+### Images
+- **GET** `/api/v1/images/image/download/{imageId}` - Download an image by ID.
+- **POST** `/api/v1/images/image/upload` - Upload an image.
+- **PUT** `/api/v1/images/image/{imageId}/update` - Update an image by ID.
+- **PUT** `/api/v1/images/image/{imageId}/delete` - Delete an image by ID.
+
+### Person
+- **GET** `/api/v1/person/{personId}` - Retrieve a person by ID.
+- **GET** `/api/v1/person/all` - Retrieve a list of all persons.
+- **GET** `/api/v1/person/personName/{personName}` - Retrieve persons by name.
+- **GET** `/api/v1/person/personEmail/{personEmail}` - Retrieve persons by email.
+- **POST** `/api/v1/person/add` - Add a new person.
+- **PUT** `/api/v1/person/{personId}/update` - Update a person by ID.
+- **DELETE** `/api/v1/person/{personId}/delete` - Delete a person by ID.
+
+### Student
+- **GET** `/api/v1/student/{studentId}/student` - Retrieve a student by ID.
+- **GET** `/api/v1/student/all` - Retrieve a list of all students.
+- **GET** `/api/v1/student/studentName/{studentName}` - Retrieve students by name.
+- **GET** `/api/v1/student/studentEmail/{studentEmail}` - Retrieve students by email.
+- **POST** `/api/v1/student/add` - Add a new student.
+- **PUT** `/api/v1/student/{studentId}/update` - Update a student by ID.
+- **DELETE** `/api/v1/student/{studentId}/delete` - Delete a student by ID.
+
+### Student Course Registration
+- **GET** `/api/v1/student/courseRegistration/all` - Retrieve a list of all student course registrations.
+- **GET** `/api/v1/student/courseRegistration/studentId/{studentId}` - Retrieve student course registrations by student ID.
+- **GET** `/api/v1/student/courseRegistration/courseId/{courseId}` - Retrieve student course registrations by course ID.
+- **GET** `/api/v1/student/courseRegistration/studentId/{studentId}/courseId/{courseId}` - Retrieve student course registrations by student ID and course ID.
+- **GET** `/api/v1/student/courseRegistration/studentId/{studentId}/courseId/{courseId}/status/{status}` - Retrieve student course registrations by student ID, course ID, and status.
+- **GET** `/api/v1/student/courseRegistration/studentId/{studentId}/status/{status}` - Retrieve student course registrations by student ID and status.
+- **POST** `/api/v1/student/courseRegistration/add-student-course-registration` - Add a new student course registration.
+- **PUT** `/api/v1/student/courseRegistration/update-student-course-registration/{id}` - Update a student course registration by ID.
+- **DELETE** `/api/v1/student/courseRegistration/delete-student-course-registration/{id}` - Delete a student course registration by ID.
+
+### Teacher
+- **GET** `/api/v1/teacher/all` - Retrieve a list of all teachers.
+- **GET** `/api/v1/teacher/email/{email}` - Retrieve teachers by email.
+- **GET** `/api/v1/teacher/name/{name}` - Retrieve teachers by name.
+- **GET** `/api/v1/teacher/university/{universityId}` - Retrieve teachers by university ID.
+- **GET** `/api/v1/teacher/department/{departmentId}` - Retrieve teachers by department ID.
+- **POST** `/api/v1/teacher/add` - Add a new teacher.
+- **PUT** `/api/v1/teacher/update/{teacherId}` - Update a teacher by ID.
+- **DELETE** `/api/v1/teacher/delete/{teacherId}` - Delete a teacher by ID.
+
+
 
 ### Universities
 - **GET** `/api/v1/universities` - Retrieve a list of all universities.
@@ -88,185 +155,53 @@ mvn spring-boot:run
 - **PUT** `/api/v1/universities/{id}` - Update a university by ID.
 - **DELETE** `/api/v1/universities/{id}` - Delete a university by ID.
 
-### Students
-- **GET** `/api/v1/students` - Retrieve a list of all students.
-- **POST** `/api/v1/students` - Create a new student.
-- **GET** `/api/v1/students/{id}` - Retrieve a student by ID.
-- **PUT** `/api/v1/students/{id}` - Update a student by ID.
-- **DELETE** `/api/v1/students/{id}` - Delete a student by ID.
 
-### Courses
-- **GET** `/api/v1/courses` - Retrieve a list of all courses.
-- **POST** `/api/v1/courses` - Create a new course.
-- **GET** `/api/v1/courses/{id}` - Retrieve a course by ID.
-- **PUT** `/api/v1/courses/{id}` - Update a course by ID.
-- **DELETE** `/api/v1/courses/{id}` - Delete a course by ID.
+### University Course
+- **GET** `/api/v1/university-course/all` - Retrieve a list of all university courses.
+- **GET** `/api/v1/university-course/course/{courseId}` - Retrieve a university course by ID.
+- **GET** `/api/v1/university-course/name/{courseName}` - Retrieve university courses by name.
+- **GET** `/api/v1/university-course/code/{courseCode}` - Retrieve university courses by code.
+- **POST** `/api/v1/university-course/add` - Add a new university course.
+- **PUT** `/api/v1/university-course/update/{courseId}/department/{departmentId}` - Update a university course by ID and department ID.
+- **DELETE** `/api/v1/university-course/delete/{courseId}` - Delete a university course by ID.
 
-## API Endpoints
 
-### Course Attendance
+### University Course Details
+- **GET** `/api/v1/university-course-details/all` - Retrieve a list of all university course details.
+- **GET** `/api/v1/university-course-details/course/{courseId}` - Retrieve university course details by course ID.
+- **GET** `/api/v1/university-course-details/details/{id}` - Retrieve university course details by ID.
+- **POST** `/api/v1/university-course-details/courses/details/add` - Add new university course details.
+- **PUT** `/api/v1/university-course-details/courses/{courseId}/details/update/{id}` - Update university course details by course ID and details ID.
+- **DELETE** `/api/v1/university-course-details/delete/{id}` - Delete university course details by ID.
 
-#### Retrieve All Course Attendance
-- **GET** `/api/v1/course-attendance/all`
-    - **Description**: Retrieve a list of all course attendance records.
-    - **Response**:
-      ```json
-      {
-        "message": "Course Attendance retrieved successfully",
-        "data": [ ... ] // List of CourseAttendanceDto
-      }
-      ```
 
-#### Retrieve Course Attendance by ID
-- **GET** `/api/v1/course-attendance/courseAttendanceId/{courseAttendanceId}`
-    - **Description**: Retrieve a course attendance record by its ID.
-    - **Path Variables**:
-        - `courseAttendanceId` (Long): ID of the course attendance record.
-    - **Response**:
-      ```json
-      {
-        "message": "Course Attendance retrieved successfully",
-        "data": { ... } // CourseAttendanceDto
-      }
-      ```
+### University Course Requirements
+- **GET** `/api/v1/university-course-requirements/all` - Retrieve a list of all university course requirements.
+- **GET** `/api/v1/university-course-requirements/courseId/{courseId}` - Retrieve university course requirements by course ID.
+- **GET** `/api/v1/university-course-requirements/courseRequirementsId/{courseRequirementsId}` - Retrieve university course requirements by ID.
+- **POST** `/api/v1/university-course-requirements/add-course-requirements` - Add new university course requirements.
+- **PUT** `/api/v1/university-course-requirements/update-course-requirements/{id}/course/{courseId}` - Update university course requirements by ID and course ID.
+- **DELETE** `/api/v1/university-course-requirements/delete-course-requirements/{id}` - Delete university course requirements by ID.
 
-#### Retrieve Course Attendance by Student ID, Course ID, and Attendance Date
-- **GET** `/api/v1/course-attendance/studentId/{studentId}/courseId/{courseId}/attendanceDate/{attendanceDate}`
-    - **Description**: Retrieve course attendance records by student ID, course ID, and attendance date.
-    - **Path Variables**:
-        - `studentId` (Long): ID of the student.
-        - `courseId` (Long): ID of the course.
-        - `attendanceDate` (LocalDate): Date of attendance.
-    - **Response**:
-      ```json
-      {
-        "message": "Course Attendance retrieved successfully",
-        "data": [ ... ] // List of CourseAttendanceDto
-      }
-      ```
 
-#### Retrieve Course Attendance by Student ID and Course ID
-- **GET** `/api/v1/course-attendance/studentId/{studentId}/courseId/{courseId}`
-    - **Description**: Retrieve course attendance records by student ID and course ID.
-    - **Path Variables**:
-        - `studentId` (Long): ID of the student.
-        - `courseId` (Long): ID of the course.
-    - **Response**:
-      ```json
-      {
-        "message": "Course Attendance retrieved successfully",
-        "data": [ ... ] // List of CourseAttendanceDto
-      }
-      ```
+### University Department
+- **GET** `/api/v1/university-department/all` - Retrieve a list of all university departments.
+- **GET** `/api/v1/university-department/{departmentId}` - Retrieve a university department by ID.
+- **GET** `/api/v1/university-department/department/{departmentName}` - Retrieve university departments by name.
+- **POST** `/api/v1/university-department/add` - Add a new university department.
+- **PUT** `/api/v1/university-department/department/{departmentId}/update` - Update a university department by ID.
+- **DELETE** `/api/v1/university-department/department/{departmentId}/delete` - Delete a university department by ID.
 
-#### Retrieve Course Attendance by Course Name
-- **GET** `/api/v1/course-attendance/courseName/{courseName}`
-    - **Description**: Retrieve course attendance records by course name.
-    - **Path Variables**:
-        - `courseName` (String): Name of the course.
-    - **Response**:
-      ```json
-      {
-        "message": "Course Attendance retrieved successfully",
-        "data": [ ... ] // List of CourseAttendanceDto
-      }
-      ```
 
-#### Retrieve Course Attendance by Course ID
-- **GET** `/api/v1/course-attendance/courseId/{courseId}`
-    - **Description**: Retrieve course attendance records by course ID.
-    - **Path Variables**:
-        - `courseId` (Long): ID of the course.
-    - **Response**:
-      ```json
-      {
-        "message": "Course Attendance retrieved successfully",
-        "data": [ ... ] // List of CourseAttendanceDto
-      }
-      ```
-
-#### Retrieve Course Attendance by Student ID
-- **GET** `/api/v1/course-attendance/studentId/{studentId}`
-    - **Description**: Retrieve course attendance records by student ID.
-    - **Path Variables**:
-        - `studentId` (Long): ID of the student.
-    - **Response**:
-      ```json
-      {
-        "message": "Course Attendance retrieved successfully",
-        "data": [ ... ] // List of CourseAttendanceDto
-      }
-      ```
-
-#### Retrieve Course Attendance by Student ID and Course Name
-- **GET** `/api/v1/course-attendance/studentId/{studentId}/courseName/{courseName}`
-    - **Description**: Retrieve course attendance records by student ID and course name.
-    - **Path Variables**:
-        - `studentId` (Long): ID of the student.
-        - `courseName` (String): Name of the course.
-    - **Response**:
-      ```json
-      {
-        "message": "Course Attendance retrieved successfully",
-        "data": [ ... ] // List of CourseAttendanceDto
-      }
-      ```
-
-#### Add Course Attendance
-- **POST** `/api/v1/course-attendance/add`
-    - **Description**: Add a new course attendance record.
-    - **Request Body**:
-      ```json
-      {
-        "studentId": Long,
-        "courseId": Long,
-        "attendanceDate": LocalDate,
-        "status": String
-      }
-      ```
-    - **Response**:
-      ```json
-      {
-        "message": "Course Attendance added successfully",
-        "data": { ... } // CourseAttendanceDto
-      }
-      ```
-
-#### Update Course Attendance
-- **PUT** `/api/v1/course-attendance/update-course-attendance/{courseAttendanceId}`
-    - **Description**: Update an existing course attendance record.
-    - **Path Variables**:
-        - `courseAttendanceId` (Long): ID of the course attendance record.
-    - **Request Body**:
-      ```json
-      {
-        "studentId": Long,
-        "courseId": Long,
-        "attendanceDate": LocalDate,
-        "status": String
-      }
-      ```
-    - **Response**:
-      ```json
-      {
-        "message": "Course Attendance updated successfully",
-        "data": { ... } // CourseAttendanceDto
-      }
-      ```
-
-#### Delete Course Attendance
-- **DELETE** `/api/v1/course-attendance/delete-course-attendance/{courseAttendanceId}`
-    - **Description**: Delete a course attendance record.
-    - **Path Variables**:
-        - `courseAttendanceId` (Long): ID of the course attendance record.
-    - **Response**:
-      ```json
-      {
-        "message": "Course Attendance deleted successfully",
-        "data": null
-      }
-      ```
-      
+### User Reports
+- **GET** `/api/v1/user-reports/all` - Retrieve a list of all user reports.
+- **GET** `/api/v1/user-reports/userReportId/{userReportId}` - Retrieve a user report by ID.
+- **GET** `/api/v1/user-reports/userReportPersonId/{userReportPersonId}` - Retrieve user reports by person ID.
+- **GET** `/api/v1/user-reports/userReportDate/{userReportDate}` - Retrieve user reports by date.
+- **GET** `/api/v1/user-reports/userReportStartDate/{userReportStartDate}/userReportEndDate/{userReportEndDate}` - Retrieve user reports between dates.
+- **POST** `/api/v1/user-reports/add` - Add a new user report.
+- **PUT** `/api/v1/user-reports/update/{reportId}` - Update a user report by ID.
+- **DELETE** `/api/v1/user-reports/delete/{userReportId}` - Delete a user report by ID.
 
 ## Built With
 - [Spring Boot](https://spring.io/projects/spring-boot) - The framework used
@@ -274,4 +209,4 @@ mvn spring-boot:run
 - [MySQL](https://www.mysql.com/) - Database
 
 ## Contributing
-Please read `CONTRIBUTING.md` for details on our code of conduct and the process for submitting pull requests.
+Please read `CONTRIBUTI
