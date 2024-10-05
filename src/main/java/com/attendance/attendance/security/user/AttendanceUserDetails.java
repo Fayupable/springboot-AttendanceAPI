@@ -20,6 +20,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AttendanceUserDetails implements UserDetails {
+
     private Long id;
     private String email;
     private String password;
@@ -27,11 +28,11 @@ public class AttendanceUserDetails implements UserDetails {
     private Collection<GrantedAuthority> authorities;
 
     public static AttendanceUserDetails buildUserDetails(Person person) {
-        List<GrantedAuthority> authorities = new ArrayList<>();
+        List<GrantedAuthority> authorities = person.getRoles()
+                .stream()
+                .map(role -> new SimpleGrantedAuthority(role.getRoleName()))
+                .collect(Collectors.toList());
 
-        if (person.getRole() != null) {
-            authorities.add(new SimpleGrantedAuthority(person.getRole().name()));
-        }
 
         return new AttendanceUserDetails(
                 person.getId(),

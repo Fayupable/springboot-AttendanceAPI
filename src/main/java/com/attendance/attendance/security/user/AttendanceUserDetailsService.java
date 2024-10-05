@@ -18,7 +18,7 @@ public class AttendanceUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         Person person = Optional.ofNullable(personRepository.findByEmail(email))
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+                .orElseThrow(() -> new UsernameNotFoundException("Person not found"));
         return AttendanceUserDetails.buildUserDetails(person);
     }
 }

@@ -1,6 +1,5 @@
 package com.attendance.attendance.entity;
 
-import com.attendance.attendance.enums.RoleType;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -40,15 +39,6 @@ public class University {
     private List<Teacher> teachers;
     
 
-    @PreRemove
-    private void setAllStudentsToMembers() {
-        if (students != null) {
-            for (Student student : students) {
-                student.setDepartment(null);
-                student.setRole(RoleType.MEMBER);
-            }
-        }
-    }
 
     public University(String universityName, String location) {
         this.universityName = universityName;

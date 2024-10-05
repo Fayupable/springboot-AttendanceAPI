@@ -3,7 +3,7 @@ package com.attendance.attendance.data;
 import com.attendance.attendance.entity.Person;
 import com.attendance.attendance.entity.Role;
 import com.attendance.attendance.entity.University;
-import com.attendance.attendance.enums.RoleType;
+
 import com.attendance.attendance.repository.IPersonRepository;
 import com.attendance.attendance.repository.IUniversityRepository;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +27,8 @@ public class DataInitializer implements ApplicationListener<ApplicationReadyEven
 
     @Override
     public void onApplicationEvent(ApplicationReadyEvent event) {
-        createDefaultRoleIfNotExists();
+        Set<String> defaultRoles = Set.of("ROLE_ADMIN","ROLE_MODERATOR","ROLE_STUDENT","ROLE_TEACHER","ROLE_MEMBER");
+        createDefaultRoleIfNotExists(defaultRoles);
         createDefaultUserIfNotExists();
         createDefaultAdminIfNotExists();
         createUniversityIfNotExists();
@@ -35,8 +36,7 @@ public class DataInitializer implements ApplicationListener<ApplicationReadyEven
     }
 
     private void createDefaultUserIfNotExists() {
-        Role userRole = roleRepository.findByName(RoleType.MEMBER).get();
-
+        Role memberRole = roleRepository.findByRoleName("ROLE_MEMBER").get();
         for (int i = 0; i < 5; i++) {
             String defaultEmail = "user" + i + "@email.com";
             if (personRepository.existsByEmail(defaultEmail)) {
@@ -47,7 +47,7 @@ public class DataInitializer implements ApplicationListener<ApplicationReadyEven
             person.setLastName("User" + i);
             person.setEmail(defaultEmail);
             person.setPassword(passwordEncoder.encode("123456"));
-            person.setRole(userRole.getName());
+            person.setRoles(Set.of(memberRole));
             Date randomDate = generateRandomDate();
             person.setDateOfBirth(randomDate);
             personRepository.save(person);
@@ -56,7 +56,8 @@ public class DataInitializer implements ApplicationListener<ApplicationReadyEven
     }
 
     private void createDefaultAdminIfNotExists() {
-        Role adminRole = roleRepository.findByName(RoleType.ADMIN).get();
+
+        Role adminRole = roleRepository.findByRoleName("ROLE_ADMIN").get();
 
         for (int i = 0; i < 2; i++) {
             String defaultEmail = "admin" + i + "@email.com";
@@ -68,18 +69,16 @@ public class DataInitializer implements ApplicationListener<ApplicationReadyEven
             person.setLastName("Admin" + i);
             person.setEmail(defaultEmail);
             person.setPassword(passwordEncoder.encode("123456"));
+            person.setRoles(Set.of(adminRole));
             Date randomDate = generateRandomDate();
             person.setDateOfBirth(randomDate);
 
-            person.setRole(adminRole.getName());
             personRepository.save(person);
             System.out.println("Admin created: " + person.getEmail());
         }
     }
 
     private void createUniversityIfNotExists() {
-        // src/main/java/com/attendance/attendance/data/DataInitializer.java
-
         List<University> universities = Arrays.asList(
                 new University("Harvard University", "Cambridge, MA"),
                 new University("Stanford University", "Stanford, CA"),
@@ -106,16 +105,11 @@ public class DataInitializer implements ApplicationListener<ApplicationReadyEven
 
     }
 
-    private void createDefaultRoleIfNotExists() {
-        RoleType[] roles = RoleType.values();
-        for (RoleType role : roles) {
-            if (roleRepository.findByName(role).isEmpty()) {
-                Role newRole = new Role();
-                newRole.setName(role);
-                roleRepository.save(newRole);
-                System.out.println("Role created: " + newRole.getName());
-            }
-        }
+    private void createDefaultRoleIfNotExists(Set<String> roles) {
+        roles.stream()
+                .filter(role -> roleRepository.findByRoleName(role).isEmpty())
+                .map(Role::new).forEach(roleRepository::save);
+
     }
 
     private Date generateRandomDate() {

@@ -10,6 +10,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.authentication.configuration.EnableGlobalAuthentication;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -30,7 +32,17 @@ public class AttendanceConfig {
     private final AttendanceUserDetailsService userDetailsService;
     private final JwtAuthEntryPoint authEntryPoint;
 
-    private static final List<String> SECURED_URLS = List.of("/api/v1/attendances/**", "/api/v1/attendanceRecords/**");
+    /*
+    "api/v1/university/**",
+            "api/v1/teacher/**",
+            "api/v1/university-course/**",
+            "api/v1/university-course-details/**",
+            "api/v1/university-course-requirements/**",
+            "api/v1/university-department/**",
+            "api/v1/schedule/**"
+     */
+    private static final List<String> SECURED_URLS = List.of("api/v1/university-course/**",
+            "api/v1/university/**");
 
     @Bean
     public ModelMapper modelMapper() {
@@ -54,10 +66,10 @@ public class AttendanceConfig {
 
     @Bean
     public DaoAuthenticationProvider daoAuthenticationProvider() {
-        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-        provider.setUserDetailsService(userDetailsService);
-        provider.setPasswordEncoder(passwordEncoder());
-        return provider;
+        var authProvider = new DaoAuthenticationProvider();
+        authProvider.setUserDetailsService(userDetailsService);
+        authProvider.setPasswordEncoder(passwordEncoder());
+        return authProvider;
     }
 
     @Bean

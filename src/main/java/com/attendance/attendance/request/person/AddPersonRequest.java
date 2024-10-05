@@ -1,6 +1,5 @@
 package com.attendance.attendance.request.person;
 
-import com.attendance.attendance.enums.RoleType;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -30,6 +29,5 @@ public class AddPersonRequest {
     @NotBlank(message = "Last name is required")
     private String lastName;
 
-    @NotBlank(message = "Role is required")
-    private RoleType role;
+
 }

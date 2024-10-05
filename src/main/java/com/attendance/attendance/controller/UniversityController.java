@@ -10,6 +10,7 @@ import com.attendance.attendance.service.university.IUniversityService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -50,8 +51,9 @@ public class UniversityController {
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/add")
     @Transactional
-    public ResponseEntity<ApiResponse> createUniversity(@RequestBody AddUniversityRequest request) {
+    public ResponseEntity<ApiResponse> createUniversity(@RequestBody AddUniversityRequest request, Authentication authentication) {
         try {
+
             University createdUniversity = universityService.addUniversity(request);
             UniversityDto universityDto = universityService.convertToDto(createdUniversity);
             return ResponseEntity.ok(new ApiResponse("University created successfully", universityDto));

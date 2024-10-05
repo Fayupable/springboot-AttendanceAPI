@@ -14,7 +14,6 @@ import org.springframework.stereotype.Component;
 import java.security.Key;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
 public class JwtUtils {
@@ -30,7 +29,7 @@ public class JwtUtils {
 
         List<String> roles = personPrincipal.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
-                .collect(Collectors.toList());
+                .toList();
 
         return Jwts.builder()
                 .setSubject(personPrincipal.getEmail())
