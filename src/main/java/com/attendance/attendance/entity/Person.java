@@ -1,13 +1,14 @@
 package com.attendance.attendance.entity;
 
-import com.attendance.attendance.enums.RoleType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.NoArgsConstructor;
 
+import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 
 
@@ -42,9 +43,12 @@ public class Person {
     @Column(name = "last_name", length = 100)
     private String lastName;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "role", length = 20)
-    private RoleType role;
+    @ManyToMany(fetch = FetchType.EAGER, cascade =
+            {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @JoinTable(name = "person_roles",
+            joinColumns = @JoinColumn(name = "person_id", referencedColumnName = "person_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
+    private Collection<Role> roles = new HashSet<>();
 
     @OneToMany(mappedBy = "person", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<UserReports> userReports;
@@ -53,15 +57,13 @@ public class Person {
     private List<Image> images;
 
 
-    public Person(Date dateOfBirth, String email, String password, String firstName, String lastName, RoleType role) {
+    public Person(Date dateOfBirth, String email, String password, String firstName, String lastName) {
         this.dateOfBirth = dateOfBirth;
         this.email = email;
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.role = role;
     }
-
 
 
 }
