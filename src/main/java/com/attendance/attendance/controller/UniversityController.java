@@ -7,6 +7,9 @@ import com.attendance.attendance.request.university.university.AddUniversityRequ
 import com.attendance.attendance.request.university.university.UpdateUniversityRequest;
 import com.attendance.attendance.response.ApiResponse;
 import com.attendance.attendance.service.university.IUniversityService;
+import io.swagger.v3.oas.annotations.Hidden;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -19,10 +22,31 @@ import java.util.List;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("${api.prefix}/university")
+@Tag(name = "University")
 public class UniversityController {
 
     private final IUniversityService universityService;
 
+
+    @Operation(
+            description = "Get university by id",
+            summary = "Get university by id",
+            responses = {
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                            description = "University retrieved successfully",
+                            responseCode = "200"
+                    ),
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                            description = "University not found",
+                            responseCode = "404"
+                    ),
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                            description = "Unauthorized/Invalid token",
+                            responseCode = "403"
+                    ),
+            }
+    )
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/{universityId}")
     public ResponseEntity<ApiResponse> getUniversityById(@PathVariable Long universityId) {
         try {

@@ -5,6 +5,7 @@ import com.attendance.attendance.response.ApiResponse;
 import com.attendance.attendance.response.JwtResponse;
 import com.attendance.attendance.security.jwt.JwtUtils;
 import com.attendance.attendance.security.user.AttendanceUserDetails;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("${api.prefix}/auth")
+@Tag(name = "Auth")
 public class AuthController {
     private final AuthenticationManager authenticationManager;
     private final JwtUtils jwtUtils;

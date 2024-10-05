@@ -6,6 +6,7 @@ import com.attendance.attendance.request.university.course.attendance.AddCourseA
 import com.attendance.attendance.request.university.course.attendance.UpdateCourseAttendanceRequest;
 import com.attendance.attendance.response.ApiResponse;
 import com.attendance.attendance.service.university.IUniversityCourseAttendanceService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cglib.core.Local;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("${api.prefix}/course-attendance")
+@Tag(name = "Course Attendance")
 public class CourseAttendanceController {
     private final IUniversityCourseAttendanceService universityCourseAttendanceService;
 

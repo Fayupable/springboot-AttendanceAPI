@@ -7,6 +7,7 @@ import com.attendance.attendance.request.university.department.AddUniversityDepa
 import com.attendance.attendance.request.university.department.UpdateUniversityDepartmentRequest;
 import com.attendance.attendance.response.ApiResponse;
 import com.attendance.attendance.service.university.IUniversityDepartmentService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -18,6 +19,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("${api.prefix}/university-department")
+@Tag(name = "University Department")
 public class UniversityDepartmentController {
 
     private final IUniversityDepartmentService universityDepartmentService;

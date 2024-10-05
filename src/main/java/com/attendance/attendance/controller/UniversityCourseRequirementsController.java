@@ -6,6 +6,7 @@ import com.attendance.attendance.request.university.course.requirement.AddCourse
 import com.attendance.attendance.request.university.course.requirement.UpdateCourseRequirementsRequest;
 import com.attendance.attendance.response.ApiResponse;
 import com.attendance.attendance.service.university.IUniversityCourseRequirementsService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -17,6 +18,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("${api.prefix}/university-course-requirements")
+@Tag(name = "University Course Requirements")
 public class UniversityCourseRequirementsController {
     private final IUniversityCourseRequirementsService universityCourseRequirementsService;
 

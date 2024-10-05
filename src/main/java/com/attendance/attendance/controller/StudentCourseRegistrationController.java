@@ -7,6 +7,7 @@ import com.attendance.attendance.request.student.courseRegistration.AddStudentCo
 import com.attendance.attendance.request.student.courseRegistration.UpdateStudentCourseRegistrationRequest;
 import com.attendance.attendance.response.ApiResponse;
 import com.attendance.attendance.service.student.courseRegistration.IStudentCourseRegistrationService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +18,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("${api.prefix}/student/courseRegistration")
+@Tag(name = "Student Course Registration")
 public class StudentCourseRegistrationController {
     private final IStudentCourseRegistrationService studentCourseRegistrationService;
 

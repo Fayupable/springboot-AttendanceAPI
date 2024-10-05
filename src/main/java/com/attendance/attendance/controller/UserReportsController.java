@@ -6,6 +6,7 @@ import com.attendance.attendance.request.report.user.AddUserReportsRequest;
 import com.attendance.attendance.request.report.user.UpdateUserReportsRequest;
 import com.attendance.attendance.response.ApiResponse;
 import com.attendance.attendance.service.report.user.IUserReportsService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,6 +19,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("${api.prefix}/user-reports")
+@Tag(name = "User Reports")
 public class UserReportsController {
     private final IUserReportsService userReportsService;
 

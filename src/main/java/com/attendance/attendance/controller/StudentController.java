@@ -6,6 +6,7 @@ import com.attendance.attendance.request.student.AddStudentRequest;
 import com.attendance.attendance.request.student.UpdateStudentRequest;
 import com.attendance.attendance.response.ApiResponse;
 import com.attendance.attendance.service.student.IStudentService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,6 +17,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("${api.prefix}/student")
+@Tag(name = "Student")
 public class StudentController {
     private final IStudentService studentService;
 

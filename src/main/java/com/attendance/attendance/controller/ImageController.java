@@ -5,6 +5,7 @@ import com.attendance.attendance.entity.Image;
 import com.attendance.attendance.exceptions.ResourceNotFoundException;
 import com.attendance.attendance.response.ApiResponse;
 import com.attendance.attendance.service.image.IImageService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
@@ -23,6 +24,7 @@ import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("${api.prefix}/images")
+@Tag(name = "Images")
 public class ImageController {
     private final IImageService imageService;
 
