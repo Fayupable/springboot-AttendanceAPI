@@ -94,12 +94,7 @@ public class UniversityDepartmentService implements IUniversityDepartmentService
     }
 
     public UniversityDepartmentDto convertToDto(UniversityDepartment department) {
-        UniversityDepartmentDto dto = new UniversityDepartmentDto();
-        dto.setDepartmentName(department.getDepartmentName());
-        dto.setUniversityName(department.getUniversity().getUniversityName());
-
-
-        return dto;
+        return modelMapper.map(department, UniversityDepartmentDto.class);
     }
 
     public List<UniversityDepartmentDto> convertToDtoList(List<UniversityDepartment> departments) {

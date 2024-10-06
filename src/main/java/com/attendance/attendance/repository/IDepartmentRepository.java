@@ -8,6 +8,8 @@ import java.util.List;
 
 public interface IDepartmentRepository extends JpaRepository<UniversityDepartment, Long> {
 
+
+
     List<UniversityDepartment> findByDepartmentNameContaining(String name);
 
     boolean existsByDepartmentName(String name);

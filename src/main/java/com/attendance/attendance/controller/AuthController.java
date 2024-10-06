@@ -5,6 +5,7 @@ import com.attendance.attendance.response.ApiResponse;
 import com.attendance.attendance.response.JwtResponse;
 import com.attendance.attendance.security.jwt.JwtUtils;
 import com.attendance.attendance.security.user.AttendanceUserDetails;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +30,14 @@ public class AuthController {
     private final AuthenticationManager authenticationManager;
     private final JwtUtils jwtUtils;
 
+    @Operation(
+            summary = "User login",
+            description = "Authenticate user and return JWT token",
+            responses = {
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Login success"),
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "401", description = "Invalid credentials")
+            }
+    )
     @PostMapping("/login")
     public ResponseEntity<ApiResponse> login(@Valid @RequestBody LoginRequest request) {
         try {
@@ -46,6 +55,4 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ApiResponse("Invalid credentials", null));
         }
     }
-
 }
-

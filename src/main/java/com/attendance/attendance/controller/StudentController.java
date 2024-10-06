@@ -6,6 +6,7 @@ import com.attendance.attendance.request.student.AddStudentRequest;
 import com.attendance.attendance.request.student.UpdateStudentRequest;
 import com.attendance.attendance.response.ApiResponse;
 import com.attendance.attendance.service.student.IStudentService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +22,14 @@ import java.util.List;
 public class StudentController {
     private final IStudentService studentService;
 
+    @Operation(
+            summary = "Get student by ID",
+            description = "Retrieve student by their ID",
+            responses = {
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Student retrieved successfully"),
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "Student not found")
+            }
+    )
     @GetMapping("/{studentId}/student")
     public ResponseEntity<ApiResponse> getStudentById(@PathVariable Long studentId) {
         try {
@@ -32,6 +41,13 @@ public class StudentController {
         }
     }
 
+    @Operation(
+            summary = "Get all students",
+            description = "Retrieve all students",
+            responses = {
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Students retrieved successfully")
+            }
+    )
     @GetMapping("/all")
     public ResponseEntity<ApiResponse> getAllStudents() {
         try {
@@ -43,6 +59,14 @@ public class StudentController {
         }
     }
 
+    @Operation(
+            summary = "Get student by name",
+            description = "Retrieve student by their name",
+            responses = {
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Students retrieved successfully"),
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "Student not found")
+            }
+    )
     @GetMapping("/studentName/{studentName}")
     public ResponseEntity<ApiResponse> getStudentByName(@PathVariable String studentName) {
         try {
@@ -54,6 +78,14 @@ public class StudentController {
         }
     }
 
+    @Operation(
+            summary = "Get student by email",
+            description = "Retrieve student by their email",
+            responses = {
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Students retrieved successfully"),
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "Student not found")
+            }
+    )
     @GetMapping("/studentEmail/{studentEmail}")
     public ResponseEntity<ApiResponse> getStudentByEmail(@PathVariable String studentEmail) {
         try {
@@ -65,7 +97,14 @@ public class StudentController {
         }
     }
 
-
+    @Operation(
+            summary = "Add student",
+            description = "Add a new student",
+            responses = {
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Student created successfully"),
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "409", description = "Conflict")
+            }
+    )
     @PostMapping("/add")
     @Transactional
     public ResponseEntity<ApiResponse> createStudent(@RequestBody AddStudentRequest request) {
@@ -78,6 +117,14 @@ public class StudentController {
         }
     }
 
+    @Operation(
+            summary = "Update student",
+            description = "Update an existing student",
+            responses = {
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Student updated successfully"),
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "409", description = "Conflict")
+            }
+    )
     @PutMapping("/{studentId}/update")
     @Transactional
     public ResponseEntity<ApiResponse> updateStudent(@RequestBody UpdateStudentRequest request, @PathVariable Long studentId) {
@@ -90,6 +137,14 @@ public class StudentController {
         }
     }
 
+    @Operation(
+            summary = "Delete student",
+            description = "Delete a student by their ID",
+            responses = {
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Student deleted successfully"),
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "Student not found")
+            }
+    )
     @DeleteMapping("/{studentId}/delete")
     public ResponseEntity<ApiResponse> deleteStudent(@PathVariable Long studentId) {
         try {
@@ -99,7 +154,4 @@ public class StudentController {
             return ResponseEntity.status(404).body(new ApiResponse(e.getMessage(), null));
         }
     }
-
-
-
 }

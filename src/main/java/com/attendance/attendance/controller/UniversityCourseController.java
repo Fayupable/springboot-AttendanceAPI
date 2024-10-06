@@ -6,6 +6,7 @@ import com.attendance.attendance.request.university.course.course.AddUniversityC
 import com.attendance.attendance.request.university.course.course.UpdateUniversityCourseRequest;
 import com.attendance.attendance.response.ApiResponse;
 import com.attendance.attendance.service.university.IUniversityCourseService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +22,13 @@ import java.util.List;
 public class UniversityCourseController {
     private final IUniversityCourseService universityCourseService;
 
+    @Operation(
+            summary = "Get all university courses",
+            description = "Retrieve all university courses",
+            responses = {
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "University courses retrieved successfully")
+            }
+    )
     @GetMapping("/all")
     public ResponseEntity<ApiResponse> getAllUniversityCourses() {
         List<UniversityCourse> universityCourses = universityCourseService.getAllCourses();
@@ -28,6 +36,14 @@ public class UniversityCourseController {
         return ResponseEntity.ok(new ApiResponse("University courses retrieved successfully", universityCourseDtos));
     }
 
+    @Operation(
+            summary = "Get university course by ID",
+            description = "Retrieve university course by its ID",
+            responses = {
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "University course retrieved successfully"),
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "University course not found")
+            }
+    )
     @GetMapping("/course/{courseId}")
     public ResponseEntity<ApiResponse> getUniversityCourseById(@PathVariable Long courseId) {
         try {
@@ -39,6 +55,14 @@ public class UniversityCourseController {
         }
     }
 
+    @Operation(
+            summary = "Get university course by name",
+            description = "Retrieve university course by its name",
+            responses = {
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "University courses retrieved successfully"),
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "University course not found")
+            }
+    )
     @GetMapping("/name/{courseName}")
     public ResponseEntity<ApiResponse> getUniversityCourseByName(@PathVariable String courseName) {
         List<UniversityCourse> universityCourses = universityCourseService.getCourseByName(courseName);
@@ -46,6 +70,14 @@ public class UniversityCourseController {
         return ResponseEntity.ok(new ApiResponse("University courses retrieved successfully", universityCourseDtos));
     }
 
+    @Operation(
+            summary = "Get university course by code",
+            description = "Retrieve university course by its code",
+            responses = {
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "University courses retrieved successfully"),
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "University course not found")
+            }
+    )
     @GetMapping("/code/{courseCode}")
     public ResponseEntity<ApiResponse> getUniversityCourseByCode(@PathVariable String courseCode) {
         List<UniversityCourse> universityCourses = universityCourseService.getCourseByCode(courseCode);
@@ -53,6 +85,14 @@ public class UniversityCourseController {
         return ResponseEntity.ok(new ApiResponse("University courses retrieved successfully", universityCourseDto));
     }
 
+    @Operation(
+            summary = "Add university course",
+            description = "Add a new university course",
+            responses = {
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "University course created successfully"),
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "409", description = "Conflict")
+            }
+    )
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/add")
     public ResponseEntity<ApiResponse> addUniversityCourse(@RequestBody AddUniversityCourseRequest request) {
@@ -65,6 +105,14 @@ public class UniversityCourseController {
         }
     }
 
+    @Operation(
+            summary = "Update university course",
+            description = "Update an existing university course",
+            responses = {
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "University course updated successfully"),
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "409", description = "Conflict")
+            }
+    )
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/update/{courseId}/department/{departmentId}")
     public ResponseEntity<ApiResponse> updateUniversityCourse(
@@ -80,6 +128,14 @@ public class UniversityCourseController {
         }
     }
 
+    @Operation(
+            summary = "Delete university course",
+            description = "Delete a university course by its ID",
+            responses = {
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "University course deleted successfully"),
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "409", description = "Conflict")
+            }
+    )
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/delete/{courseId}")
     public ResponseEntity<ApiResponse> deleteUniversityCourse(@PathVariable Long courseId) {
@@ -90,6 +146,4 @@ public class UniversityCourseController {
             return ResponseEntity.status(409).body(new ApiResponse(e.getMessage(), null));
         }
     }
-
-
 }

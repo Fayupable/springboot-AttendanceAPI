@@ -1,13 +1,11 @@
 package com.attendance.attendance.controller;
 
-
 import com.attendance.attendance.dto.UniversityDto;
 import com.attendance.attendance.entity.University;
 import com.attendance.attendance.request.university.university.AddUniversityRequest;
 import com.attendance.attendance.request.university.university.UpdateUniversityRequest;
 import com.attendance.attendance.response.ApiResponse;
 import com.attendance.attendance.service.university.IUniversityService;
-import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +24,6 @@ import java.util.List;
 public class UniversityController {
 
     private final IUniversityService universityService;
-
 
     @Operation(
             description = "Get university by id",
@@ -58,6 +55,16 @@ public class UniversityController {
         }
     }
 
+    @Operation(
+            description = "Get all universities",
+            summary = "Get all universities",
+            responses = {
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                            description = "Universities retrieved successfully",
+                            responseCode = "200"
+                    )
+            }
+    )
     @GetMapping("/all")
     public ResponseEntity<ApiResponse> getAllUniversities() {
         List<University> universities = universityService.getAllUniversity();
@@ -65,6 +72,16 @@ public class UniversityController {
         return ResponseEntity.ok(new ApiResponse("University retrieved successfully", universityDto));
     }
 
+    @Operation(
+            description = "Get university by name",
+            summary = "Get university by name",
+            responses = {
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                            description = "University retrieved successfully",
+                            responseCode = "200"
+                    )
+            }
+    )
     @GetMapping("/name/{universityName}")
     public ResponseEntity<ApiResponse> getUniversityByName(@PathVariable String universityName) {
         List<University> universities = universityService.getUniversityByName(universityName);
@@ -72,12 +89,25 @@ public class UniversityController {
         return ResponseEntity.ok(new ApiResponse("University retrieved successfully", universityDto));
     }
 
+    @Operation(
+            description = "Create a new university",
+            summary = "Create a new university",
+            responses = {
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                            description = "University created successfully",
+                            responseCode = "200"
+                    ),
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                            description = "Conflict occurred",
+                            responseCode = "409"
+                    )
+            }
+    )
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/add")
     @Transactional
     public ResponseEntity<ApiResponse> createUniversity(@RequestBody AddUniversityRequest request, Authentication authentication) {
         try {
-
             University createdUniversity = universityService.addUniversity(request);
             UniversityDto universityDto = universityService.convertToDto(createdUniversity);
             return ResponseEntity.ok(new ApiResponse("University created successfully", universityDto));
@@ -86,6 +116,20 @@ public class UniversityController {
         }
     }
 
+    @Operation(
+            description = "Delete a university by id",
+            summary = "Delete a university by id",
+            responses = {
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                            description = "University deleted successfully",
+                            responseCode = "200"
+                    ),
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                            description = "University not found",
+                            responseCode = "404"
+                    )
+            }
+    )
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/delete/{universityId}")
     @Transactional
@@ -98,6 +142,20 @@ public class UniversityController {
         }
     }
 
+    @Operation(
+            description = "Update a university by id",
+            summary = "Update a university by id",
+            responses = {
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                            description = "University updated successfully",
+                            responseCode = "200"
+                    ),
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                            description = "University not found",
+                            responseCode = "404"
+                    )
+            }
+    )
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/update/{universityId}")
     @Transactional
@@ -110,6 +168,4 @@ public class UniversityController {
             return ResponseEntity.status(404).body(new ApiResponse(e.getMessage(), null));
         }
     }
-
-
 }

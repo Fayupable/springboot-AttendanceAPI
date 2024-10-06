@@ -6,6 +6,7 @@ import com.attendance.attendance.request.teacher.AddTeacherRequest;
 import com.attendance.attendance.request.teacher.UpdateTeacherRequest;
 import com.attendance.attendance.response.ApiResponse;
 import com.attendance.attendance.service.teacher.ITeacherService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -22,13 +23,28 @@ import java.util.List;
 public class TeacherController {
     private final ITeacherService teacherService;
 
+    @Operation(
+            summary = "Get all teachers",
+            description = "Retrieve all teachers",
+            responses = {
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Teachers retrieved successfully")
+            }
+    )
     @GetMapping("/all")
     public ResponseEntity<ApiResponse> getAllTeachers() {
         List<Teacher> teachers = teacherService.getAllTeachers();
         List<TeacherDto> teacherDto = teacherService.convertToDtoList(teachers);
-        return ResponseEntity.ok(new ApiResponse("Teacher retrieved successfully", teacherDto));
+        return ResponseEntity.ok(new ApiResponse("Teachers retrieved successfully", teacherDto));
     }
 
+    @Operation(
+            summary = "Get teacher by email",
+            description = "Retrieve teacher by their email",
+            responses = {
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Teacher retrieved successfully"),
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "Teacher not found")
+            }
+    )
     @GetMapping("/email/{email}")
     public ResponseEntity<ApiResponse> getTeacherByEmail(@PathVariable String email) {
         List<Teacher> teachers = teacherService.getTeacherByEmail(email);
@@ -36,6 +52,14 @@ public class TeacherController {
         return ResponseEntity.ok(new ApiResponse("Teacher retrieved successfully", teacherDto));
     }
 
+    @Operation(
+            summary = "Get teacher by name",
+            description = "Retrieve teacher by their name",
+            responses = {
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Teacher retrieved successfully"),
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "Teacher not found")
+            }
+    )
     @GetMapping("/name/{name}")
     public ResponseEntity<ApiResponse> getTeacherByName(@PathVariable String name) {
         List<Teacher> teachers = teacherService.getTeacherByName(name);
@@ -43,6 +67,14 @@ public class TeacherController {
         return ResponseEntity.ok(new ApiResponse("Teacher retrieved successfully", teacherDto));
     }
 
+    @Operation(
+            summary = "Get teacher by university ID",
+            description = "Retrieve teacher by their university ID",
+            responses = {
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Teacher retrieved successfully"),
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "Teacher not found")
+            }
+    )
     @GetMapping("/university/{universityId}")
     public ResponseEntity<ApiResponse> getTeacherByUniversityId(@PathVariable Long universityId) {
         List<Teacher> teachers = teacherService.getTeacherByUniversityId(universityId);
@@ -50,6 +82,14 @@ public class TeacherController {
         return ResponseEntity.ok(new ApiResponse("Teacher retrieved successfully", teacherDto));
     }
 
+    @Operation(
+            summary = "Get teacher by department ID",
+            description = "Retrieve teacher by their department ID",
+            responses = {
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Teacher retrieved successfully"),
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "Teacher not found")
+            }
+    )
     @GetMapping("/department/{departmentId}")
     public ResponseEntity<ApiResponse> getTeacherByDepartmentId(@PathVariable Long departmentId) {
         List<Teacher> teachers = teacherService.getTeacherByDepartmentId(departmentId);
@@ -57,6 +97,14 @@ public class TeacherController {
         return ResponseEntity.ok(new ApiResponse("Teacher retrieved successfully", teacherDto));
     }
 
+    @Operation(
+            summary = "Add teacher",
+            description = "Add a new teacher",
+            responses = {
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Teacher created successfully"),
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "409", description = "Conflict")
+            }
+    )
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/add")
     @Transactional
@@ -70,6 +118,14 @@ public class TeacherController {
         }
     }
 
+    @Operation(
+            summary = "Delete teacher",
+            description = "Delete a teacher by their ID",
+            responses = {
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Teacher deleted successfully"),
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "Teacher not found")
+            }
+    )
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/delete/{teacherId}")
     @Transactional
@@ -82,6 +138,14 @@ public class TeacherController {
         }
     }
 
+    @Operation(
+            summary = "Update teacher",
+            description = "Update an existing teacher",
+            responses = {
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Teacher updated successfully"),
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "Teacher not found")
+            }
+    )
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/update/{teacherId}")
     @Transactional
@@ -94,6 +158,4 @@ public class TeacherController {
             return ResponseEntity.status(404).body(new ApiResponse(e.getMessage(), null));
         }
     }
-
-
 }
