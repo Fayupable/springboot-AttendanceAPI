@@ -11,6 +11,7 @@ The Attendance Application is a Spring Boot-based project designed to manage att
 - [Configuration](#configuration)
 - [Running the Application](#running-the-application)
 - [Table](#table)
+- [Dependencies](#dependencies)
 - [API Endpoints](#api-endpoints)
 - [Built With](#built-with)
 - [Contributing](#contributing)
@@ -78,6 +79,9 @@ mvn spring-boot:run
 
 ## Table
 ![image alt](https://github.com/Fayupable/springboot-AttendanceAPI/blob/main/doc/AttendanceNew.png?raw=true)
+
+## Dependencies
+![image alt](https://github.com/Fayupable/springboot-AttendanceAPI/blob/main/doc/dependcy.png?raw=true)
 
 ## API Endpoints
 
