@@ -1,11 +1,15 @@
 package com.attendance.attendance.controller;
 
 import com.attendance.attendance.dto.StudentDto;
+import com.attendance.attendance.dto.UniversityCourseDto;
 import com.attendance.attendance.entity.Student;
+import com.attendance.attendance.entity.UniversityCourse;
 import com.attendance.attendance.request.student.AddStudentRequest;
 import com.attendance.attendance.request.student.UpdateStudentRequest;
 import com.attendance.attendance.response.ApiResponse;
 import com.attendance.attendance.service.student.IStudentService;
+import com.attendance.attendance.service.university.IUniversityCourseService;
+import com.attendance.attendance.service.university.IUniversityService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +25,7 @@ import java.util.List;
 @Tag(name = "Student")
 public class StudentController {
     private final IStudentService studentService;
+    private final IUniversityCourseService universityService;
 
     @Operation(
             summary = "Get student by ID",
@@ -36,6 +41,17 @@ public class StudentController {
             Student student = studentService.getStudentById(studentId);
             StudentDto studentDto = studentService.convertToDto(student);
             return ResponseEntity.ok(new ApiResponse("Student retrieved successfully", studentDto));
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(404).body(new ApiResponse(e.getMessage(), null));
+        }
+    }
+
+    @GetMapping("/{studentId}/courses")
+    public ResponseEntity<ApiResponse> getCoursesForStudent(@PathVariable Long studentId) {
+        try {
+            List<UniversityCourse> courses = studentService.getCoursesForStudent(studentId);
+            List<UniversityCourseDto> courseDto = universityService.convertToDtoToList(courses);
+            return ResponseEntity.ok(new ApiResponse("Courses retrieved successfully", courseDto));
         } catch (RuntimeException e) {
             return ResponseEntity.status(404).body(new ApiResponse(e.getMessage(), null));
         }

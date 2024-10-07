@@ -12,7 +12,9 @@ import lombok.Setter;
 @AllArgsConstructor
 @Entity
 @Table(name = "teacher")
+@PrimaryKeyJoinColumn(name = "person_id")
 public class Teacher extends Person {
+
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "university_id", nullable = false, foreignKey = @ForeignKey(name = "fk_teacher_university"))

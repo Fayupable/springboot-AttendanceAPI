@@ -2,6 +2,7 @@ package com.attendance.attendance.service.student;
 
 import com.attendance.attendance.dto.StudentDto;
 import com.attendance.attendance.entity.Student;
+import com.attendance.attendance.entity.UniversityCourse;
 import com.attendance.attendance.request.student.AddStudentRequest;
 import com.attendance.attendance.request.student.UpdateStudentRequest;
 
@@ -18,6 +19,7 @@ public interface IStudentService {
 
     Student getStudentById(Long id);
 
+    List<UniversityCourse> getCoursesForStudent(Long id);
 
     Student addStudent(AddStudentRequest request);
 

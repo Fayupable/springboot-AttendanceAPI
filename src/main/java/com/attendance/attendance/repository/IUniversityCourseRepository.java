@@ -2,6 +2,7 @@ package com.attendance.attendance.repository;
 
 import com.attendance.attendance.entity.University;
 import com.attendance.attendance.entity.UniversityCourse;
+import com.attendance.attendance.entity.UniversityDepartment;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -10,6 +11,14 @@ public interface IUniversityCourseRepository extends JpaRepository<UniversityCou
     boolean existsByCourseCode(String courseCode);
 
     boolean existsByCourseName(String courseName);
+
+    boolean existsByCourseCodeContaining(String courseCode);
+
+    boolean existsByCourseNameContaining(String courseName);
+
+    boolean existsByCourseNameAndDepartment(String courseName, UniversityDepartment department);
+
+    List<UniversityCourse> findByDepartment(UniversityDepartment department);
 
     List<UniversityCourse> findByCourseNameContaining(String courseName);
 

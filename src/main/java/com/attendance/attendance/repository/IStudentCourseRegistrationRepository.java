@@ -11,7 +11,6 @@ import java.util.List;
 public interface IStudentCourseRegistrationRepository extends JpaRepository<StudentCourseRegistration, Long> {
     StudentCourseRegistration findByStudentIdAndCourse_CourseId(Long studentId, Long courseId);
 
-
     List<StudentCourseRegistration> findByStudentId(Long studentId);
 
     List<StudentCourseRegistration> findByCourse_CourseId(Long courseId);
@@ -28,7 +27,7 @@ public interface IStudentCourseRegistrationRepository extends JpaRepository<Stud
 
     boolean existsByStudentIdAndStatus(Long studentId, String status);
 
-
+    boolean existsByStudentAndCourse(Student student, UniversityCourse course);
 
     StudentCourseRegistration findStudentAndCourseByStudentIdAndCourse_CourseId(Long studentId, Long courseId);
 

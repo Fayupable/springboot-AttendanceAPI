@@ -41,4 +41,8 @@ public class UniversityDepartment {
     private List<Teacher> teachers;
 
 
+    public UniversityDepartment(String departmentName, University university) {
+        this.departmentName = departmentName;
+        this.university = university;
+    }
 }

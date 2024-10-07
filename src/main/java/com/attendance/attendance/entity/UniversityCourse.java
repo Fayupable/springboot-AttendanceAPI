@@ -40,4 +40,10 @@ public class UniversityCourse {
 
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<CoursesRequirements> courseRequirements;
+
+    public UniversityCourse(String courseName, String courseCode, String description) {
+        this.courseName = courseName;
+        this.courseCode = courseCode;
+        this.description = description;
+    }
 }

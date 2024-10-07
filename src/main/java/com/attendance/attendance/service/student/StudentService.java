@@ -3,6 +3,7 @@ package com.attendance.attendance.service.student;
 import com.attendance.attendance.dto.StudentDto;
 import com.attendance.attendance.entity.Student;
 import com.attendance.attendance.entity.University;
+import com.attendance.attendance.entity.UniversityCourse;
 import com.attendance.attendance.entity.UniversityDepartment;
 import com.attendance.attendance.exceptions.AlreadyExistsException;
 import com.attendance.attendance.exceptions.ResourceNotFoundException;
@@ -45,6 +46,13 @@ public class StudentService implements IStudentService {
     @Override
     public Student getStudentById(Long id) {
         return studentRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Student not found"));
+    }
+
+    @Override
+    public List<UniversityCourse> getCoursesForStudent(Long id) {
+        return studentRepository.findStudentById(id)
+                .map(Student::getCourses)
+                .orElseThrow(() -> new ResourceNotFoundException("Student not found"));
     }
 
     @Override

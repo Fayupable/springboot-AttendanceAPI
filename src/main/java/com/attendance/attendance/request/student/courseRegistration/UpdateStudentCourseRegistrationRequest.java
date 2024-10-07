@@ -8,9 +8,6 @@ import java.time.LocalDateTime;
 @Schema(name = "Update Student Course Registration Request", description = "Request to update a student's course registration, including student ID, course ID, registration date, and status")
 public class UpdateStudentCourseRegistrationRequest {
 
-    @Schema(description = "ID of the registration", example = "1")
-    private Long id;
-
     @Schema(description = "ID of the student", example = "123")
     private Long studentId;
 
@@ -20,6 +17,6 @@ public class UpdateStudentCourseRegistrationRequest {
     @Schema(description = "Date of registration", example = "2023-10-01T12:00:00")
     private LocalDateTime registrationDate;
 
-    @Schema(description = "Registration status", example = "Registered")
+    @Schema(description = "Registration status", example = "PENDING")
     private String status;
 }

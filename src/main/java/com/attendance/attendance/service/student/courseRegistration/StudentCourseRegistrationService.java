@@ -109,7 +109,7 @@ public class StudentCourseRegistrationService implements IStudentCourseRegistrat
         StudentCourseRegistration studentCourseRegistration = new StudentCourseRegistration();
         studentCourseRegistration.setCourse(course);
         studentCourseRegistration.setStudent(student);
-        studentCourseRegistration.setStatus(request.getStatus());
+        studentCourseRegistration.setStatus("PENDING");
 
 
         return studentCourseRegistration;
@@ -118,21 +118,43 @@ public class StudentCourseRegistrationService implements IStudentCourseRegistrat
 
     @Override
     public StudentCourseRegistration updateStudentCourseRegistration(UpdateStudentCourseRegistrationRequest request, Long studentCourseRegistrationId) {
+        StudentCourseRegistration studentCourseRegistration = findStudentCourseRegistrationById(studentCourseRegistrationId);
+        Student student = findStudentById(request.getStudentId());
+        UniversityCourse course = findCourseById(request.getCourseId());
+        updateStudentCourseRegistrationDetails(studentCourseRegistration, student, course, request);
+        return studentCourseRegistrationRepository.save(studentCourseRegistration);
+    }
+
+    private StudentCourseRegistration findStudentCourseRegistrationById(Long studentCourseRegistrationId) {
         return studentCourseRegistrationRepository.findById(studentCourseRegistrationId)
-                .map(studentCourseRegistration -> {
-                    Student student = studentRepository.findById(request.getStudentId())
-                            .orElseThrow(() -> new EntityNotFoundException("Student not found"));
-
-                    UniversityCourse course = universityCourseRepository.findById(request.getCourseId())
-                            .orElseThrow(() -> new EntityNotFoundException("Course not found"));
-
-                    studentCourseRegistration.setStudent(student);
-                    studentCourseRegistration.setCourse(course);
-                    studentCourseRegistration.setRegistrationDate(request.getRegistrationDate());
-                    studentCourseRegistration.setStatus(request.getStatus());
-                    return studentCourseRegistrationRepository.save(studentCourseRegistration);
-                })
                 .orElseThrow(() -> new RuntimeException("Student course registration not found"));
+    }
+
+    private Student findStudentById(Long studentId) {
+        return studentRepository.findById(studentId)
+                .orElseThrow(() -> new EntityNotFoundException("Student not found"));
+    }
+
+    private UniversityCourse findCourseById(Long courseId) {
+        return universityCourseRepository.findById(courseId)
+                .orElseThrow(() -> new EntityNotFoundException("Course not found"));
+    }
+
+    private void updateStudentCourseRegistrationDetails(StudentCourseRegistration studentCourseRegistration, Student student, UniversityCourse course, UpdateStudentCourseRegistrationRequest request) {
+        studentCourseRegistration.setStudent(student);
+        studentCourseRegistration.setCourse(course);
+        studentCourseRegistration.setRegistrationDate(request.getRegistrationDate());
+        if ("approved".equalsIgnoreCase(request.getStatus())) {
+            addCourseForApprovedStudent(student, course);
+        }
+        studentCourseRegistration.setStatus(request.getStatus());
+    }
+
+    private void addCourseForApprovedStudent(Student student, UniversityCourse course) {
+        if (!student.getCourses().contains(course)) {
+            student.getCourses().add(course);
+            studentRepository.save(student);
+        }
     }
 
 
