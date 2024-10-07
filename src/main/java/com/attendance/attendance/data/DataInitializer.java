@@ -1,7 +1,7 @@
 package com.attendance.attendance.data;
 
 import com.attendance.attendance.entity.*;
-
+import com.attendance.attendance.enums.AttendanceStatus;
 import com.attendance.attendance.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
@@ -10,6 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -31,36 +32,40 @@ public class DataInitializer implements ApplicationListener<ApplicationReadyEven
     private final ITeacherRepository teacherRepository;
     private final IUserReportsRepository userReportsRepository;
     private final IGeneralReportsRepository generalReportsRepository;
-    private final IImageRepository imageRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Override
     public void onApplicationEvent(ApplicationReadyEvent event) {
-        Set<String> defaultRoles = Set.of("ROLE_ADMIN","ROLE_MODERATOR","ROLE_STUDENT","ROLE_TEACHER","ROLE_MEMBER");
-        createDefaultRoleIfNotExists(defaultRoles);
-        createDefaultUserIfNotExists();
-        createDefaultAdminIfNotExists();
-        createUniversityIfNotExists();
-        createUniversityDepartmentIfNotExists();
-        createUniversityCoursesIfNotExists();
-        createUniversityCourseDetailsIfNotExists();
-        createCourseRequirementsIfNotExists();
-        createDefaultStudentIfNotExists();
-        assignCoursesToStudents();
-
+//        Set<String> defaultRoles = Set.of("ROLE_ADMIN", "ROLE_MODERATOR", "ROLE_STUDENT", "ROLE_TEACHER", "ROLE_MEMBER");
+//        createDefaultRoleIfNotExists(defaultRoles);
+//        createDefaultUserIfNotExists();
+//        createDefaultAdminIfNotExists();
+//        createUniversityIfNotExists();
+//        createUniversityDepartmentIfNotExists();
+//        createUniversityCoursesIfNotExists();
+//        createUniversityCourseDetailsIfNotExists();
+//        createCourseRequirementsIfNotExists();
+//        createDefaultStudentIfNotExists();
+//        createDefaultTeacherIfNotExists();
+//        assignCoursesToStudents();
+//        createGeneralReportsIfNotExists();
+//        createDefaultUserReportsIfNotExists();
+//        createCoursesAttendanceIfNotExists();
 
     }
 
     private void createDefaultUserIfNotExists() {
         Role memberRole = roleRepository.findByRoleName("ROLE_MEMBER").get();
-        for (int i = 0; i < 5; i++) {
-            String defaultEmail = "user" + i + "@email.com";
+        List<String> userNames = List.of("John Doe", "Jane Smith", "Alice Johnson", "Bob Brown", "Charlie Davis");
+        for (int i = 0; i < userNames.size(); i++) {
+            String defaultEmail = userNames.get(i).toLowerCase().replace(" ", ".") + "@example.com";
             if (personRepository.existsByEmail(defaultEmail)) {
                 continue;
             }
+            String[] nameParts = userNames.get(i).split(" ");
             Person person = new Person();
-            person.setFirstName("The user");
-            person.setLastName("User" + i);
+            person.setFirstName(nameParts[0]);
+            person.setLastName(nameParts[1]);
             person.setEmail(defaultEmail);
             person.setPassword(passwordEncoder.encode("123456"));
             person.setRoles(Set.of(memberRole));
@@ -72,23 +77,22 @@ public class DataInitializer implements ApplicationListener<ApplicationReadyEven
     }
 
     private void createDefaultAdminIfNotExists() {
-
         Role adminRole = roleRepository.findByRoleName("ROLE_ADMIN").get();
-
-        for (int i = 0; i < 2; i++) {
-            String defaultEmail = "admin" + i + "@email.com";
+        List<String> adminNames = List.of("Admin One", "Admin Two");
+        for (int i = 0; i < adminNames.size(); i++) {
+            String defaultEmail = adminNames.get(i).toLowerCase().replace(" ", ".") + "@example.com";
             if (personRepository.existsByEmail(defaultEmail)) {
                 continue;
             }
+            String[] nameParts = adminNames.get(i).split(" ");
             Person person = new Person();
-            person.setFirstName("Admin");
-            person.setLastName("Admin" + i);
+            person.setFirstName(nameParts[0]);
+            person.setLastName(nameParts[1]);
             person.setEmail(defaultEmail);
             person.setPassword(passwordEncoder.encode("123456"));
             person.setRoles(Set.of(adminRole));
             Date randomDate = generateRandomDate();
             person.setDateOfBirth(randomDate);
-
             personRepository.save(person);
             System.out.println("Admin created: " + person.getEmail());
         }
@@ -104,25 +108,56 @@ public class DataInitializer implements ApplicationListener<ApplicationReadyEven
             return;
         }
 
-        for (int i = 0; i < 5; i++) {
-            String defaultEmail = "student" + i + "@email.com";
+        List<String> studentNames = List.of("Michael Scott", "Pam Beesly", "Jim Halpert", "Dwight Schrute", "Angela Martin");
+        for (int i = 0; i < studentNames.size(); i++) {
+            String defaultEmail = studentNames.get(i).toLowerCase().replace(" ", ".") + "@example.com";
             if (personRepository.existsByEmail(defaultEmail)) {
                 continue;
             }
-
+            String[] nameParts = studentNames.get(i).split(" ");
             Student student = new Student();
-            student.setFirstName("Student");
-            student.setLastName("Student" + i);
+            student.setFirstName(nameParts[0]);
+            student.setLastName(nameParts[1]);
             student.setEmail(defaultEmail);
             student.setPassword(passwordEncoder.encode("123456"));
             student.setRoles(Set.of(studentRole));
             student.setDateOfBirth(generateRandomDate());
-            student.setStudentNumber("S" + i);
+            student.setStudentNumber("S" + i + 6);
             student.setUniversity(universities.get(i % universities.size()));
             student.setDepartment(departments.get(i % departments.size()));
-
             studentRepository.save(student);
             System.out.println("Student created: " + student.getEmail());
+        }
+    }
+
+    private void createDefaultTeacherIfNotExists() {
+        Role teacherRole = roleRepository.findByRoleName("ROLE_TEACHER").orElseThrow(() -> new RuntimeException("Role not found"));
+        List<University> universities = universityRepository.findAll();
+        List<UniversityDepartment> departments = universityDepartmentRepository.findAll();
+
+        if (universities.isEmpty() || departments.isEmpty()) {
+            System.err.println("No universities or departments found.");
+            return;
+        }
+
+        List<String> teacherNames = List.of("Dexter Morgan", "Debra Morgan", "Harry Morgan", "Rita Morgan", "Vince Masuka", "Sergeant Doakes");
+        for (int i = 0; i < teacherNames.size(); i++) {
+            String defaultEmail = teacherNames.get(i).toLowerCase().replace(" ", ".") + "@example.com";
+            if (personRepository.existsByEmail(defaultEmail)) {
+                continue;
+            }
+            String[] nameParts = teacherNames.get(i).split(" ");
+            Teacher teacher = new Teacher();
+            teacher.setFirstName(nameParts[0]);
+            teacher.setLastName(nameParts[1]);
+            teacher.setEmail(defaultEmail);
+            teacher.setPassword(passwordEncoder.encode("123456"));
+            teacher.setRoles(Set.of(teacherRole));
+            teacher.setDateOfBirth(generateRandomDate());
+            teacher.setUniversity(universities.get(i % universities.size()));
+            teacher.setDepartment(departments.get(i % departments.size()));
+            teacherRepository.save(teacher);
+            System.out.println("Teacher created: " + teacher.getEmail());
         }
     }
 
@@ -132,25 +167,14 @@ public class DataInitializer implements ApplicationListener<ApplicationReadyEven
                 new University("Stanford University", "Stanford, CA"),
                 new University("Massachusetts Institute of Technology", "Cambridge, MA"),
                 new University("University of California, Berkeley", "Berkeley, CA"),
-                new University("University of Oxford", "Oxford, UK"),
-                new University("Ludwig Maximilian University of Munich", "Munich, Germany"),
-                new University("Heidelberg University", "Heidelberg, Germany"),
-                new University("Humboldt University of Berlin", "Berlin, Germany"),
-                new University("Technical University of Munich", "Munich, Germany"),
-                new University("University of Freiburg", "Freiburg, Germany"),
-                new University("University of Göttingen", "Göttingen, Germany"),
-                new University("University of Hamburg", "Hamburg, Germany"),
-                new University("University of Stuttgart", "Stuttgart, Germany"),
-                new University("RWTH Aachen University", "Aachen, Germany"),
-                new University("University of Bonn", "Bonn, Germany")
+                new University("University of Oxford", "Oxford, UK")
         );
 
-            for (University university : universities) {
-                if (!universityRepository.existsByUniversityName(university.getUniversityName())) {
-                    universityRepository.save(university);
-                }
+        for (University university : universities) {
+            if (!universityRepository.existsByUniversityName(university.getUniversityName())) {
+                universityRepository.save(university);
             }
-
+        }
     }
 
     private void createUniversityDepartmentIfNotExists() {
@@ -162,9 +186,7 @@ public class DataInitializer implements ApplicationListener<ApplicationReadyEven
         }
 
         List<String> departmentNames = Arrays.asList(
-                "Computer Science", "Mathematics", "Physics", "Chemistry", "Biology",
-                "Economics", "Business", "Engineering", "Medicine", "Law",
-                "History", "Philosophy", "Psychology", "Sociology", "Political Science"
+                "Computer Science", "Mathematics", "Physics", "Chemistry", "Biology"
         );
 
         for (University university : universities) {
@@ -176,41 +198,6 @@ public class DataInitializer implements ApplicationListener<ApplicationReadyEven
             }
         }
     }
-//    private void createUniversityCoursesIfNotExists() {
-//        List<UniversityDepartment> universityDepartments = universityDepartmentRepository.findAll();
-//
-//        if (universityDepartments.isEmpty()) {
-//            System.out.println("No departments found.");
-//            return;
-//        }
-//
-//        List<UniversityCourse> courses = Arrays.asList(
-//                new UniversityCourse("Introduction to Computer Science", "CS101", "Basic concepts in computer science."),
-//                new UniversityCourse("Calculus I", "MATH101", "Differential and integral calculus."),
-//                new UniversityCourse("Physics I", "PHYS101", "Basic physics principles."),
-//                new UniversityCourse("Chemistry I", "CHEM101", "Introduction to general chemistry."),
-//                new UniversityCourse("Biology I", "BIO101", "Introduction to biology."),
-//                new UniversityCourse("Introduction to Economics", "ECON101", "Principles of economics."),
-//                new UniversityCourse("Business Management", "BUS101", "Fundamentals of business management."),
-//                new UniversityCourse("Engineering Design", "ENGR101", "Introduction to engineering design principles."),
-//                new UniversityCourse("Introduction to Medicine", "MED101", "Basic medical principles."),
-//                new UniversityCourse("Introduction to Law", "LAW101", "Basic legal principles."),
-//                new UniversityCourse("World History", "HIST101", "Overview of world history."),
-//                new UniversityCourse("Philosophy of Science", "PHIL101", "Introduction to philosophy of science."),
-//                new UniversityCourse("Psychology I", "PSY101", "Introduction to psychology."),
-//                new UniversityCourse("Sociology I", "SOC101", "Introduction to sociology."),
-//                new UniversityCourse("Political Science I", "POL101", "Introduction to political science.")
-//        );
-//
-//        for (UniversityDepartment department : universityDepartments) {
-//            for (UniversityCourse course : courses) {
-//                if (!universityCourseRepository.existsByCourseNameAndDepartment(course.getCourseName(), department)) {
-//                    course.setDepartment(department);
-//                    universityCourseRepository.save(course);
-//                }
-//            }
-//        }
-//    }
 
     private void createUniversityCoursesIfNotExists() {
         List<UniversityDepartment> universityDepartments = universityDepartmentRepository.findAll();
@@ -339,6 +326,72 @@ public class DataInitializer implements ApplicationListener<ApplicationReadyEven
         }
     }
 
+    private void createCoursesAttendanceIfNotExists() {
+        List<Student> students = studentRepository.findAll();
+        List<UniversityCourse> courses = universityCourseRepository.findAll();
+
+        if (students.isEmpty() || courses.isEmpty()) {
+            System.out.println("No students or courses found.");
+            return;
+        }
+
+        List<CoursesAttendance> attendanceList = new ArrayList<>();
+        for (Student student : students) {
+            for (int i = 0; i < 3; i++) {
+                UniversityCourse course = courses.get((int) (Math.random() * courses.size()));
+                AttendanceStatus status = AttendanceStatus.values()[(int) (Math.random() * AttendanceStatus.values().length)];
+                CoursesAttendance attendance = new CoursesAttendance();
+                attendance.setStudent(student);
+                attendance.setCourse(course);
+                attendance.setAttendanceDate(LocalDate.now().minusDays((int) (Math.random() * 30)));
+                attendance.setAttendanceStatus(status);
+                attendanceList.add(attendance);
+            }
+        }
+
+        for (CoursesAttendance attendance : attendanceList) {
+            courseAttendanceRepository.save(attendance);
+            System.out.println("Attendance record created for student: " + attendance.getStudent().getStudentNumber() + " - Course: " + attendance.getCourse().getCourseName());
+        }
+    }
+
+    private void createGeneralReportsIfNotExists() {
+        List<GeneralReports> reports = Arrays.asList(
+                new GeneralReports("Monthly Attendance Report", LocalDate.now(), "Report content for monthly attendance."),
+                new GeneralReports("Yearly Performance Report", LocalDate.now(), "Report content for yearly performance."),
+                new GeneralReports("Semester Grades Report", LocalDate.now(), "Report content for semester grades."),
+                new GeneralReports("Student Progress Report", LocalDate.now(), "Report content for student progress.")
+        );
+        for (GeneralReports report : reports) {
+            generalReportsRepository.save(report);
+            System.out.println("Report created: " + report.getReportName());
+        }
+
+
+    }
+
+    private void createDefaultUserReportsIfNotExists() {
+        List<Person> persons = personRepository.findAll();
+
+        if (persons.isEmpty()) {
+            System.out.println("No persons found.");
+            return;
+        }
+
+        List<UserReports> reports = Arrays.asList(
+                new UserReports(persons.get(0), "Monthly Report", "Monthly report content.", LocalDate.now()),
+                new UserReports(persons.get(1), "Yearly Report", "Yearly report content.", LocalDate.now()),
+                new UserReports(persons.get(2), "Semester Report", "Semester report content.", LocalDate.now()),
+                new UserReports(persons.get(3), "Progress Report", "Progress report content.", LocalDate.now())
+        );
+
+
+        for (UserReports report : reports) {
+            userReportsRepository.save(report);
+            System.out.println("User report created: " + report.getTitle() + " for " + report.getPerson().getEmail());
+        }
+    }
+
     private void assignCoursesToStudents() {
         List<Student> students = studentRepository.findAll();
 
@@ -371,7 +424,6 @@ public class DataInitializer implements ApplicationListener<ApplicationReadyEven
         roles.stream()
                 .filter(role -> roleRepository.findByRoleName(role).isEmpty())
                 .map(Role::new).forEach(roleRepository::save);
-
     }
 
     private Date generateRandomDate() {
@@ -383,7 +435,6 @@ public class DataInitializer implements ApplicationListener<ApplicationReadyEven
         long randomMillis = ThreadLocalRandom.current().longs(startMillis, endMillis + 1).findAny().getAsLong();
         return new Date(randomMillis);
     }
-
 
     @Override
     public boolean supportsAsyncExecution() {

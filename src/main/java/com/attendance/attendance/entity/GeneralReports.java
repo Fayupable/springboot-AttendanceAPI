@@ -27,4 +27,10 @@ public class GeneralReports {
     @Lob
     @Column(name = "report_content")
     private String reportContent;
+
+    public GeneralReports(String reportName, LocalDate reportDate, String reportContent) {
+        this.reportName = reportName;
+        this.reportDate = reportDate;
+        this.reportContent = reportContent;
+    }
 }

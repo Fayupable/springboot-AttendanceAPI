@@ -37,6 +37,12 @@ public class StudentCourseRegistration {
     private String status;
 
 
+    @PreRemove
+    private void removeStudentCourseRegistration() {
+        this.student.getCourses().remove(this.course);
+        this.student.getStudentCourseRegistrations().remove(this);
+    }
+
 
 
 

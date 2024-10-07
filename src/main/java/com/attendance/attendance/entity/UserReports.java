@@ -30,6 +30,13 @@ public class UserReports {
     private String title;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "person_id", nullable = false,foreignKey = @ForeignKey(name = "fk_person_id"))
+    @JoinColumn(name = "person_id", nullable = false, foreignKey = @ForeignKey(name = "fk_person_id"))
     private Person person;
+
+    public UserReports(Person person, String title, String content, LocalDate date) {
+        this.person = person;
+        this.title = title;
+        this.content = content;
+        this.date = date;
+    }
 }
