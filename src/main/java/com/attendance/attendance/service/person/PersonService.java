@@ -7,10 +7,16 @@ import com.attendance.attendance.entity.Person;
 import com.attendance.attendance.exceptions.AlreadyExistsException;
 import com.attendance.attendance.repository.IImageRepository;
 import com.attendance.attendance.repository.IPersonRepository;
+import com.attendance.attendance.request.log.LogRequest;
 import com.attendance.attendance.request.person.AddPersonRequest;
 import com.attendance.attendance.request.person.UpdatePersonRequest;
+import com.attendance.attendance.security.user.AttendanceUserDetails;
+import com.attendance.attendance.service.log.ILogService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,9 +29,25 @@ public class PersonService implements IPersonService {
     private final IPersonRepository personRepository;
     private final IImageRepository imageRepository;
     private final ModelMapper modelMapper;
+    private final ILogService logService;
+
 
     @Override
     public Person getUserById(Long id) {
+        AttendanceUserDetails userDetails = (AttendanceUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Long authenticatedUserId = userDetails.getId();
+
+        Person person = personRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("User not found"));
+
+        LogRequest request = new LogRequest();
+        request.setPersonId(authenticatedUserId);
+        request.setFirstName(person.getFirstName());
+        request.setLastName(person.getLastName());
+        request.setAction("GET");
+        request.setMessage("User with id " + id + " is fetched");
+        request.setServiceName("PersonService");
+
+        logService.logAction(request);
         return personRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("User not found"));
     }
 

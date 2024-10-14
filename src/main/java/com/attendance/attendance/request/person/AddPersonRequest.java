@@ -34,4 +34,5 @@ public class AddPersonRequest {
     @Schema(description = "Last name of the person", example = "Doe")
     @NotBlank(message = "Last name is required")
     private String lastName;
+
 }

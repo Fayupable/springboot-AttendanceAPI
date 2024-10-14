@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,6 +31,7 @@ public class PersonController {
                     @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "Person not found")
             }
     )
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/{personId}")
     public ResponseEntity<ApiResponse> getPersonById(@PathVariable Long personId) {
         try {
