@@ -1,16 +1,19 @@
 package com.attendance.attendance.controller;
 
 import com.attendance.attendance.request.auth.LoginRequest;
+import com.attendance.attendance.request.log.LogRequest;
 import com.attendance.attendance.response.ApiResponse;
 import com.attendance.attendance.response.JwtResponse;
 import com.attendance.attendance.security.jwt.JwtUtils;
 import com.attendance.attendance.security.user.AttendanceUserDetails;
+import com.attendance.attendance.service.log.ILogService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -55,4 +58,6 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ApiResponse("Invalid credentials", null));
         }
     }
+
+
 }

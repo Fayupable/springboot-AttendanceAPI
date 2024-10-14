@@ -50,6 +50,7 @@ public class PersonController {
                     @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Persons retrieved successfully")
             }
     )
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/all")
     public ResponseEntity<ApiResponse> getAllPerson() {
         List<Person> person = personService.getAllPerson();
@@ -76,6 +77,7 @@ public class PersonController {
         }
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(
             summary = "Get person by email",
             description = "Retrieve person by their email",

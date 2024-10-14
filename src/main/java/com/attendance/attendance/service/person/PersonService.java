@@ -34,22 +34,32 @@ public class PersonService implements IPersonService {
 
     @Override
     public Person getUserById(Long id) {
-        AttendanceUserDetails userDetails = (AttendanceUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Long authenticatedUserId = userDetails.getId();
+//        AttendanceUserDetails userDetails = (AttendanceUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//        Long authenticatedUserId = userDetails.getId();
+//
+//        Person person = personRepository.findById(id)
+//                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+//
+//        logUserAction(authenticatedUserId, person, "GET", "User with id " + id + " is fetched");
 
-        Person person = personRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("User not found"));
 
-        LogRequest request = new LogRequest();
-        request.setPersonId(authenticatedUserId);
-        request.setFirstName(person.getFirstName());
-        request.setLastName(person.getLastName());
-        request.setAction("GET");
-        request.setMessage("User with id " + id + " is fetched");
-        request.setServiceName("PersonService");
-
-        logService.logAction(request);
+//        return person;
         return personRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("User not found"));
     }
+
+//    private void logUserAction(Long authenticatedUserId, Person person, String action, String message) {
+//        String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
+//
+//        LogRequest request = new LogRequest();
+//        request.setPersonId(authenticatedUserId);
+//        request.setFirstName(person.getFirstName());
+//        request.setLastName(person.getLastName());
+//        request.setAction(action);
+//        request.setMessage(message);
+//        request.setServiceName(methodName);
+//
+//        logService.logAction(request);
+//    }
 
     @Override
     public List<Person> getUserByEmail(String email) {
