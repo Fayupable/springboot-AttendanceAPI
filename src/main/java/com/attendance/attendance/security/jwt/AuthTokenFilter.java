@@ -2,7 +2,6 @@ package com.attendance.attendance.security.jwt;
 
 import com.attendance.attendance.security.user.AttendanceUserDetailsService;
 import io.jsonwebtoken.JwtException;
-import io.micrometer.common.lang.NonNull;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -24,18 +23,29 @@ public class AuthTokenFilter extends OncePerRequestFilter {
     private AttendanceUserDetailsService userDetailsService;
 
     @Override
-    protected void doFilterInternal(@NonNull HttpServletRequest request,
-                                    @NonNull HttpServletResponse response,
-                                    @NonNull FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request,
+                                    HttpServletResponse response,
+                                    FilterChain filterChain) throws ServletException, IOException {
 
         try {
             String jwt = parseJwt(request);
             if (StringUtils.hasText(jwt) && jwtUtils.validateToken(jwt)) {
                 String username = jwtUtils.getPersonNameFromToken(jwt);
                 UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-                System.err.println("UserDetails: " + userDetails.getAuthorities());
-                var auth = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-                SecurityContextHolder.getContext().setAuthentication(auth);
+                if(userDetails != null){
+                    UsernamePasswordAuthenticationToken authentication =
+                            new UsernamePasswordAuthenticationToken(
+                                    userDetails,
+                                    null,
+                                    userDetails.getAuthorities());
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
+
+                    // Debug logları
+                    logger.debug("Authenticated user: " + userDetails.getUsername());
+                    logger.debug("Authorities: " + userDetails.getAuthorities());
+                }
+            } else {
+                logger.debug("JWT token is missing or invalid");
             }
         } catch (JwtException e) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);

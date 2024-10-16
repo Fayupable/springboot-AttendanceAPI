@@ -7,16 +7,10 @@ import com.attendance.attendance.entity.Person;
 import com.attendance.attendance.exceptions.AlreadyExistsException;
 import com.attendance.attendance.repository.IImageRepository;
 import com.attendance.attendance.repository.IPersonRepository;
-import com.attendance.attendance.request.log.LogRequest;
 import com.attendance.attendance.request.person.AddPersonRequest;
 import com.attendance.attendance.request.person.UpdatePersonRequest;
-import com.attendance.attendance.security.user.AttendanceUserDetails;
-import com.attendance.attendance.service.log.ILogService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,37 +23,12 @@ public class PersonService implements IPersonService {
     private final IPersonRepository personRepository;
     private final IImageRepository imageRepository;
     private final ModelMapper modelMapper;
-    private final ILogService logService;
 
 
     @Override
     public Person getUserById(Long id) {
-//        AttendanceUserDetails userDetails = (AttendanceUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//        Long authenticatedUserId = userDetails.getId();
-//
-//        Person person = personRepository.findById(id)
-//                .orElseThrow(() -> new IllegalArgumentException("User not found"));
-//
-//        logUserAction(authenticatedUserId, person, "GET", "User with id " + id + " is fetched");
-
-
-//        return person;
         return personRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("User not found"));
     }
-
-//    private void logUserAction(Long authenticatedUserId, Person person, String action, String message) {
-//        String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-//
-//        LogRequest request = new LogRequest();
-//        request.setPersonId(authenticatedUserId);
-//        request.setFirstName(person.getFirstName());
-//        request.setLastName(person.getLastName());
-//        request.setAction(action);
-//        request.setMessage(message);
-//        request.setServiceName(methodName);
-//
-//        logService.logAction(request);
-//    }
 
     @Override
     public List<Person> getUserByEmail(String email) {
